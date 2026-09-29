@@ -2,6 +2,8 @@ package com.khanh.newsaggregator.ingestion;
 
 import com.khanh.newsaggregator.article.Article;
 import com.khanh.newsaggregator.article.ArticleRepository;
+import com.khanh.newsaggregator.category.Category;
+import com.khanh.newsaggregator.category.CategoryRepository;
 import com.khanh.newsaggregator.common.util.HashUtils;
 import com.khanh.newsaggregator.source.Source;
 import com.khanh.newsaggregator.source.SourceRepository;
@@ -33,6 +35,7 @@ public class RssIngestionService {
 
     private final ArticleRepository articleRepository;
     private final SourceRepository sourceRepository;
+    private final CategoryRepository categoryRepository;
     private final RssContentParser contentParser;
 
     /**
@@ -64,9 +67,11 @@ public class RssIngestionService {
                 String summary = contentParser.cleanSummary(entry);
                 String imageUrl = truncate(contentParser.extractImageUrl(entry), 1000);
                 LocalDateTime publishedAt = toLocalDateTime(entry.getPublishedDate());
+                Category category = determineCategory(title, summary);
 
                 Article article = Article.builder()
                         .source(source)
+                        .category(category)
                         .title(title)
                         .summary(summary)
                         .url(truncate(link, 1000))
@@ -119,5 +124,40 @@ public class RssIngestionService {
             return null;
         }
         return value.length() <= maxLength ? value : value.substring(0, maxLength);
+    }
+
+    public Category determineCategory(String title, String summary) {
+        String text = ((title != null ? title : "") + " " + (summary != null ? summary : "")).toLowerCase();
+
+        // 1. Công nghệ
+        if (text.contains("ai") || text.contains("công nghệ") || text.contains("chip") || text.contains("bán dẫn")
+                || text.contains("smartphone") || text.contains("phần mềm") || text.contains("hacker")
+                || text.contains("internet") || text.contains("google") || text.contains("apple")
+                || text.contains("openai") || text.contains("robot") || text.contains("máy tính")
+                || text.contains("samsung") || text.contains("nvidia")) {
+            return categoryRepository.findBySlug("cong-nghe").orElse(null);
+        }
+
+        // 2. Kinh doanh
+        if (text.contains("chứng khoán") || text.contains("giá vàng") || text.contains("bất động sản")
+                || text.contains("ngân hàng") || text.contains("lãi suất") || text.contains("usd")
+                || text.contains("doanh nghiệp") || text.contains("thị trường") || text.contains("tài chính")
+                || text.contains("xuất khẩu") || text.contains("giá xăng") || text.contains("lạm phát")
+                || text.contains("đầu tư") || text.contains("kinh tế") || text.contains("doanh thu")
+                || text.contains("cổ phiếu") || text.contains("tỷ phú")) {
+            return categoryRepository.findBySlug("kinh-doanh").orElse(null);
+        }
+
+        // 3. Thế giới
+        if (text.contains("mỹ") || text.contains("nga") || text.contains("ukraine") || text.contains("trung quốc")
+                || text.contains("israel") || text.contains("thế giới") || text.contains("quốc tế")
+                || text.contains("gaza") || text.contains("liên hợp quốc") || text.contains("châu âu")
+                || text.contains("nato") || text.contains("nhật bản") || text.contains("hàn quốc")
+                || text.contains("tổng thống") || text.contains("ngoại giao") || text.contains("iran")) {
+            return categoryRepository.findBySlug("the-gioi").orElse(null);
+        }
+
+        // 4. Mặc định: Thời sự (cho các tin xã hội, giao thông, đời sống, pháp luật...)
+        return categoryRepository.findBySlug("thoi-su").orElse(null);
     }
 }

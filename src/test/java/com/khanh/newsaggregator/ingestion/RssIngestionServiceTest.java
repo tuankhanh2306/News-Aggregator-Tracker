@@ -35,6 +35,9 @@ class RssIngestionServiceTest {
     private SourceRepository sourceRepository;
 
     @Mock
+    private com.khanh.newsaggregator.category.CategoryRepository categoryRepository;
+
+    @Mock
     private RssContentParser contentParser;
 
     @InjectMocks
