@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: news-aggregator
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:news_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
+
+  mail:
+    host: ${MAIL_HOST:sandbox.smtp.mailtrap.io}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8080
+
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+news:
+  ingestion:
+    enabled: true
+    initial-delay-ms: 3000
+    fixed-delay-ms: 300000
+  trending:
+    enabled: true
+    initial-delay-ms: 8000
+    fixed-delay-ms: 1800000
+  digest:
+    enabled: ${NEWS_DIGEST_ENABLED:true}
+    cron: ${NEWS_DIGEST_CRON:0 0 7 * * *}
+    from: ${NEWS_DIGEST_FROM:news-digest@newsaggregator.com}
