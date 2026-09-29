@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VNNews Hub - Cổng Tin Tức & Xu Hướng Tự Động</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-4">
+                
+                <!-- Brand / Logo -->
+                <div class="flex items-center gap-3 shrink-0 cursor-pointer" onclick="resetFilters()">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                        <i class="fa-solid fa-newspaper text-lg"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">VNNews Hub</span>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 animate-pulse">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 hidden sm:block">Tổng hợp & Phân tích Tin tức Đa nguồn</p>
+                    </div>
+                </div>
+
+                <!-- Search Input Box -->
+                <div class="flex-1 max-w-lg hidden md:block">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm tin tức (Full-Text Search)..." 
+                               class="w-full pl-10 pr-20 py-2 bg-slate-100 border border-transparent rounded-xl text-sm focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                               onkeydown="if(event.key === 'Enter') handleSearch()">
+                        <button onclick="handleSearch()" class="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow transition-all">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Actions: Auth, Digest, Swagger -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <a href="/swagger-ui/index.html" target="_blank" title="Tài liệu Swagger OpenAPI 3"
+                       class="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all border border-slate-200">
+                        <i class="fa-solid fa-code text-indigo-500"></i> API Docs
+                    </a>
+
+                    <!-- User Actions -->
+                    <div id="unauthSection" class="flex items-center gap-2">
+                        <button onclick="openAuthModal('login')" class="px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-600 transition-colors">
+                            Đăng nhập
+                        </button>
+                        <button onclick="openAuthModal('register')" class="px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm shadow-indigo-200 transition-all">
+                            Đăng ký
+                        </button>
+                    </div>
+
+                    <div id="authSection" class="hidden items-center gap-2">
+                        <button onclick="openSubscriptionModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-violet-50 text-violet-700 hover:bg-violet-100 rounded-xl text-xs sm:text-sm font-semibold transition-all">
+                            <i class="fa-regular fa-envelope text-violet-600"></i>
+                            <span class="hidden sm:inline">Bản tin của tôi</span>
+                        </button>
+                        <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+                            <span id="userGreeting" class="text-xs font-medium text-slate-600 hidden md:inline"></span>
+                            <button onclick="handleLogout()" title="Đăng xuất" class="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-all">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 md:hidden">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="mobileSearchInput" placeholder="Tìm kiếm tin tức..." 
+                           class="w-full pl-10 pr-20 py-2 bg-slate-100 border border-transparent rounded-xl text-sm focus:bg-white focus:border-indigo-500 outline-none"
+                           onkeydown="if(event.key === 'Enter') handleMobileSearch()">
+                    <button onclick="handleMobileSearch()" class="absolute right-1.5 top-1/2 -translate-y-1/2 px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-semibold">
+                        Tìm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subheader: Trending Keywords Bar -->
+    <div class="bg-gradient-to-r from-amber-50 via-indigo-50/50 to-violet-50 border-b border-amber-200/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+            <div class="flex items-center gap-2 text-xs overflow-x-auto scrollbar-none py-0.5">
+                <span class="flex items-center gap-1.5 font-bold text-amber-700 shrink-0">
+                    <i class="fa-solid fa-fire text-amber-500"></i> Xu hướng 24h:
+                </span>
+                <div id="trendingKeywordsList" class="flex items-center gap-1.5">
+                    <span class="text-slate-400 text-xs italic">Đang phân tích từ khóa...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Tabs Navigation -->
+    <nav class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="categoryTabs" class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none text-sm font-semibold">
+                <button onclick="selectCategory(null)" id="tab-all" class="category-tab active px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm shrink-0 transition-all">
+                    Tất cả tin
+                </button>
+                <!-- Categories loaded dynamically -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+        <!-- Feed Status Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+                <h1 id="feedTitle" class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Tin Mới Nhất</h1>
+                <p id="feedSubtitle" class="text-xs sm:text-sm text-slate-500 mt-1">Cập nhật liên tục từ VnExpress, Tuổi Trẻ, Dân Trí, VietNamNet, Thanh Niên</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="totalArticlesBadge" class="text-xs font-semibold px-2.5 py-1 bg-slate-200/70 text-slate-700 rounded-lg">Đang tải...</span>
+                <button onclick="refreshCurrentFeed()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition-all shadow-sm">
+                    <i class="fa-solid fa-rotate-right"></i> Làm mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Articles Grid -->
+        <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Loading Skeletons -->
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm animate-pulse space-y-4">
+                <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                <div class="h-6 bg-slate-200 rounded w-5/6"></div>
+                <div class="h-16 bg-slate-100 rounded"></div>
+                <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm animate-pulse space-y-4">
+                <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                <div class="h-6 bg-slate-200 rounded w-5/6"></div>
+                <div class="h-16 bg-slate-100 rounded"></div>
+                <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+            </div>
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm animate-pulse space-y-4">
+                <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                <div class="h-6 bg-slate-200 rounded w-5/6"></div>
+                <div class="h-16 bg-slate-100 rounded"></div>
+                <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
+            <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-2xl mb-3">
+                <i class="fa-regular fa-folder-open"></i>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Không tìm thấy bài viết nào</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Vui lòng thử từ khóa tìm kiếm khác hoặc chọn một danh mục khác.</p>
+            <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-semibold hover:bg-indigo-700 transition-all">
+                Xem tất cả tin
+            </button>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="paginationContainer" class="mt-10 flex items-center justify-between border-t border-slate-200 pt-6">
+            <button id="prevPageBtn" onclick="changePage(-1)" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-all">
+                <i class="fa-solid fa-chevron-left text-[10px]"></i> Trang trước
+            </button>
+            <div class="text-xs font-semibold text-slate-600">
+                Trang <span id="currentPageNum" class="text-indigo-600 font-bold">1</span> / <span id="totalPagesNum">1</span>
+            </div>
+            <button id="nextPageBtn" onclick="changePage(1)" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-all">
+                Trang sau <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-newspaper text-sm"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-slate-800">VNNews Hub &bull; Production Backend Portfolio</div>
+                        <p class="text-xs text-slate-500">Phát triển bởi Nguyễn Tuấn Khanh - Java Spring Boot & PostgreSQL</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 text-xs font-semibold text-slate-600">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 rounded-md">
+                        <i class="fa-brands fa-java text-orange-600"></i> Java 21 / Spring Boot 3
+                    </span>
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 rounded-md">
+                        <i class="fa-solid fa-database text-blue-600"></i> Postgres FTS + Redis
+                    </span>
+                    <a href="https://github.com/tuankhanh2306/News-Aggregator-Tracker" target="_blank" class="hover:text-indigo-600 transition-colors">
+                        <i class="fa-brands fa-github text-sm"></i> GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL: Auth (Login & Register) -->
+    <div id="authModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative">
+            <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-slate-200 mb-6">
+                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-sm font-bold text-indigo-600 border-b-2 border-indigo-600">
+                    Đăng nhập
+                </button>
+                <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-sm font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700">
+                    Đăng ký
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="fullNameGroup" class="hidden">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Họ và tên</label>
+                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Địa chỉ Email</label>
+                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none">
+                </div>
+
+                <div id="authAlert" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+
+                <button type="submit" id="authSubmitBtn" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm shadow-md shadow-indigo-200 transition-all">
+                    Đăng nhập
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Subscriptions & Email Digest -->
+    <div id="subModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 relative max-h-[90vh] flex flex-col">
+            <button onclick="closeSubModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center text-lg">
+                    <i class="fa-regular fa-envelope"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Bản Tin Email Hằng Ngày</h2>
+                    <p class="text-xs text-slate-500">Chọn các chuyên mục bạn muốn nhận tóm tắt vào 7h sáng mỗi ngày</p>
+                </div>
+            </div>
+
+            <!-- Categories Checkboxes List -->
+            <div class="overflow-y-auto flex-1 my-3 pr-1 space-y-2.5" id="subscriptionCategoryList">
+                <div class="text-center py-6 text-slate-400 text-xs">Đang tải danh mục...</div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="border-t border-slate-200 pt-4 mt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="previewEmailDigest()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-all">
+                        <i class="fa-solid fa-eye text-slate-500"></i> Xem trước Email
+                    </button>
+                    <button onclick="sendEmailDigestNow()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
+                        <i class="fa-solid fa-paper-plane text-violet-200"></i> Gửi thử ngay
+                    </button>
+                </div>
+                <button onclick="closeSubModal()" class="w-full sm:w-auto px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl text-xs font-semibold">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Email Preview IFrame Modal -->
+    <div id="previewModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col relative overflow-hidden">
+            <div class="px-5 py-3.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-envelope-open-text text-violet-600"></i>
+                    <span class="text-xs font-bold text-slate-800">Xem trước Bản tin Daily Digest (Thymeleaf HTML Template)</span>
+                </div>
+                <button onclick="closePreviewModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <iframe id="previewIframe" class="w-full flex-1 border-0"></iframe>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300">
+        <div id="toastContent" class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl text-xs font-semibold text-white"></div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // State Management
+        let state = {
+            categories: [],
+            currentCategoryId: null,
+            currentSearchKeyword: null,
+            currentPage: 0,
+            pageSize: 12,
+            totalPages: 1,
+            user: null,
+            userSubscriptions: new Set()
+        };
+
+        const API = {
+            articles: '/api/articles',
+            categories: '/api/categories',
+            trending: '/api/trending/keywords',
+            auth: '/api/auth',
+            subscriptions: '/api/subscriptions',
+            digest: '/api/subscriptions/digest'
+        };
+
+        // Source badge colors
+        const SOURCE_COLORS = {
+            'VnExpress': { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200' },
+            'Tuổi Trẻ': { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200' },
+            'Dân Trí': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+            'VietNamNet': { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+            'Thanh Niên': { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' }
+        };
+
+        // Init on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            initAuth();
+            loadCategories();
+            loadTrendingKeywords();
+            loadArticles();
+        });
+
+        // ================= AUTH MANAGEMENT =================
+        function initAuth() {
+            const token = localStorage.getItem('jwt_token');
+            const email = localStorage.getItem('user_email');
+            const fullName = localStorage.getItem('user_fullname');
+
+            if (token && email) {
+                state.user = { token, email, fullName };
+                document.getElementById('unauthSection').classList.add('hidden');
+                document.getElementById('authSection').classList.remove('hidden');
+                document.getElementById('authSection').classList.add('flex');
+                document.getElementById('userGreeting').textContent = fullName || email;
+            } else {
+                state.user = null;
+                document.getElementById('unauthSection').classList.remove('hidden');
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('authSection').classList.remove('flex');
+            }
+        }
+
+        function openAuthModal(tab = 'login') {
+            document.getElementById('authModal').classList.remove('hidden');
+            switchAuthTab(tab);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('authAlert').classList.add('hidden');
+        }
+
+        let currentAuthTab = 'login';
+        function switchAuthTab(tab) {
+            currentAuthTab = tab;
+            const loginTab = document.getElementById('authTabLogin');
+            const regTab = document.getElementById('authTabRegister');
+            const nameGroup = document.getElementById('fullNameGroup');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            document.getElementById('authAlert').classList.add('hidden');
+
+            if (tab === 'login') {
+                loginTab.className = 'flex-1 pb-3 text-sm font-bold text-indigo-600 border-b-2 border-indigo-600';
+                regTab.className = 'flex-1 pb-3 text-sm font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700';
+                nameGroup.classList.add('hidden');
+                submitBtn.textContent = 'Đăng nhập';
+            } else {
+                regTab.className = 'flex-1 pb-3 text-sm font-bold text-indigo-600 border-b-2 border-indigo-600';
+                loginTab.className = 'flex-1 pb-3 text-sm font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-700';
+                nameGroup.classList.remove('hidden');
+                submitBtn.textContent = 'Tạo tài khoản';
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value;
+            const fullName = document.getElementById('authFullName').value.trim();
+            const alertEl = document.getElementById('authAlert');
+
+            alertEl.className = 'p-3 rounded-xl text-xs font-medium bg-slate-100 text-slate-600';
+            alertEl.textContent = 'Đang xử lý...';
+            alertEl.classList.remove('hidden');
+
+            try {
+                if (currentAuthTab === 'login') {
+                    const res = await fetch(`${API.auth}/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'Sai thông tin đăng nhập');
+
+                    localStorage.setItem('jwt_token', data.token);
+                    localStorage.setItem('user_email', data.email);
+                    localStorage.setItem('user_fullname', data.fullName || data.email);
+                    initAuth();
+                    closeAuthModal();
+                    showToast('Đăng nhập thành công!', 'success');
+                } else {
+                    const res = await fetch(`${API.auth}/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password, fullName })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'Không thể tạo tài khoản');
+
+                    localStorage.setItem('jwt_token', data.token);
+                    localStorage.setItem('user_email', data.email);
+                    localStorage.setItem('user_fullname', data.fullName || data.email);
+                    initAuth();
+                    closeAuthModal();
+                    showToast('Đăng ký thành công và đã tự động đăng nhập!', 'success');
+                }
+            } catch (err) {
+                alertEl.className = 'p-3 rounded-xl text-xs font-medium bg-rose-50 text-rose-600 border border-rose-200';
+                alertEl.textContent = err.message;
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('user_email');
+            localStorage.removeItem('user_fullname');
+            initAuth();
+            showToast('Đã đăng xuất', 'info');
+        }
+
+        // ================= CATEGORIES & TRENDING =================
+        async function loadCategories() {
+            try {
+                const res = await fetch(API.categories);
+                if (!res.ok) return;
+                state.categories = await res.json();
+
+                const container = document.getElementById('categoryTabs');
+                state.categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.id = `tab-cat-${cat.id}`;
+                    btn.className = 'category-tab px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-indigo-600 hover:bg-slate-100 shrink-0 transition-all';
+                    btn.textContent = cat.name;
+                    btn.onclick = () => selectCategory(cat.id, cat.name);
+                    container.appendChild(btn);
+                });
+            } catch (err) {
+                console.error('Error loading categories:', err);
+            }
+        }
+
+        async function loadTrendingKeywords() {
+            try {
+                const res = await fetch(`${API.trending}?limit=8`);
+                if (!res.ok) return;
+                const keywords = await res.json();
+                const container = document.getElementById('trendingKeywordsList');
+                container.innerHTML = '';
+
+                if (!keywords || keywords.length === 0) {
+                    container.innerHTML = '<span class="text-slate-400 text-xs italic">Chưa có đủ dữ liệu từ khóa hôm nay</span>';
+                    return;
+                }
+
+                keywords.forEach(kw => {
+                    const pill = document.createElement('button');
+                    pill.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white hover:bg-indigo-600 text-slate-700 hover:text-white border border-slate-200 hover:border-indigo-600 font-semibold shadow-xs transition-all shrink-0';
+                    pill.innerHTML = `<span>#${kw.keyword}</span><span class="text-[10px] opacity-70">(${kw.frequency})</span>`;
+                    pill.onclick = () => searchByKeyword(kw.keyword);
+                    container.appendChild(pill);
+                });
+            } catch (err) {
+                console.error('Error loading trending:', err);
+            }
+        }
+
+        // ================= ARTICLES FEED =================
+        async function loadArticles() {
+            const grid = document.getElementById('articlesGrid');
+            const empty = document.getElementById('emptyState');
+            const badge = document.getElementById('totalArticlesBadge');
+
+            grid.innerHTML = `
+                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm animate-pulse space-y-4">
+                    <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+                    <div class="h-6 bg-slate-200 rounded w-5/6"></div>
+                    <div class="h-16 bg-slate-100 rounded"></div>
+                    <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+                </div>
+            `;
+            empty.classList.add('hidden');
+
+            try {
+                let url = `${API.articles}?page=${state.currentPage}&size=${state.pageSize}`;
+                if (state.currentSearchKeyword) {
+                    url += `&q=${encodeURIComponent(state.currentSearchKeyword)}`;
+                } else if (state.currentCategoryId) {
+                    url += `&categoryId=${state.currentCategoryId}`;
+                }
+
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Không thể tải danh sách bài viết');
+                const pageData = await res.json();
+
+                state.totalPages = pageData.totalPages || 1;
+                document.getElementById('currentPageNum').textContent = state.currentPage + 1;
+                document.getElementById('totalPagesNum').textContent = state.totalPages;
+                document.getElementById('prevPageBtn').disabled = state.currentPage <= 0;
+                document.getElementById('nextPageBtn').disabled = state.currentPage >= state.totalPages - 1;
+                badge.textContent = `${pageData.totalElements || 0} bài viết`;
+
+                if (!pageData.content || pageData.content.length === 0) {
+                    grid.innerHTML = '';
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                grid.innerHTML = '';
+                pageData.content.forEach(article => {
+                    grid.appendChild(createArticleCard(article));
+                });
+
+            } catch (err) {
+                grid.innerHTML = `<div class="col-span-full text-center text-rose-500 py-10">${err.message}</div>`;
+            }
+        }
+
+        function createArticleCard(article) {
+            const sourceStyle = SOURCE_COLORS[article.sourceName] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200' };
+            const timeAgo = formatRelativeTime(article.publishedAt);
+
+            const card = document.createElement('div');
+            card.className = 'group bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-50/50 transition-all flex flex-col justify-between';
+
+            card.innerHTML = `
+                <div>
+                    <!-- Meta Badges -->
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold border ${sourceStyle.bg} ${sourceStyle.text} ${sourceStyle.border}">
+                            ${article.sourceName || 'Tin tức'}
+                        </span>
+                        <div class="flex items-center gap-1.5 text-[11px] text-slate-400">
+                            <i class="fa-regular fa-clock"></i>
+                            <span>${timeAgo}</span>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <h2 class="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug mb-2">
+                        <a href="${article.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(article.title)}</a>
+                    </h2>
+
+                    <!-- Summary -->
+                    <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4">
+                        ${escapeHtml(article.summary || 'Không có mô tả chi tiết.')}
+                    </p>
+                </div>
+
+                <!-- Footer info -->
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500">
+                        <i class="fa-solid fa-tag text-[9px] text-indigo-400"></i> ${escapeHtml(article.categoryName || 'Chung')}
+                    </span>
+                    <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                        Đọc tin gốc <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+            `;
+            return card;
+        }
+
+        // ================= SEARCH & FILTER =================
+        function handleSearch() {
+            const input = document.getElementById('searchInput');
+            const kw = input.value.trim();
+            if (!kw) return;
+            searchByKeyword(kw);
+        }
+
+        function handleMobileSearch() {
+            const input = document.getElementById('mobileSearchInput');
+            const kw = input.value.trim();
+            if (!kw) return;
+            searchByKeyword(kw);
+        }
+
+        function searchByKeyword(keyword) {
+            state.currentSearchKeyword = keyword;
+            state.currentCategoryId = null;
+            state.currentPage = 0;
+
+            document.getElementById('searchInput').value = keyword;
+            document.getElementById('mobileSearchInput').value = keyword;
+            document.getElementById('feedTitle').innerHTML = `Kết quả tìm kiếm: <span class="text-indigo-600">"${escapeHtml(keyword)}"</span>`;
+            document.getElementById('feedSubtitle').textContent = 'Sắp xếp theo độ liên quan bằng PostgreSQL TSVECTOR Full-Text Search';
+
+            // Reset tab styles
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.className = 'category-tab px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-indigo-600 hover:bg-slate-100 shrink-0 transition-all';
+            });
+
+            loadArticles();
+        }
+
+        function selectCategory(id, name) {
+            state.currentCategoryId = id;
+            state.currentSearchKeyword = null;
+            state.currentPage = 0;
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+
+            // Update Tab styles
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.className = 'category-tab px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-indigo-600 hover:bg-slate-100 shrink-0 transition-all';
+            });
+
+            if (id === null) {
+                document.getElementById('tab-all').className = 'category-tab active px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm shrink-0 transition-all';
+                document.getElementById('feedTitle').textContent = 'Tin Mới Nhất';
+                document.getElementById('feedSubtitle').textContent = 'Cập nhật liên tục từ VnExpress, Tuổi Trẻ, Dân Trí, VietNamNet, Thanh Niên';
+            } else {
+                const activeTab = document.getElementById(`tab-cat-${id}`);
+                if (activeTab) {
+                    activeTab.className = 'category-tab active px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm shrink-0 transition-all';
+                }
+                document.getElementById('feedTitle').textContent = `Chuyên mục: ${name}`;
+                document.getElementById('feedSubtitle').textContent = `Danh sách tin tức mới nhất thuộc chuyên mục ${name}`;
+            }
+
+            loadArticles();
+        }
+
+        function resetFilters() {
+            selectCategory(null);
+        }
+
+        function refreshCurrentFeed() {
+            loadArticles();
+            loadTrendingKeywords();
+            showToast('Đã làm mới dữ liệu!', 'info');
+        }
+
+        function changePage(delta) {
+            const newPage = state.currentPage + delta;
+            if (newPage >= 0 && newPage < state.totalPages) {
+                state.currentPage = newPage;
+                loadArticles();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // ================= SUBSCRIPTIONS & DIGEST =================
+        async function openSubscriptionModal() {
+            if (!state.user) {
+                openAuthModal('login');
+                return;
+            }
+            document.getElementById('subModal').classList.remove('hidden');
+            await loadUserSubscriptions();
+        }
+
+        function closeSubModal() {
+            document.getElementById('subModal').classList.add('hidden');
+        }
+
+        async function loadUserSubscriptions() {
+            const list = document.getElementById('subscriptionCategoryList');
+            list.innerHTML = '<div class="text-center py-6 text-slate-400 text-xs">Đang tải danh mục...</div>';
+
+            try {
+                // Fetch subscribed categories
+                const subRes = await fetch(API.subscriptions, {
+                    headers: { 'Authorization': `Bearer ${state.user.token}` }
+                });
+                if (!subRes.ok) throw new Error('Không thể tải danh sách đăng ký');
+                const subs = await subRes.json();
+                state.userSubscriptions = new Set(subs.map(s => s.categoryId));
+
+                list.innerHTML = '';
+                state.categories.forEach(cat => {
+                    const isSubscribed = state.userSubscriptions.has(cat.id);
+                    const item = document.createElement('div');
+                    item.className = 'flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:border-violet-300 transition-all';
+                    item.innerHTML = `
+                        <div>
+                            <span class="text-sm font-bold text-slate-800">${escapeHtml(cat.name)}</span>
+                            <span class="text-xs text-slate-400 block">/chuyen-muc/${escapeHtml(cat.slug)}</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" ${isSubscribed ? 'checked' : ''} onchange="toggleSubscription(${cat.id}, this.checked)" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
+                        </label>
+                    `;
+                    list.appendChild(item);
+                });
+
+            } catch (err) {
+                list.innerHTML = `<div class="text-center text-rose-500 py-4 text-xs">${err.message}</div>`;
+            }
+        }
+
+        async function toggleSubscription(categoryId, isSubscribe) {
+            try {
+                if (isSubscribe) {
+                    await fetch(API.subscriptions, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${state.user.token}`
+                        },
+                        body: JSON.stringify({ categoryId })
+                    });
+                    state.userSubscriptions.add(categoryId);
+                    showToast('Đã đăng ký theo dõi chuyên mục!', 'success');
+                } else {
+                    await fetch(`${API.subscriptions}/${categoryId}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${state.user.token}` }
+                    });
+                    state.userSubscriptions.delete(categoryId);
+                    showToast('Đã hủy theo dõi chuyên mục!', 'info');
+                }
+            } catch (err) {
+                showToast('Lỗi khi cập nhật theo dõi', 'error');
+            }
+        }
+
+        async function previewEmailDigest() {
+            if (!state.user) return;
+            try {
+                const res = await fetch(`${API.digest}/preview`, {
+                    headers: { 'Authorization': `Bearer ${state.user.token}` }
+                });
+                if (!res.ok) throw new Error('Không thể tạo bản tin xem trước');
+                const html = await res.text();
+
+                const iframe = document.getElementById('previewIframe');
+                iframe.srcdoc = html;
+                document.getElementById('previewModal').classList.remove('hidden');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.add('hidden');
+        }
+
+        async function sendEmailDigestNow() {
+            if (!state.user) return;
+            try {
+                showToast('Đang điều phối gửi email...', 'info');
+                const res = await fetch(`${API.digest}/send`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${state.user.token}` }
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Lỗi khi gửi email');
+                showToast(data.message || 'Đã gửi bản tin thành công tới email của bạn!', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        // ================= HELPERS =================
+        function formatRelativeTime(dateString) {
+            if (!dateString) return 'Gần đây';
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMinutes = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMinutes < 1) return 'Vừa xong';
+            if (diffMinutes < 60) return `${diffMinutes} phút trước`;
+            if (diffHours < 24) return `${diffHours} giờ trước`;
+            if (diffDays === 1) return 'Hôm qua';
+            if (diffDays < 7) return `${diffDays} ngày trước`;
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const content = document.getElementById('toastContent');
+
+            let bg = 'bg-slate-800';
+            let icon = 'fa-solid fa-circle-info';
+            if (type === 'success') {
+                bg = 'bg-emerald-600';
+                icon = 'fa-solid fa-circle-check';
+            } else if (type === 'error') {
+                bg = 'bg-rose-600';
+                icon = 'fa-solid fa-triangle-exclamation';
+            }
+
+            content.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl text-xs font-semibold text-white ${bg}`;
+            content.innerHTML = `<i class="${icon}"></i> <span>${message}</span>`;
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
