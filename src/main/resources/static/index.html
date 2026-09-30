@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VNNews Hub - Lướt Tin Vắn Phong Cách Mới</title>
+    <title>VNNews Hub - Micro-Content Feed & TikTok Recommendation Engine</title>
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -25,7 +25,6 @@
                             surface: '#111115',
                             card: '#16161c',
                             border: 'rgba(255, 255, 255, 0.08)',
-                            borderHover: 'rgba(255, 255, 255, 0.16)',
                             accent: '#6366f1',
                             accentLight: '#818cf8',
                         }
@@ -37,11 +36,10 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Linear-style aesthetics */
         body {
             background-color: #09090b;
             color: #f4f4f5;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.015em;
         }
 
         /* Snap Scroll TikTok Deck */
@@ -92,28 +90,33 @@
         .heart-animate {
             animation: heartPulse 0.35s ease-in-out;
         }
+
+        /* Reading Progress Bar Animation */
+        .read-progress-bar {
+            transition: width 0.1s linear;
+        }
     </style>
 </head>
 <body class="bg-[#09090b] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
 
-    <!-- Top Navigation Header (Linear Minimalist) -->
-    <header class="h-14 border-b border-[rgba(255,255,255,0.07)] bg-[#09090b]/80 backdrop-blur-xl sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between gap-4">
+    <!-- Top Navigation Header -->
+    <header class="h-14 border-b border-[rgba(255,255,255,0.07)] bg-[#09090b]/85 backdrop-blur-xl sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between gap-4">
         
         <!-- Left: Logo & View Switcher -->
         <div class="flex items-center gap-4 sm:gap-6">
             <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetFilters()">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-sm">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-sm shadow-indigo-900/40">
                     <i class="fa-solid fa-bolt text-xs"></i>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="font-extrabold text-sm sm:text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">VNNews Hub</span>
-                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-800 text-zinc-400 border border-zinc-700/50">v2.0</span>
+                    <span class="font-black text-sm sm:text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">VNNews Hub</span>
+                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">TikTok Algorithmic Feed</span>
                 </div>
             </div>
 
             <!-- Mode Switcher: Reels vs Grid -->
             <div class="flex items-center bg-[#18181b] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
-                <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ TikTok"
+                <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ Micro-Content (TikTok)"
                         class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all">
                     <i class="fa-solid fa-mobile-screen text-[11px]"></i>
                     <span class="hidden sm:inline">Lướt Thẻ</span>
@@ -137,11 +140,11 @@
             </div>
         </div>
 
-        <!-- Right: Actions & Profile -->
+        <!-- Right: Actions & User -->
         <div class="flex items-center gap-2 sm:gap-3">
             
-            <!-- Reload Unread Deck Button -->
-            <button onclick="handleReloadAction()" title="Làm mới tin chưa đọc (ưu tiên sở thích)" 
+            <!-- Reload Unread Deck Button with Recommendation Trigger -->
+            <button onclick="handleReloadAction()" title="Làm mới hàng đợi (Học tức thì theo sở thích phiên hiện tại)" 
                     class="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
                 <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-indigo-400"></i>
                 <span class="hidden sm:inline">Làm Mới</span>
@@ -168,7 +171,7 @@
                     <i class="fa-regular fa-envelope text-[11px]"></i>
                     <span class="hidden sm:inline">Bản tin</span>
                 </button>
-                <span id="userBadge" class="text-xs font-mono text-zinc-400 hidden sm:inline truncate max-w-[120px]"></span>
+                <span id="userBadge" class="text-xs font-mono text-zinc-400 hidden sm:inline truncate max-w-[110px]"></span>
                 <button onclick="handleLogout()" title="Đăng xuất" class="p-1.5 text-zinc-500 hover:text-rose-400 transition-colors">
                     <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
                 </button>
@@ -182,7 +185,7 @@
         <!-- ========================================== -->
         <!-- LEFT SIDEBAR: Linear / TikTok Navigation -->
         <!-- ========================================== -->
-        <aside class="w-60 shrink-0 border-r border-[rgba(255,255,255,0.07)] p-4 hidden md:flex flex-col justify-between overflow-y-auto">
+        <aside class="w-64 shrink-0 border-r border-[rgba(255,255,255,0.07)] p-4 hidden md:flex flex-col justify-between overflow-y-auto">
             <div class="space-y-6">
                 
                 <!-- Main Nav Tabs -->
@@ -190,7 +193,7 @@
                     <button onclick="selectFeedFilter('for-you')" id="nav-for-you" 
                             class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 transition-all">
                         <span class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Dành Cho Bạn
+                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Dành Cho Bạn (70-20-10)
                         </span>
                         <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
                     </button>
@@ -242,16 +245,41 @@
 
             </div>
 
-            <!-- User Behavior Status Box -->
-            <div class="p-3 rounded-xl bg-zinc-900/60 border border-[rgba(255,255,255,0.06)] text-[11px] space-y-1.5">
-                <div class="flex items-center justify-between font-mono text-[10px] text-zinc-400">
-                    <span>HỒ SƠ QUAN TÂM</span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <!-- TIKTOK RECOMMENDATION ENGINE: LIVE SIGNALS HUD -->
+            <div class="p-3.5 rounded-xl bg-zinc-900/80 border border-[rgba(255,255,255,0.08)] text-[11px] space-y-2 mt-4">
+                <div class="flex items-center justify-between font-mono text-[10px] text-indigo-400 font-bold">
+                    <span class="flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> THUẬT TOÁN TIKTOK
+                    </span>
+                    <span id="coldStartBadge" class="text-[9px] bg-zinc-800 px-1 rounded text-zinc-400">Cold-Start</span>
                 </div>
-                <div id="interestSummary" class="text-xs text-zinc-300 font-semibold truncate">
-                    Đang học hành vi...
+
+                <!-- Dominant Interest Profile -->
+                <div>
+                    <div class="text-[10px] font-mono text-zinc-500 uppercase">Trọng số hứng thú phiên:</div>
+                    <div id="dominantInterestText" class="text-xs font-bold text-white mt-0.5 truncate">
+                        Đang đọc vị hành vi...
+                    </div>
+                    <!-- Interest score distribution bar -->
+                    <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1.5 flex" id="interestBar">
+                        <div class="bg-indigo-500 h-full w-1/4"></div>
+                        <div class="bg-rose-500 h-full w-1/4"></div>
+                        <div class="bg-amber-500 h-full w-1/4"></div>
+                        <div class="bg-emerald-500 h-full w-1/4"></div>
+                    </div>
                 </div>
-                <p class="text-[10px] text-zinc-500 leading-tight">Thả tim bài viết để hệ thống ưu tiên nội dung bạn yêu thích.</p>
+
+                <!-- Live Signal Activity Log -->
+                <div class="pt-1 border-t border-zinc-800">
+                    <div class="text-[10px] font-mono text-zinc-500">Tín hiệu ngầm mới nhất:</div>
+                    <div id="liveSignalLog" class="text-[11px] font-mono text-emerald-400 truncate mt-0.5">
+                        Chờ tín hiệu lướt tin...
+                    </div>
+                </div>
+
+                <div class="text-[9px] text-zinc-500 font-mono flex items-center justify-between pt-0.5">
+                    <span>Tỷ lệ: 70% Cá nhân • 20% Khám phá • 10% Hot</span>
+                </div>
             </div>
         </aside>
 
@@ -260,7 +288,7 @@
         <!-- ========================================== -->
         <main class="flex-1 flex flex-col items-center justify-center relative overflow-hidden bg-[#09090b]">
 
-            <!-- VIEW 1: TIKTOK REELS SWIPE (EXACT LIKE SCREENSHOT) -->
+            <!-- VIEW 1: TIKTOK REELS SWIPE (ONE-CARD-PER-SCREEN) -->
             <section id="reelsViewSection" class="w-full h-[calc(100vh-56px)] flex items-center justify-center p-2 sm:p-4 relative">
                 
                 <!-- TikTok Style Vertical Card Container -->
@@ -411,11 +439,11 @@
         <div id="toastContent" class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium border"></div>
     </div>
 
-    <!-- APPLICATION JAVASCRIPT -->
+    <!-- APPLICATION JAVASCRIPT: TIKTOK RECOMMENDATION ENGINE -->
     <script>
-        // ==========================================
-        // STATE MANAGEMENT & USER BEHAVIOR ENGINE
-        // ==========================================
+        // =========================================================================
+        // 1. STATE & IMPLICIT SIGNALS MAPPING ENGINE
+        // =========================================================================
         let state = {
             viewMode: 'reels', // 'reels' | 'grid'
             feedFilter: 'for-you', // 'for-you' | 'trending' | 'liked' | 'history'
@@ -424,16 +452,22 @@
             currentSearchKeyword: null,
             trendingKeywords: [],
 
-            // All fetched raw articles
+            // Raw candidates
             allArticles: [],
 
-            // Filtered deck for Reels
+            // Final generated TikTok deck (70 - 20 - 10 slotting)
             reelsDeck: [],
 
-            // User Behavior Profiling
-            readArticleIds: new Set(JSON.parse(localStorage.getItem('read_articles_v2') || '[]')),
-            likedArticleIds: new Set(JSON.parse(localStorage.getItem('liked_articles_v2') || '[]')),
-            categoryInterests: JSON.parse(localStorage.getItem('user_category_interests') || '{}'),
+            // Implicit Signals History
+            readArticleIds: new Set(JSON.parse(localStorage.getItem('read_articles_v3') || '[]')),
+            likedArticleIds: new Set(JSON.parse(localStorage.getItem('liked_articles_v3') || '[]')),
+
+            // Real-Time In-Session Category Interest Scores
+            sessionWeights: JSON.parse(localStorage.getItem('session_category_weights') || '{"cong-nghe": 0, "kinh-doanh": 0, "the-gioi": 0, "thoi-su": 0}'),
+
+            // Cold Start Flag: true if user has < 5 recorded signals
+            isColdStart: false,
+            signalsCount: parseInt(localStorage.getItem('user_signals_count') || '0'),
 
             // Auth
             user: null,
@@ -449,6 +483,15 @@
             digest: '/api/subscriptions/digest'
         };
 
+        // Source Credibility Weights (Anti-Clickbait filter)
+        const SOURCE_CREDIBILITY = {
+            'VnExpress': 1.25,
+            'Tuổi Trẻ': 1.20,
+            'Thanh Niên': 1.15,
+            'Dân Trí': 1.10,
+            'VietNamNet': 1.10
+        };
+
         const CATEGORY_DEFAULT_IMAGES = {
             'cong-nghe': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80',
             'kinh-doanh': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80',
@@ -460,8 +503,9 @@
         // Initialize application on load
         document.addEventListener('DOMContentLoaded', () => {
             initAuth();
+            state.isColdStart = state.signalsCount < 5;
             updateStatsBadges();
-            updateInterestSummaryUI();
+            updateRecommendationHUD();
             loadCategories();
             loadTrendingData().then(() => {
                 fetchArticlesAndBuildFeed();
@@ -469,9 +513,9 @@
             initKeyboardShortcuts();
         });
 
-        // ==========================================
-        // DATA FETCHING & RECOMMENDATION ENGINE
-        // ==========================================
+        // =========================================================================
+        // 2. RETRIEVAL & RECOMMENDATION PIPELINE (70 - 20 - 10 SLOTTING)
+        // =========================================================================
         async function loadTrendingData() {
             try {
                 const res = await fetch(`${API.trending}?limit=12`);
@@ -488,7 +532,6 @@
             spinner.classList.add('animate-spin');
 
             try {
-                // Fetch articles (up to 50 latest from multiple sources)
                 let url = `${API.articles}?page=0&size=50`;
                 if (state.currentSearchKeyword) {
                     url += `&q=${encodeURIComponent(state.currentSearchKeyword)}`;
@@ -501,8 +544,8 @@
                 const pageData = await res.json();
                 state.allArticles = pageData.content || [];
 
-                // Build deck according to User Behavior & Filter
-                buildReelsDeck(isReloadAction);
+                // Pipeline: Generate 70 - 20 - 10 Deck
+                generateAlgorithmicDeck(isReloadAction);
 
                 if (state.viewMode === 'reels') {
                     renderTikTokDeck();
@@ -511,7 +554,7 @@
                 }
 
                 if (isReloadAction) {
-                    showToast(`Đã làm mới! Đang ưu tiên các tin phù hợp nhất với bạn.`, 'success');
+                    showToast('Đã làm mới! Đang điều phối luồng tin vi mô theo sở thích phiên hiện tại.', 'success');
                 }
 
             } catch (err) {
@@ -523,80 +566,146 @@
         }
 
         /**
-         * Recommendation Engine:
-         * Calculates score for each article based on:
-         * 1. User category interest (from liked articles)
-         * 2. Social / Search Trending match (Top search keywords)
-         * 3. Freshness (recency)
+         * 4-Stage TikTok Recommendation Pipeline:
+         * Stage 1: Content Profiling & Score Calculation
+         * Stage 2: Cold-Start Guard (First 5 cards rotation for new users)
+         * Stage 3: Slotting Interleaving (70% Personal / 20% Exploration / 10% Breaking)
+         * Stage 4: Unread Filtering on Reload
          */
-        function buildReelsDeck(isReloadAction = false) {
+        function generateAlgorithmicDeck(isReloadAction = false) {
             let pool = [...state.allArticles];
 
-            // 1. Filter out already-read articles if it's a reload action
+            // Filter unread if reload
             if (isReloadAction) {
                 const unreadOnly = pool.filter(a => !state.readArticleIds.has(a.id));
-                if (unreadOnly.length > 0) {
-                    pool = unreadOnly;
-                }
+                if (unreadOnly.length > 0) pool = unreadOnly;
             }
 
-            // 2. Specific Nav Filters
+            // Explicit Filters
             if (state.feedFilter === 'liked') {
-                pool = pool.filter(a => state.likedArticleIds.has(a.id));
-            } else if (state.feedFilter === 'history') {
-                pool = pool.filter(a => state.readArticleIds.has(a.id));
+                state.reelsDeck = pool.filter(a => state.likedArticleIds.has(a.id));
+                return;
+            }
+            if (state.feedFilter === 'history') {
+                state.reelsDeck = pool.filter(a => state.readArticleIds.has(a.id));
+                return;
             }
 
-            // 3. Score each article
             const topKeywords = state.trendingKeywords.map(k => k.keyword.toLowerCase());
 
+            // Stage 1: Scoring Formula
+            // Score_i = w_interest * Interest(Category) + w_trend * TrendingMatch + w_cred * SourceCredibility + w_recency * Freshness
             pool.forEach(article => {
                 let score = 0;
                 const catSlug = article.categorySlug || 'thoi-su';
-                const userInterest = state.categoryInterests[catSlug] || 0;
+                const userCategoryScore = state.sessionWeights[catSlug] || 0;
 
-                // Priority 1: User liked this category in the past
-                score += userInterest * 10;
+                // 1. In-session User Interest (w1 = 12)
+                score += userCategoryScore * 12;
 
-                // Priority 2: Matches top trending search keywords on internet
+                // 2. Trending Match on Web (w2 = 25)
                 const titleLower = (article.title || '').toLowerCase();
+                let matchesTrending = false;
                 topKeywords.forEach(kw => {
                     if (titleLower.includes(kw)) {
-                        score += 15;
-                        article.isTrendingHot = true;
+                        score += 25;
+                        matchesTrending = true;
                     }
                 });
+                article.isTrendingHot = matchesTrending;
 
-                // Priority 3: Freshness boost
+                // 3. Source Credibility (Anti-clickbait filter)
+                const credMultiplier = SOURCE_CREDIBILITY[article.sourceName] || 1.0;
+                score = score * credMultiplier;
+
+                // 4. Freshness
                 if (article.publishedAt) {
                     const hoursAgo = (new Date() - new Date(article.publishedAt)) / 3600000;
-                    if (hoursAgo < 6) score += 5;
+                    if (hoursAgo < 4) score += 15;
+                    else if (hoursAgo < 12) score += 8;
                 }
 
                 article._score = score;
             });
 
-            // 4. Sort descending by score
-            if (state.feedFilter === 'for-you' || state.feedFilter === 'trending') {
-                pool.sort((a, b) => (b._score || 0) - (a._score || 0));
-                
-                // Flag top 1 to 3 items as "Recommended For You" if they match user interest
-                let recommendedCount = 0;
-                pool.forEach(a => {
-                    const catSlug = a.categorySlug || 'thoi-su';
-                    if ((state.categoryInterests[catSlug] || 0) > 0 && recommendedCount < 3) {
-                        a.isPersonalizedForYou = true;
-                        recommendedCount++;
-                    }
+            // Stage 2: Cold Start Handler for brand new users (signals < 5)
+            if (state.isColdStart) {
+                // Rotate 5 broad categories across first 5 cards
+                const categories = ['thoi-su', 'kinh-doanh', 'cong-nghe', 'the-gioi'];
+                const coldDeck = [];
+                categories.forEach(cat => {
+                    const found = pool.find(a => (a.categorySlug || 'thoi-su') === cat && !coldDeck.includes(a));
+                    if (found) coldDeck.push(found);
                 });
+                // Fill remainder with top scored
+                pool.forEach(a => {
+                    if (!coldDeck.includes(a)) coldDeck.push(a);
+                });
+                state.reelsDeck = coldDeck;
+                return;
             }
 
-            state.reelsDeck = pool;
+            // Stage 3: 70 - 20 - 10 Slotting Algorithm
+            // Separate into 3 candidate buckets:
+            // A: Breaking / Top Trending (10%)
+            // B: Personalized Favorites (70%)
+            // C: Exploration / Unfamiliar Categories (20%)
+            const breakingPool = pool.filter(a => a.isTrendingHot).sort((a, b) => b._score - a._score);
+            
+            // Find user's least viewed categories for Exploration
+            const sortedCategories = Object.entries(state.sessionWeights).sort((a, b) => a[1] - b[1]);
+            const leastFavCat = sortedCategories.length > 0 ? sortedCategories[0][0] : 'the-gioi';
+            const explorationPool = pool.filter(a => (a.categorySlug || 'thoi-su') === leastFavCat);
+
+            const personalizedPool = pool.filter(a => !breakingPool.includes(a) && !explorationPool.includes(a))
+                                         .sort((a, b) => b._score - a._score);
+
+            // Interleave in 10-slot cycles: [Break, Pers, Pers, Expl, Pers, Pers, Pers, Expl, Pers, Break]
+            const slottedDeck = [];
+            const maxLen = pool.length;
+            let bIdx = 0, pIdx = 0, eIdx = 0;
+
+            for (let i = 0; i < maxLen; i++) {
+                const slot = i % 10;
+                let picked = null;
+
+                if (slot === 0 || slot === 9) { // 10% Breaking
+                    if (bIdx < breakingPool.length) {
+                        picked = breakingPool[bIdx++];
+                        picked.slotType = 'breaking';
+                    }
+                } else if (slot === 3 || slot === 7) { // 20% Exploration
+                    if (eIdx < explorationPool.length) {
+                        picked = explorationPool[eIdx++];
+                        picked.slotType = 'exploration';
+                    }
+                }
+
+                // Default 70% Personalized fallback
+                if (!picked) {
+                    if (pIdx < personalizedPool.length) {
+                        picked = personalizedPool[pIdx++];
+                        picked.slotType = 'personalized';
+                    } else if (bIdx < breakingPool.length) {
+                        picked = breakingPool[bIdx++];
+                        picked.slotType = 'breaking';
+                    } else if (eIdx < explorationPool.length) {
+                        picked = explorationPool[eIdx++];
+                        picked.slotType = 'exploration';
+                    }
+                }
+
+                if (picked && !slottedDeck.includes(picked)) {
+                    slottedDeck.push(picked);
+                }
+            }
+
+            state.reelsDeck = slottedDeck.length > 0 ? slottedDeck : pool;
         }
 
-        // ==========================================
-        // RENDER 1: TIKTOK REELS SWIPE VIEW
-        // ==========================================
+        // =========================================================================
+        // 3. RENDER TIKTOK REELS SWIPE (MICRO-CONTENT CARD)
+        // =========================================================================
         function renderTikTokDeck() {
             const feed = document.getElementById('tiktokFeed');
             feed.innerHTML = '';
@@ -626,8 +735,8 @@
                 feed.appendChild(createTikTokCard(article, index));
             });
 
-            // Set up Observer to mark viewed
-            initCardViewObserver();
+            // Set up Observer for Dwell Time & Implicit Signals
+            setupImplicitSignalsObserver();
         }
 
         function createTikTokCard(article, index) {
@@ -640,77 +749,93 @@
             const isLiked = state.likedArticleIds.has(article.id);
             const isRead = state.readArticleIds.has(article.id);
 
-            // Generate synthetic realistic like counts for visual appeal
+            // Compute word count and standard reading time (e.g. 50 words ≈ 14s)
+            const textContent = `${article.title || ''} ${article.summary || ''}`;
+            const wordCount = textContent.trim().split(/\s+/).length;
+            const standardReadSecs = Math.max(3, Math.round(wordCount * 0.28));
+
+            // Slot badge indicator (70 - 20 - 10)
+            let slotBadgeHtml = '';
+            if (article.slotType === 'breaking') {
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/30 text-rose-300 border border-rose-400/30 flex items-center gap-1"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng (10%)</span>`;
+            } else if (article.slotType === 'exploration') {
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center gap-1"><i class="fa-solid fa-compass text-amber-400"></i> Khám Phá (20%)</span>`;
+            } else {
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Sở Thích (70%)</span>`;
+            }
+
             const baseLikes = 120 + ((article.id * 37) % 890);
 
             card.innerHTML = `
+                <!-- Reading Dwell Time Progress Bar on Top -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-zinc-900 z-30 overflow-hidden">
+                    <div id="readProgress-${article.id}" class="read-progress-bar h-full bg-gradient-to-r from-indigo-500 to-rose-500 w-0"></div>
+                </div>
+
                 <!-- Background Media with Dark Cinematic Gradient Overlay -->
                 <div class="absolute inset-0 z-0">
                     <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
                          class="w-full h-full object-cover object-center filter brightness-[0.72]"
                          onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
-                    <!-- Linear Vignette Gradient: Ensures text is crystal clear -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/35"></div>
                 </div>
 
-                <!-- Top Card Bar (Metadata) -->
+                <!-- Top Card Bar (Metadata & Algorithm Tag) -->
                 <div class="relative z-10 p-5 flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold tracking-tight bg-black/60 backdrop-blur-md text-zinc-200 border border-white/10">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-black/65 backdrop-blur-md text-zinc-200 border border-white/10">
                             ${article.sourceName || 'Báo điện tử'}
                         </span>
                         <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900/80 backdrop-blur-md text-zinc-300 border border-white/10">
                             ${escapeHtml(article.categoryName || 'Tin tức')}
                         </span>
-                        ${article.isPersonalizedForYou ? `
-                            <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 flex items-center gap-1">
-                                <i class="fa-solid fa-sparkles text-[9px]"></i> Gợi ý
-                            </span>
-                        ` : ''}
+                        ${slotBadgeHtml}
                     </div>
 
-                    <span id="readTag-${article.id}" class="text-[10px] font-mono px-2 py-0.5 rounded-full ${isRead ? 'bg-zinc-800/80 text-zinc-400 border border-zinc-700/60' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}">
+                    <!-- Signal Feedback Badge -->
+                    <span id="signalBadge-${article.id}" class="text-[10px] font-mono px-2 py-0.5 rounded-full ${isRead ? 'bg-zinc-800/80 text-zinc-400 border border-zinc-700/60' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}">
                         ${isRead ? 'Đã xem' : 'Mới'}
                     </span>
                 </div>
 
-                <!-- Center/Bottom: Card Content & Right Floating Action Bar (TikTok Style) -->
+                <!-- Center/Bottom: Micro-Article Lead-in & TikTok Action Column -->
                 <div class="relative z-10 p-5 sm:p-6 flex items-end justify-between gap-3">
                     
-                    <!-- Left: Headline & Punchy Bullet Summary -->
+                    <!-- Left: Micro-Article Lead-in Content (Under 60 words) -->
                     <div class="flex-1 space-y-2.5 max-w-[340px] sm:max-w-[360px]">
                         
                         <!-- Headline -->
-                        <h2 class="text-base sm:text-lg font-bold text-white leading-snug tracking-tight drop-shadow-md">
+                        <h2 class="text-base sm:text-lg font-extrabold text-white leading-snug tracking-tight drop-shadow-md">
                             ${escapeHtml(article.title)}
                         </h2>
 
-                        <!-- Punchy Bullet Summary Box (Linear Card) -->
-                        <div class="p-3 rounded-xl bg-black/70 backdrop-blur-md border border-white/10 text-zinc-200 text-xs leading-relaxed space-y-1 shadow-xl">
+                        <!-- Micro-Article Summary Box (Linear Card) -->
+                        <div class="p-3 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-zinc-200 text-xs leading-relaxed space-y-1 shadow-2xl">
                             <p class="line-clamp-3">
-                                <span class="text-indigo-400 font-semibold mr-1">Tóm tắt:</span>
+                                <span class="text-indigo-400 font-bold mr-1">⚡ Tóm tắt:</span>
                                 ${escapeHtml(article.summary || 'Nhấn nút bên dưới để đọc bài viết gốc đầy đủ trên trang báo.')}
                             </p>
                         </div>
 
-                        <!-- Published time & source info -->
-                        <div class="flex items-center gap-2 text-[11px] font-mono text-zinc-400 pt-1">
+                        <!-- Read time benchmark & word count -->
+                        <div class="flex items-center gap-2 text-[10px] font-mono text-zinc-400 pt-0.5">
                             <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
                             <span>&bull;</span>
-                            <span class="truncate">#${index + 1} của hàng đợi</span>
+                            <span>~${wordCount} từ (${standardReadSecs}s)</span>
                         </div>
 
-                        <!-- Read Original Source Link -->
+                        <!-- Action: Read Full Article (Deep Read Signal) -->
                         <div class="pt-1">
                             <a href="${article.url}" target="_blank" rel="noopener noreferrer"
-                               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white text-zinc-950 hover:bg-zinc-200 rounded-lg text-xs font-semibold shadow-md transition-all">
-                                <span>Đọc bài gốc trên ${article.sourceName || 'báo'}</span>
+                               onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
+                               class="inline-flex items-center gap-2 px-4 py-2 bg-white text-zinc-950 hover:bg-zinc-200 rounded-xl text-xs font-bold shadow-lg transition-all hover:scale-105 active:scale-95">
+                                <span>Đọc bản đầy đủ trên ${article.sourceName || 'báo'}</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                             </a>
                         </div>
                     </div>
 
-                    <!-- Right: TikTok Action Column (Like, Comment, Bookmark, Share) -->
+                    <!-- Right: TikTok Action Column -->
                     <div class="flex flex-col items-center gap-3.5 shrink-0 pb-1">
                         
                         <!-- Source Avatar -->
@@ -727,8 +852,8 @@
                             <span id="likeCount-${article.id}" class="text-[10px] font-mono font-medium">${isLiked ? baseLikes + 1 : baseLikes}</span>
                         </button>
 
-                        <!-- Bookmark Button -->
-                        <button onclick="shareArticle('${escapeHtml(article.title)}', '${article.url}')" title="Chia sẻ"
+                        <!-- Share Button -->
+                        <button onclick="recordShareSignal(${article.id}, '${article.categorySlug}', '${escapeHtml(article.title)}', '${article.url}')" title="Chia sẻ"
                                 class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
                             <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
                                 <i class="fa-solid fa-share text-sm"></i>
@@ -736,8 +861,9 @@
                             <span class="text-[10px] font-mono font-medium">Share</span>
                         </button>
 
-                        <!-- External Link Icon -->
+                        <!-- External Link Direct Icon -->
                         <a href="${article.url}" target="_blank" title="Mở trang gốc"
+                           onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
                            class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
                             <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
                                 <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
@@ -752,33 +878,61 @@
             return card;
         }
 
-        // ==========================================
-        // AUTOMATIC VIEW OBSERVATION & READ TRACKING
-        // ==========================================
-        let viewTimers = {};
+        // =========================================================================
+        // 4. IMPLICIT SIGNALS OBSERVER: DWELL TIME VS WORD COUNT & FAST SKIP
+        // =========================================================================
+        let cardSessionState = {};
 
-        function initCardViewObserver() {
+        function setupImplicitSignalsObserver() {
             const feed = document.getElementById('tiktokFeed');
             const options = {
                 root: feed,
-                threshold: 0.65 // Card is considered viewed when 65% visible
+                threshold: 0.70 // Card in focus when 70% visible
             };
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const cardId = entry.target.id;
                     const articleId = parseInt(cardId.replace('tiktok-card-', ''));
+                    const article = state.reelsDeck.find(a => a.id === articleId);
+                    if (!article) return;
+
+                    const catSlug = article.categorySlug || 'thoi-su';
+                    const textContent = `${article.title || ''} ${article.summary || ''}`;
+                    const wordCount = textContent.trim().split(/\s+/).length;
+                    const standardReadMs = Math.max(3000, wordCount * 280);
 
                     if (entry.isIntersecting) {
-                        // User started viewing this card: Start 1.2s timer to mark read
-                        viewTimers[articleId] = setTimeout(() => {
-                            recordArticleAsRead(articleId);
-                        }, 1200);
+                        // User started viewing this card: Record start time
+                        const startTime = performance.now();
+                        cardSessionState[articleId] = {
+                            startTime,
+                            progressBarInterval: null
+                        };
+
+                        // Animate reading progress bar
+                        const progressBar = document.getElementById(`readProgress-${articleId}`);
+                        if (progressBar) {
+                            progressBar.style.width = '0%';
+                            const updateInterval = 100;
+                            cardSessionState[articleId].progressBarInterval = setInterval(() => {
+                                const elapsed = performance.now() - startTime;
+                                const pct = Math.min(100, (elapsed / standardReadMs) * 100);
+                                progressBar.style.width = `${pct}%`;
+                            }, updateInterval);
+                        }
+
                     } else {
-                        // User scrolled away
-                        if (viewTimers[articleId]) {
-                            clearTimeout(viewTimers[articleId]);
-                            delete viewTimers[articleId];
+                        // User scrolled away: Calculate Dwell Time
+                        if (cardSessionState[articleId]) {
+                            const { startTime, progressBarInterval } = cardSessionState[articleId];
+                            clearInterval(progressBarInterval);
+                            const dwellMs = performance.now() - startTime;
+                            const dwellSec = dwellMs / 1000;
+                            delete cardSessionState[articleId];
+
+                            // Evaluate Signals:
+                            evaluateImplicitSignals(articleId, catSlug, dwellSec, standardReadMs / 1000);
                         }
                     }
                 });
@@ -789,17 +943,107 @@
             });
         }
 
+        /**
+         * Evaluates implicit signals:
+         * - Fast Skip (< 1.5s): Negative signal (-10 pts)
+         * - Completion Rate (> 70% of standard reading time): Positive signal (+20 pts)
+         * - Idle Cap (> 40s): Cap to avoid idle bias
+         */
+        function evaluateImplicitSignals(articleId, categorySlug, dwellSec, standardSec) {
+            // Cap idle
+            if (dwellSec > 40) dwellSec = 40;
+
+            const badge = document.getElementById(`signalBadge-${articleId}`);
+
+            if (dwellSec < 1.5) {
+                // Tín hiệu Fast Skip: Người dùng không quan tâm
+                applySignalAdjustment(categorySlug, -10, `⏩ Fast Skip: ${categorySlug} (-10đ)`);
+                if (badge) {
+                    badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-500 border border-zinc-700';
+                    badge.textContent = 'Lướt nhanh';
+                }
+            } else if (dwellSec >= standardSec * 0.65) {
+                // Tín hiệu Completion Rate: Đã đọc hết thẻ
+                applySignalAdjustment(categorySlug, 20, `✓ Đã đọc hết: ${categorySlug} (+20đ)`);
+                recordArticleAsRead(articleId);
+                if (badge) {
+                    badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                    badge.textContent = 'Đã đọc kỹ';
+                }
+            } else {
+                // Đọc lướt vừa phải
+                applySignalAdjustment(categorySlug, 5, `👀 Đọc lướt: ${categorySlug} (+5đ)`);
+                recordArticleAsRead(articleId);
+            }
+        }
+
+        function recordDeepReadSignal(articleId, categorySlug) {
+            // Deep Read Action: Bấm đọc bản đầy đủ (+35đ)
+            applySignalAdjustment(categorySlug, 35, `🔥 Đọc bài gốc: ${categorySlug} (+35đ)`);
+            recordArticleAsRead(articleId);
+        }
+
+        function recordShareSignal(articleId, categorySlug, title, url) {
+            applySignalAdjustment(categorySlug, 25, `🔗 Chia sẻ: ${categorySlug} (+25đ)`);
+            shareArticle(title, url);
+        }
+
+        function applySignalAdjustment(categorySlug, delta, logMessage) {
+            const cat = categorySlug || 'thoi-su';
+            state.sessionWeights[cat] = Math.max(-50, (state.sessionWeights[cat] || 0) + delta);
+            state.signalsCount++;
+
+            // Save session weights
+            localStorage.setItem('session_category_weights', JSON.stringify(state.sessionWeights));
+            localStorage.setItem('user_signals_count', state.signalsCount.toString());
+
+            if (state.signalsCount >= 5) {
+                state.isColdStart = false;
+            }
+
+            // Update live HUD
+            updateRecommendationHUD(logMessage);
+        }
+
+        function updateRecommendationHUD(lastSignalLog = null) {
+            const dominantEl = document.getElementById('dominantInterestText');
+            const logEl = document.getElementById('liveSignalLog');
+            const coldBadge = document.getElementById('coldStartBadge');
+
+            if (coldBadge) {
+                coldBadge.textContent = state.isColdStart ? 'Cold-Start (5/5)' : 'Cá nhân hóa';
+                coldBadge.className = state.isColdStart 
+                    ? 'text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono'
+                    : 'text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono';
+            }
+
+            if (lastSignalLog && logEl) {
+                logEl.textContent = lastSignalLog;
+            }
+
+            const entries = Object.entries(state.sessionWeights);
+            entries.sort((a, b) => b[1] - a[1]);
+            const top = entries[0];
+
+            const catMap = {
+                'cong-nghe': 'Công nghệ & AI',
+                'kinh-doanh': 'Kinh doanh & Tài chính',
+                'the-gioi': 'Quốc tế / Thế giới',
+                'thoi-su': 'Thời sự & Xã hội'
+            };
+
+            if (top && top[1] > 0) {
+                dominantEl.textContent = `${catMap[top[0]] || top[0]} (+${top[1]}đ)`;
+            } else {
+                dominantEl.textContent = 'Đang đọc vị sở thích...';
+            }
+        }
+
         function recordArticleAsRead(articleId) {
             if (!state.readArticleIds.has(articleId)) {
                 state.readArticleIds.add(articleId);
-                localStorage.setItem('read_articles_v2', JSON.stringify(Array.from(state.readArticleIds)));
+                localStorage.setItem('read_articles_v3', JSON.stringify(Array.from(state.readArticleIds)));
                 updateStatsBadges();
-
-                const tag = document.getElementById(`readTag-${articleId}`);
-                if (tag) {
-                    tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800/80 text-zinc-400 border border-zinc-700/60';
-                    tag.textContent = 'Đã xem';
-                }
             }
         }
 
@@ -826,9 +1070,6 @@
             });
         }
 
-        // ==========================================
-        // USER BEHAVIOR: LIKE & INTEREST PROFILING
-        // ==========================================
         function toggleLike(articleId, categorySlug) {
             const icon = document.getElementById(`likeIcon-${articleId}`);
             const countEl = document.getElementById(`likeCount-${articleId}`);
@@ -838,42 +1079,18 @@
                 state.likedArticleIds.delete(articleId);
                 icon.className = 'fa-solid fa-heart text-base';
                 countEl.textContent = Math.max(0, count - 1);
+                applySignalAdjustment(categorySlug, -20, `💔 Bỏ thích: ${categorySlug} (-20đ)`);
                 showToast('Đã bỏ thích bài viết', 'info');
             } else {
                 state.likedArticleIds.add(articleId);
                 icon.className = 'fa-solid fa-heart text-base text-rose-500 scale-110 heart-animate';
                 countEl.textContent = count + 1;
-
-                // Train User Interest Profile: Boost weight of this category
-                const cat = categorySlug || 'thoi-su';
-                state.categoryInterests[cat] = (state.categoryInterests[cat] || 0) + 1;
-                localStorage.setItem('user_category_interests', JSON.stringify(state.categoryInterests));
-
-                updateInterestSummaryUI();
-                showToast('Đã thích! Hệ thống sẽ ưu tiên các tin thuộc lĩnh vực này khi làm mới ❤️', 'success');
+                applySignalAdjustment(categorySlug, 25, `❤️ Thả tim: ${categorySlug} (+25đ)`);
+                showToast('Đã lưu bài viết vào mục Yêu thích! ❤️', 'success');
             }
 
-            localStorage.setItem('liked_articles_v2', JSON.stringify(Array.from(state.likedArticleIds)));
+            localStorage.setItem('liked_articles_v3', JSON.stringify(Array.from(state.likedArticleIds)));
             updateStatsBadges();
-        }
-
-        function updateInterestSummaryUI() {
-            const summaryEl = document.getElementById('interestSummary');
-            const entries = Object.entries(state.categoryInterests);
-            if (entries.length === 0) {
-                summaryEl.textContent = 'Chưa có dữ liệu';
-                return;
-            }
-            // Find category with highest likes
-            entries.sort((a, b) => b[1] - a[1]);
-            const topCategorySlug = entries[0][0];
-            const catMap = {
-                'cong-nghe': 'Công nghệ & AI',
-                'kinh-doanh': 'Kinh doanh & Tài chính',
-                'the-gioi': 'Tin tức Quốc tế',
-                'thoi-su': 'Thời sự & Xã hội'
-            };
-            summaryEl.textContent = catMap[topCategorySlug] || topCategorySlug;
         }
 
         function updateStatsBadges() {
@@ -887,10 +1104,10 @@
 
         function resetReadHistory() {
             state.readArticleIds.clear();
-            localStorage.removeItem('read_articles_v2');
+            localStorage.removeItem('read_articles_v3');
             updateStatsBadges();
             fetchArticlesAndBuildFeed(false);
-            showToast('Đã xóa lịch sử đã xem!', 'info');
+            showToast('Đã đặt lại lịch sử đã xem!', 'info');
         }
 
         function shareArticle(title, url) {
@@ -903,20 +1120,19 @@
             }
         }
 
-        // ==========================================
-        // RENDER 2: EDITORIAL BENTO GRID (BY DATE)
-        // ==========================================
+        // =========================================================================
+        // 5. RENDER EDITORIAL BENTO GRID (GROUPED BY DATE)
+        // =========================================================================
         function renderDateGroupedGrid() {
             const container = document.getElementById('gridDateGroupedContainer');
             document.getElementById('gridTotalElements').textContent = `${state.allArticles.length} bài viết`;
             container.innerHTML = '';
 
             if (state.allArticles.length === 0) {
-                container.innerHTML = '<div class="text-center py-16 text-zinc-500 text-xs">Không có bài viết nào.</div>';
+                container.innerHTML = '<div class="text-center py-16 text-zinc-500 text-xs font-mono">Không có bài viết nào.</div>';
                 return;
             }
 
-            // Group articles by date string: "Hôm nay", "Hôm qua", or "dd/MM/yyyy"
             const groups = {};
             const todayStr = new Date().toDateString();
             const yesterday = new Date();
@@ -940,7 +1156,6 @@
                 groups[dateKey].push(article);
             });
 
-            // Render each date section
             for (const [dateLabel, articles] of Object.entries(groups)) {
                 const section = document.createElement('div');
                 section.className = 'space-y-4';
@@ -990,7 +1205,7 @@
                             </div>
 
                             <h3 class="text-sm font-bold text-zinc-100 group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
-                                <a href="${article.url}" target="_blank">${escapeHtml(article.title)}</a>
+                                <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
                             </h3>
 
                             <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
@@ -1001,6 +1216,7 @@
 
                     <div class="p-4 pt-0 flex items-center justify-between border-t border-zinc-800/80 mt-2">
                         <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
+                           onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
                            class="inline-flex items-center gap-1 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
                             <span>Đọc tiếp</span>
                             <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
@@ -1013,9 +1229,9 @@
             `;
         }
 
-        // ==========================================
-        // SIDEBAR, CATEGORIES, SEARCH & MODES
-        // ==========================================
+        // =========================================================================
+        // 6. SIDEBAR, CATEGORIES, SEARCH & MODES
+        // =========================================================================
         function switchViewMode(mode) {
             state.viewMode = mode;
             const reelsSection = document.getElementById('reelsViewSection');
@@ -1043,7 +1259,6 @@
             state.currentCategoryId = null;
             state.currentSearchKeyword = null;
 
-            // Reset active states
             ['for-you', 'trending', 'liked', 'history'].forEach(f => {
                 const btn = document.getElementById(`nav-${f}`);
                 if (btn) {
@@ -1131,9 +1346,9 @@
             selectFeedFilter('for-you');
         }
 
-        // ==========================================
-        // AUTH & SUBSCRIPTIONS
-        // ==========================================
+        // =========================================================================
+        // 7. AUTH & SUBSCRIPTIONS
+        // =========================================================================
         function initAuth() {
             const token = localStorage.getItem('jwt_token');
             const email = localStorage.getItem('user_email');
@@ -1320,9 +1535,9 @@
             document.getElementById('previewModal').classList.add('hidden');
         }
 
-        // ==========================================
-        // HELPERS
-        // ==========================================
+        // =========================================================================
+        // 8. UTILITIES
+        // =========================================================================
         function formatRelativeTime(dateString) {
             if (!dateString) return 'Gần đây';
             const date = new Date(dateString);
