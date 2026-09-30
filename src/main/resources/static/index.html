@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VNNews Hub - Lướt Tin Tức & Xu Hướng Phong Cách Mới</title>
-    <!-- Google Fonts -->
+    <title>VNNews Hub - Lướt Tin Vắn Phong Cách Mới</title>
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
+                        linear: {
+                            base: '#09090b',
+                            surface: '#111115',
+                            card: '#16161c',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                            borderHover: 'rgba(255, 255, 255, 0.16)',
+                            accent: '#6366f1',
+                            accentLight: '#818cf8',
                         }
                     }
                 }
@@ -33,31 +37,40 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Reels TikTok Snap Scroll Container */
-        .reels-container {
+        /* Linear-style aesthetics */
+        body {
+            background-color: #09090b;
+            color: #f4f4f5;
+            letter-spacing: -0.01em;
+        }
+
+        /* Snap Scroll TikTok Deck */
+        .tiktok-feed {
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
-        .reel-card {
-            scroll-snap-align: start;
+        .tiktok-card {
+            scroll-snap-align: center;
             scroll-snap-stop: always;
         }
-        /* Custom scrollbar */
+
+        /* Subtle scrollbar */
         ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f172a;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #334155;
+            background: #27272a;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #3f3f46;
         }
+
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -70,340 +83,357 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .line-clamp-4 {
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .heart-animate {
+            animation: heartPulse 0.35s ease-in-out;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col font-sans select-none overflow-x-hidden">
+<body class="bg-[#09090b] text-zinc-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
 
-    <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 transition-all shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-3">
-                
-                <!-- Brand / Logo -->
-                <div class="flex items-center gap-3 shrink-0 cursor-pointer" onclick="resetFilters()">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-500 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-900/40">
-                        <i class="fa-solid fa-bolt-lightning text-lg"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xl font-black tracking-tight bg-gradient-to-r from-rose-400 via-indigo-300 to-violet-400 bg-clip-text text-transparent">VNNews Hub</span>
-                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 animate-pulse">
-                                <span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span> Reels
-                            </span>
-                        </div>
-                        <p class="text-[10px] text-slate-400 hidden sm:block">Lướt tin vắn nhanh &bull; Đa nguồn tự động</p>
-                    </div>
+    <!-- Top Navigation Header (Linear Minimalist) -->
+    <header class="h-14 border-b border-[rgba(255,255,255,0.07)] bg-[#09090b]/80 backdrop-blur-xl sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between gap-4">
+        
+        <!-- Left: Logo & View Switcher -->
+        <div class="flex items-center gap-4 sm:gap-6">
+            <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetFilters()">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-sm">
+                    <i class="fa-solid fa-bolt text-xs"></i>
                 </div>
-
-                <!-- View Switcher (Reels vs Grid) & Reload Action -->
-                <div class="flex items-center gap-1 sm:gap-2 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60">
-                    <button id="viewReelsBtn" onclick="switchView('reels')" title="Chế độ lướt thẻ TikTok"
-                            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all">
-                        <i class="fa-solid fa-mobile-screen"></i>
-                        <span class="hidden sm:inline">Lướt Thẻ</span>
-                    </button>
-                    <button id="viewGridBtn" onclick="switchView('grid')" title="Chế độ xem lưới truyền thống"
-                            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all">
-                        <i class="fa-solid fa-table-cells-large"></i>
-                        <span class="hidden sm:inline">Dạng Lưới</span>
-                    </button>
-                </div>
-
-                <!-- Search Input Box (Desktop) -->
-                <div class="flex-1 max-w-sm hidden md:block">
-                    <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                        <input type="text" id="searchInput" placeholder="Tìm kiếm tin tức (FTS)..." 
-                               class="w-full pl-9 pr-16 py-1.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-200 placeholder-slate-400 focus:bg-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
-                               onkeydown="if(event.key === 'Enter') handleSearch()">
-                        <button onclick="handleSearch()" class="absolute right-1 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-[10px] font-semibold transition-all">
-                            Tìm
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Reload Button & Stats -->
                 <div class="flex items-center gap-2">
-                    <button onclick="reloadUnreadFeed()" title="Làm mới để lấy các tin mới chưa đọc" 
-                            class="group relative inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-900/30 transition-all hover:scale-105 active:scale-95">
-                        <i id="reloadIcon" class="fa-solid fa-rotate text-sm transition-transform duration-700"></i>
-                        <span class="hidden sm:inline">Làm Mới</span>
-                    </button>
-
-                    <a href="/swagger-ui/index.html" target="_blank" title="Tài liệu Swagger API"
-                       class="hidden lg:inline-flex items-center gap-1 px-2.5 py-2 text-xs font-bold text-slate-400 hover:text-indigo-400 hover:bg-slate-800 rounded-xl transition-all border border-slate-800">
-                        <i class="fa-solid fa-code text-indigo-400"></i> API
-                    </a>
-
-                    <!-- User Actions -->
-                    <div id="unauthSection" class="flex items-center gap-1 sm:gap-2">
-                        <button onclick="openAuthModal('login')" class="px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors">
-                            Đăng nhập
-                        </button>
-                        <button onclick="openAuthModal('register')" class="px-3 py-1.5 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 rounded-xl border border-slate-700 transition-all">
-                            Đăng ký
-                        </button>
-                    </div>
-
-                    <div id="authSection" class="hidden items-center gap-2">
-                        <button onclick="openSubscriptionModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-violet-900/40 text-violet-300 border border-violet-700/50 hover:bg-violet-800/40 rounded-xl text-xs font-semibold transition-all">
-                            <i class="fa-regular fa-envelope text-violet-400"></i>
-                            <span class="hidden sm:inline">Bản tin</span>
-                        </button>
-                        <button onclick="handleLogout()" title="Đăng xuất" class="p-2 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-slate-800 transition-all">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        </button>
-                    </div>
+                    <span class="font-extrabold text-sm sm:text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">VNNews Hub</span>
+                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-800 text-zinc-400 border border-zinc-700/50">v2.0</span>
                 </div>
-
             </div>
+
+            <!-- Mode Switcher: Reels vs Grid -->
+            <div class="flex items-center bg-[#18181b] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
+                <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ TikTok"
+                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all">
+                    <i class="fa-solid fa-mobile-screen text-[11px]"></i>
+                    <span class="hidden sm:inline">Lướt Thẻ</span>
+                </button>
+                <button id="viewGridBtn" onclick="switchViewMode('grid')" title="Chế độ Xem Lưới Theo Ngày"
+                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all">
+                    <i class="fa-solid fa-table-cells text-[11px]"></i>
+                    <span class="hidden sm:inline">Dạng Lưới</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Center: Search Box -->
+        <div class="flex-1 max-w-md hidden md:block">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm tin tức (Full-Text Search)..." 
+                       class="w-full pl-8 pr-16 py-1.5 bg-[#141418] border border-[rgba(255,255,255,0.08)] rounded-lg text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/40 transition-all"
+                       onkeydown="if(event.key === 'Enter') triggerSearch()">
+                <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-500 bg-zinc-800/80 px-1 rounded border border-zinc-700/50">↵ Enter</span>
+            </div>
+        </div>
+
+        <!-- Right: Actions & Profile -->
+        <div class="flex items-center gap-2 sm:gap-3">
             
-            <!-- Mobile Search Bar -->
-            <div class="pb-3 md:hidden">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="mobileSearchInput" placeholder="Tìm kiếm tin tức..." 
-                           class="w-full pl-9 pr-14 py-1.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-slate-200 focus:bg-slate-900 focus:border-indigo-500 outline-none"
-                           onkeydown="if(event.key === 'Enter') handleMobileSearch()">
-                    <button onclick="handleMobileSearch()" class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 bg-indigo-600 text-white rounded-lg text-[10px] font-semibold">
-                        Tìm
-                    </button>
-                </div>
+            <!-- Reload Unread Deck Button -->
+            <button onclick="handleReloadAction()" title="Làm mới tin chưa đọc (ưu tiên sở thích)" 
+                    class="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
+                <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-indigo-400"></i>
+                <span class="hidden sm:inline">Làm Mới</span>
+            </button>
+
+            <!-- Swagger API Docs -->
+            <a href="/swagger-ui/index.html" target="_blank" title="Tài liệu Swagger API"
+               class="hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] text-zinc-400 hover:text-zinc-200 text-xs font-mono transition-all">
+                API Docs
+            </a>
+
+            <!-- User Auth Buttons -->
+            <div id="unauthSection" class="flex items-center gap-1.5">
+                <button onclick="openAuthModal('login')" class="px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white transition-colors">
+                    Đăng nhập
+                </button>
+                <button onclick="openAuthModal('register')" class="px-3 py-1.5 text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 rounded-lg transition-all">
+                    Đăng ký
+                </button>
+            </div>
+
+            <div id="authSection" class="hidden items-center gap-2">
+                <button onclick="openSubModal()" class="flex items-center gap-1 px-2.5 py-1.5 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 rounded-lg text-xs font-medium transition-all">
+                    <i class="fa-regular fa-envelope text-[11px]"></i>
+                    <span class="hidden sm:inline">Bản tin</span>
+                </button>
+                <span id="userBadge" class="text-xs font-mono text-zinc-400 hidden sm:inline truncate max-w-[120px]"></span>
+                <button onclick="handleLogout()" title="Đăng xuất" class="p-1.5 text-zinc-500 hover:text-rose-400 transition-colors">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Subheader: Trending Keywords Bar -->
-    <div class="bg-slate-900/70 border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-            <div class="flex items-center gap-2 text-xs overflow-x-auto scrollbar-none py-0.5">
-                <span class="flex items-center gap-1 font-extrabold text-rose-400 shrink-0">
-                    <i class="fa-solid fa-fire text-rose-500 animate-bounce"></i> Xu hướng:
-                </span>
-                <div id="trendingKeywordsList" class="flex items-center gap-1.5">
-                    <span class="text-slate-500 text-xs italic">Đang tải từ khóa hot...</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Category Tabs Navigation -->
-    <nav class="bg-slate-900 border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div id="categoryTabs" class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2 scrollbar-none text-xs font-semibold">
-                <button onclick="selectCategory(null)" id="tab-all" class="category-tab active px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm shrink-0 transition-all">
-                    Tất cả tin
-                </button>
-                <!-- Categories loaded dynamically -->
-            </div>
-        </div>
-    </nav>
-
-    <!-- MAIN VIEW CONTAINER -->
-    <main class="flex-1 w-full flex flex-col justify-center items-center relative overflow-hidden">
-
+    <!-- App Body: Sidebar + Main Content Layout -->
+    <div class="flex-1 flex max-w-[1600px] w-full mx-auto relative overflow-hidden">
+        
         <!-- ========================================== -->
-        <!-- VIEW 1: REELS / TIKTOK NEWS SWIPE VIEW -->
+        <!-- LEFT SIDEBAR: Linear / TikTok Navigation -->
         <!-- ========================================== -->
-        <section id="reelsViewSection" class="w-full flex-1 flex flex-col items-center justify-center p-2 sm:p-4 max-w-4xl mx-auto relative h-[calc(100vh-170px)]">
-            
-            <!-- Feed Stats Bar -->
-            <div class="w-full max-w-xl flex items-center justify-between text-[11px] text-slate-400 mb-2 px-2">
-                <div class="flex items-center gap-2">
-                    <span id="reelsUnreadCount" class="font-bold text-rose-400 flex items-center gap-1">
-                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span> 0 tin chưa đọc
-                    </span>
-                    <span>&bull;</span>
-                    <span id="reelsReadCount" class="text-slate-500">Đã đọc: 0</span>
-                </div>
-                <div class="flex items-center gap-2 text-slate-400">
-                    <span>Lướt: Phím <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-[10px]">↓</kbd> / <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-[10px]">↑</kbd> hoặc Vuốt</span>
-                </div>
-            </div>
+        <aside class="w-60 shrink-0 border-r border-[rgba(255,255,255,0.07)] p-4 hidden md:flex flex-col justify-between overflow-y-auto">
+            <div class="space-y-6">
+                
+                <!-- Main Nav Tabs -->
+                <div class="space-y-1">
+                    <button onclick="selectFeedFilter('for-you')" id="nav-for-you" 
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 transition-all">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Dành Cho Bạn
+                        </span>
+                        <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                    </button>
 
-            <!-- Reels Feed Snap Scroll Container -->
-            <div id="reelsFeed" class="reels-container w-full max-w-xl h-full overflow-y-auto rounded-2xl sm:rounded-3xl border border-slate-800/80 bg-slate-900/50 shadow-2xl relative">
-                <!-- Loading Skeleton for Reels -->
-                <div class="reel-card w-full h-full flex flex-col justify-end p-6 bg-slate-900 relative animate-pulse">
-                    <div class="absolute inset-0 bg-slate-800/60"></div>
-                    <div class="relative z-10 space-y-3">
-                        <div class="h-5 bg-slate-700 rounded w-1/4"></div>
-                        <div class="h-8 bg-slate-600 rounded w-3/4"></div>
-                        <div class="h-16 bg-slate-700 rounded w-full"></div>
+                    <button onclick="selectFeedFilter('trending')" id="nav-trending" 
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-fire text-rose-500"></i> Xu Hướng Hot
+                        </span>
+                    </button>
+
+                    <button onclick="selectFeedFilter('liked')" id="nav-liked" 
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-heart text-rose-500"></i> Tin Đã Thích
+                        </span>
+                        <span id="likedCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
+                    </button>
+
+                    <button onclick="selectFeedFilter('history')" id="nav-history" 
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-clock-rotate-left text-zinc-400"></i> Đã Xem Qua
+                        </span>
+                        <span id="readCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
+                    </button>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <div class="px-3 mb-2 text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">Chuyên Mục</div>
+                    <div id="sidebarCategoriesList" class="space-y-0.5">
+                        <button onclick="selectCategory(null, 'Tất cả tin')" id="cat-btn-all" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-200 bg-zinc-800/60 transition-all">
+                            Tất cả tin
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Floating Navigation Controls for Reels (Desktop helper) -->
-            <div class="hidden md:flex flex-col gap-2 absolute right-4 lg:right-12 bottom-1/2 translate-y-1/2 z-30">
-                <button onclick="scrollReels(-1)" title="Tin trước (Phím Mũi tên Lên)" class="w-11 h-11 rounded-full bg-slate-800/90 hover:bg-indigo-600 text-white flex items-center justify-center shadow-lg border border-slate-700 hover:border-indigo-500 transition-all hover:scale-110 active:scale-95">
-                    <i class="fa-solid fa-chevron-up"></i>
-                </button>
-                <button onclick="scrollReels(1)" title="Tin tiếp theo (Phím Mũi tên Xuống)" class="w-11 h-11 rounded-full bg-slate-800/90 hover:bg-indigo-600 text-white flex items-center justify-center shadow-lg border border-slate-700 hover:border-indigo-500 transition-all hover:scale-110 active:scale-95">
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-            </div>
-
-        </section>
-
-        <!-- ========================================== -->
-        <!-- VIEW 2: CLASSIC GRID VIEW -->
-        <!-- ========================================== -->
-        <section id="gridViewSection" class="hidden w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between mb-6">
+                <!-- Trending Topics Cloud -->
                 <div>
-                    <h2 id="gridFeedTitle" class="text-xl font-bold text-white">Tin Tức Mới Nhất</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Hiển thị dạng lưới thẻ thông tin</p>
+                    <div class="px-3 mb-2 text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-semibold flex items-center justify-between">
+                        <span>Top Tìm Kiếm</span>
+                        <i class="fa-solid fa-chart-line text-[10px] text-zinc-600"></i>
+                    </div>
+                    <div id="sidebarTrendingCloud" class="flex flex-wrap gap-1.5 px-2">
+                        <span class="text-[11px] text-zinc-600 italic">Đang phân tích...</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span id="gridTotalBadge" class="text-xs px-2.5 py-1 bg-slate-800 rounded-lg text-slate-300 font-semibold border border-slate-700">0 bài viết</span>
-                </div>
+
             </div>
 
-            <!-- Grid Items -->
-            <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-            <!-- Grid Pagination -->
-            <div id="paginationContainer" class="mt-8 flex items-center justify-between border-t border-slate-800 pt-6">
-                <button id="prevPageBtn" onclick="changeGridPage(-1)" class="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 disabled:opacity-40 transition-all">
-                    <i class="fa-solid fa-chevron-left mr-1"></i> Trang trước
-                </button>
-                <div class="text-xs text-slate-400">
-                    Trang <span id="currentPageNum" class="text-indigo-400 font-bold">1</span> / <span id="totalPagesNum">1</span>
+            <!-- User Behavior Status Box -->
+            <div class="p-3 rounded-xl bg-zinc-900/60 border border-[rgba(255,255,255,0.06)] text-[11px] space-y-1.5">
+                <div class="flex items-center justify-between font-mono text-[10px] text-zinc-400">
+                    <span>HỒ SƠ QUAN TÂM</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 </div>
-                <button id="nextPageBtn" onclick="changeGridPage(1)" class="px-4 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-700 disabled:opacity-40 transition-all">
-                    Trang sau <i class="fa-solid fa-chevron-right ml-1"></i>
-                </button>
+                <div id="interestSummary" class="text-xs text-zinc-300 font-semibold truncate">
+                    Đang học hành vi...
+                </div>
+                <p class="text-[10px] text-zinc-500 leading-tight">Thả tim bài viết để hệ thống ưu tiên nội dung bạn yêu thích.</p>
             </div>
-        </section>
+        </aside>
 
-    </main>
+        <!-- ========================================== -->
+        <!-- MAIN STAGE: REELS VIEW & GRID VIEW -->
+        <!-- ========================================== -->
+        <main class="flex-1 flex flex-col items-center justify-center relative overflow-hidden bg-[#09090b]">
+
+            <!-- VIEW 1: TIKTOK REELS SWIPE (EXACT LIKE SCREENSHOT) -->
+            <section id="reelsViewSection" class="w-full h-[calc(100vh-56px)] flex items-center justify-center p-2 sm:p-4 relative">
+                
+                <!-- TikTok Style Vertical Card Container -->
+                <div class="relative w-full max-w-[460px] h-full max-h-[820px] flex items-center justify-center">
+                    
+                    <!-- The Snap Scroll Feed -->
+                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-2xl sm:rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[#121216] shadow-2xl relative">
+                        <!-- Loading State Card -->
+                        <div class="tiktok-card w-full h-full flex flex-col justify-end p-6 relative bg-zinc-900 animate-pulse">
+                            <div class="absolute inset-0 bg-zinc-800/40"></div>
+                            <div class="relative z-10 space-y-3">
+                                <div class="h-4 bg-zinc-700 rounded w-1/3"></div>
+                                <div class="h-6 bg-zinc-600 rounded w-3/4"></div>
+                                <div class="h-14 bg-zinc-700/60 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Navigation Arrows (Right side of card) -->
+                    <div class="hidden sm:flex flex-col gap-2 absolute -right-14 bottom-1/2 translate-y-1/2 z-30">
+                        <button onclick="scrollTikTok(-1)" title="Tin trước (Phím ↑ / K)" 
+                                class="w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-chevron-up text-xs"></i>
+                        </button>
+                        <button onclick="scrollTikTok(1)" title="Tin tiếp theo (Phím ↓ / J / Space)" 
+                                class="w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- VIEW 2: EDITORIAL BENTO GRID (GROUPED BY DATE) -->
+            <section id="gridViewSection" class="hidden w-full h-[calc(100vh-56px)] overflow-y-auto p-4 sm:p-8 max-w-7xl mx-auto">
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[rgba(255,255,255,0.07)]">
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                            <span>Bản Tin Tổng Hợp</span>
+                            <span id="gridCategoryBadge" class="text-xs font-mono font-normal text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded">Tất cả tin</span>
+                        </h1>
+                        <p class="text-xs text-zinc-400 mt-0.5">Phân loại theo ngày xuất bản &bull; Lọc thông tin có tương tác cao</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="gridTotalElements" class="text-xs font-mono text-zinc-400">0 bài viết</span>
+                    </div>
+                </div>
+
+                <!-- Date Grouped Container -->
+                <div id="gridDateGroupedContainer" class="space-y-10">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+
+        </main>
+    </div>
 
     <!-- MODAL: Auth (Login & Register) -->
-    <div id="authModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-800 relative">
-            <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <div id="authModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#121216] rounded-2xl max-w-md w-full p-6 border border-[rgba(255,255,255,0.1)] shadow-2xl relative">
+            <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-zinc-500 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
             <!-- Tabs -->
-            <div class="flex border-b border-slate-800 mb-6">
-                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500">
+            <div class="flex border-b border-zinc-800 mb-5">
+                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-indigo-500">
                     Đăng nhập
                 </button>
-                <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-300">
+                <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300">
                     Đăng ký
                 </button>
             </div>
 
             <!-- Form -->
-            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+            <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
                 <div id="fullNameGroup" class="hidden">
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Họ và tên</label>
-                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:border-indigo-500 outline-none">
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Họ và tên</label>
+                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Địa chỉ Email</label>
-                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:border-indigo-500 outline-none">
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Địa chỉ Email</label>
+                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Mật khẩu</label>
-                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:border-indigo-500 outline-none">
+                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Mật khẩu</label>
+                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
                 </div>
 
-                <div id="authAlert" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+                <div id="authAlert" class="hidden p-2.5 rounded-lg text-xs font-medium"></div>
 
-                <button type="submit" id="authSubmitBtn" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-900/40 transition-all">
+                <button type="submit" id="authSubmitBtn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs shadow-md transition-all">
                     Đăng nhập
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL: Subscriptions & Email Digest -->
-    <div id="subModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-800 relative max-h-[90vh] flex flex-col">
-            <button onclick="closeSubModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <!-- MODAL: Subscriptions & Digest -->
+    <div id="subModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#121216] rounded-2xl max-w-lg w-full p-6 border border-[rgba(255,255,255,0.1)] shadow-2xl relative max-h-[90vh] flex flex-col">
+            <button onclick="closeSubModal()" class="absolute right-4 top-4 text-zinc-500 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-xl bg-violet-900/40 text-violet-400 flex items-center justify-center text-lg border border-violet-700/50">
+                <div class="w-9 h-9 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-sm border border-indigo-500/20">
                     <i class="fa-regular fa-envelope"></i>
                 </div>
                 <div>
-                    <h2 class="text-lg font-bold text-white">Bản Tin Email Hằng Ngày</h2>
-                    <p class="text-xs text-slate-400">Nhận tóm tắt tin tức các chuyên mục bạn quan tâm lúc 7h sáng</p>
+                    <h2 class="text-sm font-bold text-white">Bản Tin Email Hằng Ngày</h2>
+                    <p class="text-[11px] text-zinc-400">Tự động tổng hợp và gửi tóm tắt các chuyên mục bạn theo dõi lúc 7:00 AM</p>
                 </div>
             </div>
 
-            <!-- Categories Checkboxes List -->
-            <div class="overflow-y-auto flex-1 my-3 pr-1 space-y-2.5" id="subscriptionCategoryList">
-                <div class="text-center py-6 text-slate-500 text-xs">Đang tải danh mục...</div>
+            <!-- Categories Checklist -->
+            <div id="subCategoryList" class="overflow-y-auto flex-1 my-2 pr-1 space-y-2">
+                <div class="text-center py-4 text-xs text-zinc-500 font-mono">Đang tải...</div>
             </div>
 
-            <!-- Actions Bar -->
-            <div class="border-t border-slate-800 pt-4 mt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <button onclick="previewEmailDigest()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition-all">
-                        <i class="fa-solid fa-eye text-slate-400"></i> Xem trước Email
-                    </button>
-                    <button onclick="sendEmailDigestNow()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
-                        <i class="fa-solid fa-paper-plane text-violet-200"></i> Gửi thử ngay
-                    </button>
-                </div>
-                <button onclick="closeSubModal()" class="w-full sm:w-auto px-4 py-2 border border-slate-700 text-slate-400 hover:bg-slate-800 rounded-xl text-xs font-semibold">
+            <div class="border-t border-zinc-800 pt-3 mt-2 flex items-center justify-between gap-2">
+                <button onclick="previewEmailDigest()" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-semibold transition-all">
+                    <i class="fa-solid fa-eye text-zinc-400 mr-1"></i> Xem trước Email
+                </button>
+                <button onclick="closeSubModal()" class="px-3 py-1.5 border border-zinc-700 text-zinc-400 hover:text-white rounded-lg text-xs">
                     Đóng
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: Email Preview IFrame Modal -->
-    <div id="previewModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 rounded-2xl max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col relative overflow-hidden border border-slate-800">
-            <div class="px-5 py-3.5 bg-slate-800/80 border-b border-slate-700 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-envelope-open-text text-violet-400"></i>
-                    <span class="text-xs font-bold text-white">Xem trước Bản tin Daily Digest (Thymeleaf HTML Template)</span>
-                </div>
-                <button onclick="closePreviewModal()" class="text-slate-400 hover:text-white p-1">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+    <!-- MODAL: Email Preview Iframe -->
+    <div id="previewModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[#121216] rounded-2xl max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col relative overflow-hidden border border-zinc-800">
+            <div class="px-4 py-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between">
+                <span class="text-xs font-mono font-semibold text-zinc-300">Xem trước Daily Digest (HTML Template)</span>
+                <button onclick="closePreviewModal()" class="text-zinc-500 hover:text-white">
+                    <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
             <iframe id="previewIframe" class="w-full flex-1 border-0 bg-white"></iframe>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300">
-        <div id="toastContent" class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold text-white"></div>
+    <!-- Toast Component -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transition-all duration-300">
+        <div id="toastContent" class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium border"></div>
     </div>
 
-    <!-- Application Script -->
+    <!-- APPLICATION JAVASCRIPT -->
     <script>
-        // State Management
+        // ==========================================
+        // STATE MANAGEMENT & USER BEHAVIOR ENGINE
+        // ==========================================
         let state = {
-            viewMode: 'reels', // 'reels' or 'grid'
+            viewMode: 'reels', // 'reels' | 'grid'
+            feedFilter: 'for-you', // 'for-you' | 'trending' | 'liked' | 'history'
             categories: [],
             currentCategoryId: null,
             currentSearchKeyword: null,
-            
-            // Unread Queue & Read History for Reels
-            reelsArticles: [], // The active deck of articles currently loaded in Reels
-            readArticleIds: new Set(JSON.parse(localStorage.getItem('read_articles_history') || '[]')),
-            likedArticleIds: new Set(JSON.parse(localStorage.getItem('liked_articles') || '[]')),
-            
-            // Grid View Pagination
-            gridPage: 0,
-            gridPageSize: 12,
-            gridTotalPages: 1,
+            trendingKeywords: [],
+
+            // All fetched raw articles
+            allArticles: [],
+
+            // Filtered deck for Reels
+            reelsDeck: [],
+
+            // User Behavior Profiling
+            readArticleIds: new Set(JSON.parse(localStorage.getItem('read_articles_v2') || '[]')),
+            likedArticleIds: new Set(JSON.parse(localStorage.getItem('liked_articles_v2') || '[]')),
+            categoryInterests: JSON.parse(localStorage.getItem('user_category_interests') || '{}'),
 
             // Auth
             user: null,
@@ -419,16 +449,6 @@
             digest: '/api/subscriptions/digest'
         };
 
-        // Source badge colors
-        const SOURCE_COLORS = {
-            'VnExpress': { bg: 'bg-rose-500/20', text: 'text-rose-400', border: 'border-rose-500/30' },
-            'Tuổi Trẻ': { bg: 'bg-sky-500/20', text: 'text-sky-400', border: 'border-sky-500/30' },
-            'Dân Trí': { bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' },
-            'VietNamNet': { bg: 'bg-amber-500/20', text: 'text-amber-400', border: 'border-amber-500/30' },
-            'Thanh Niên': { bg: 'bg-purple-500/20', text: 'text-purple-400', border: 'border-purple-500/30' }
-        };
-
-        // Fallback images based on categories
         const CATEGORY_DEFAULT_IMAGES = {
             'cong-nghe': 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80',
             'kinh-doanh': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80',
@@ -437,17 +457,566 @@
             'default': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&auto=format&fit=crop&q=80'
         };
 
-        // Init on DOM Load
+        // Initialize application on load
         document.addEventListener('DOMContentLoaded', () => {
             initAuth();
+            updateStatsBadges();
+            updateInterestSummaryUI();
             loadCategories();
-            loadTrendingKeywords();
-            initKeyboardNavigation();
-            loadInitialReelsFeed();
+            loadTrendingData().then(() => {
+                fetchArticlesAndBuildFeed();
+            });
+            initKeyboardShortcuts();
         });
 
-        // ================= VIEW SWITCHER =================
-        function switchView(mode) {
+        // ==========================================
+        // DATA FETCHING & RECOMMENDATION ENGINE
+        // ==========================================
+        async function loadTrendingData() {
+            try {
+                const res = await fetch(`${API.trending}?limit=12`);
+                if (!res.ok) return;
+                state.trendingKeywords = await res.json();
+                renderSidebarTrendingCloud();
+            } catch (err) {
+                console.error('Trending fetch error:', err);
+            }
+        }
+
+        async function fetchArticlesAndBuildFeed(isReloadAction = false) {
+            const spinner = document.getElementById('reloadSpinner');
+            spinner.classList.add('animate-spin');
+
+            try {
+                // Fetch articles (up to 50 latest from multiple sources)
+                let url = `${API.articles}?page=0&size=50`;
+                if (state.currentSearchKeyword) {
+                    url += `&q=${encodeURIComponent(state.currentSearchKeyword)}`;
+                } else if (state.currentCategoryId) {
+                    url += `&categoryId=${state.currentCategoryId}`;
+                }
+
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Không thể tải tin tức');
+                const pageData = await res.json();
+                state.allArticles = pageData.content || [];
+
+                // Build deck according to User Behavior & Filter
+                buildReelsDeck(isReloadAction);
+
+                if (state.viewMode === 'reels') {
+                    renderTikTokDeck();
+                } else {
+                    renderDateGroupedGrid();
+                }
+
+                if (isReloadAction) {
+                    showToast(`Đã làm mới! Đang ưu tiên các tin phù hợp nhất với bạn.`, 'success');
+                }
+
+            } catch (err) {
+                console.error(err);
+                showToast(err.message, 'error');
+            } finally {
+                setTimeout(() => spinner.classList.remove('animate-spin'), 500);
+            }
+        }
+
+        /**
+         * Recommendation Engine:
+         * Calculates score for each article based on:
+         * 1. User category interest (from liked articles)
+         * 2. Social / Search Trending match (Top search keywords)
+         * 3. Freshness (recency)
+         */
+        function buildReelsDeck(isReloadAction = false) {
+            let pool = [...state.allArticles];
+
+            // 1. Filter out already-read articles if it's a reload action
+            if (isReloadAction) {
+                const unreadOnly = pool.filter(a => !state.readArticleIds.has(a.id));
+                if (unreadOnly.length > 0) {
+                    pool = unreadOnly;
+                }
+            }
+
+            // 2. Specific Nav Filters
+            if (state.feedFilter === 'liked') {
+                pool = pool.filter(a => state.likedArticleIds.has(a.id));
+            } else if (state.feedFilter === 'history') {
+                pool = pool.filter(a => state.readArticleIds.has(a.id));
+            }
+
+            // 3. Score each article
+            const topKeywords = state.trendingKeywords.map(k => k.keyword.toLowerCase());
+
+            pool.forEach(article => {
+                let score = 0;
+                const catSlug = article.categorySlug || 'thoi-su';
+                const userInterest = state.categoryInterests[catSlug] || 0;
+
+                // Priority 1: User liked this category in the past
+                score += userInterest * 10;
+
+                // Priority 2: Matches top trending search keywords on internet
+                const titleLower = (article.title || '').toLowerCase();
+                topKeywords.forEach(kw => {
+                    if (titleLower.includes(kw)) {
+                        score += 15;
+                        article.isTrendingHot = true;
+                    }
+                });
+
+                // Priority 3: Freshness boost
+                if (article.publishedAt) {
+                    const hoursAgo = (new Date() - new Date(article.publishedAt)) / 3600000;
+                    if (hoursAgo < 6) score += 5;
+                }
+
+                article._score = score;
+            });
+
+            // 4. Sort descending by score
+            if (state.feedFilter === 'for-you' || state.feedFilter === 'trending') {
+                pool.sort((a, b) => (b._score || 0) - (a._score || 0));
+                
+                // Flag top 1 to 3 items as "Recommended For You" if they match user interest
+                let recommendedCount = 0;
+                pool.forEach(a => {
+                    const catSlug = a.categorySlug || 'thoi-su';
+                    if ((state.categoryInterests[catSlug] || 0) > 0 && recommendedCount < 3) {
+                        a.isPersonalizedForYou = true;
+                        recommendedCount++;
+                    }
+                });
+            }
+
+            state.reelsDeck = pool;
+        }
+
+        // ==========================================
+        // RENDER 1: TIKTOK REELS SWIPE VIEW
+        // ==========================================
+        function renderTikTokDeck() {
+            const feed = document.getElementById('tiktokFeed');
+            feed.innerHTML = '';
+
+            if (state.reelsDeck.length === 0) {
+                feed.innerHTML = `
+                    <div class="tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#121216]">
+                        <div class="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-xl mb-3 border border-zinc-700/60">
+                            <i class="fa-solid fa-check-double text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Bạn đã đọc hết các tin mới!</h3>
+                        <p class="text-xs text-zinc-400 mt-1 max-w-xs">Hệ thống liên tục cập nhật tin tức. Bấm làm mới hoặc đặt lại lịch sử để đọc tiếp.</p>
+                        <div class="mt-4 flex gap-2">
+                            <button onclick="resetReadHistory()" class="px-3.5 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold border border-zinc-700">
+                                Đọc lại từ đầu
+                            </button>
+                            <button onclick="handleReloadAction()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">
+                                Làm mới
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            state.reelsDeck.forEach((article, index) => {
+                feed.appendChild(createTikTokCard(article, index));
+            });
+
+            // Set up Observer to mark viewed
+            initCardViewObserver();
+        }
+
+        function createTikTokCard(article, index) {
+            const card = document.createElement('div');
+            card.id = `tiktok-card-${article.id}`;
+            card.className = 'tiktok-card w-full h-full flex flex-col justify-between relative overflow-hidden bg-black select-none';
+
+            const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
+            const timeAgo = formatRelativeTime(article.publishedAt);
+            const isLiked = state.likedArticleIds.has(article.id);
+            const isRead = state.readArticleIds.has(article.id);
+
+            // Generate synthetic realistic like counts for visual appeal
+            const baseLikes = 120 + ((article.id * 37) % 890);
+
+            card.innerHTML = `
+                <!-- Background Media with Dark Cinematic Gradient Overlay -->
+                <div class="absolute inset-0 z-0">
+                    <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
+                         class="w-full h-full object-cover object-center filter brightness-[0.72]"
+                         onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
+                    <!-- Linear Vignette Gradient: Ensures text is crystal clear -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30"></div>
+                </div>
+
+                <!-- Top Card Bar (Metadata) -->
+                <div class="relative z-10 p-5 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold tracking-tight bg-black/60 backdrop-blur-md text-zinc-200 border border-white/10">
+                            ${article.sourceName || 'Báo điện tử'}
+                        </span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900/80 backdrop-blur-md text-zinc-300 border border-white/10">
+                            ${escapeHtml(article.categoryName || 'Tin tức')}
+                        </span>
+                        ${article.isPersonalizedForYou ? `
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 flex items-center gap-1">
+                                <i class="fa-solid fa-sparkles text-[9px]"></i> Gợi ý
+                            </span>
+                        ` : ''}
+                    </div>
+
+                    <span id="readTag-${article.id}" class="text-[10px] font-mono px-2 py-0.5 rounded-full ${isRead ? 'bg-zinc-800/80 text-zinc-400 border border-zinc-700/60' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}">
+                        ${isRead ? 'Đã xem' : 'Mới'}
+                    </span>
+                </div>
+
+                <!-- Center/Bottom: Card Content & Right Floating Action Bar (TikTok Style) -->
+                <div class="relative z-10 p-5 sm:p-6 flex items-end justify-between gap-3">
+                    
+                    <!-- Left: Headline & Punchy Bullet Summary -->
+                    <div class="flex-1 space-y-2.5 max-w-[340px] sm:max-w-[360px]">
+                        
+                        <!-- Headline -->
+                        <h2 class="text-base sm:text-lg font-bold text-white leading-snug tracking-tight drop-shadow-md">
+                            ${escapeHtml(article.title)}
+                        </h2>
+
+                        <!-- Punchy Bullet Summary Box (Linear Card) -->
+                        <div class="p-3 rounded-xl bg-black/70 backdrop-blur-md border border-white/10 text-zinc-200 text-xs leading-relaxed space-y-1 shadow-xl">
+                            <p class="line-clamp-3">
+                                <span class="text-indigo-400 font-semibold mr-1">Tóm tắt:</span>
+                                ${escapeHtml(article.summary || 'Nhấn nút bên dưới để đọc bài viết gốc đầy đủ trên trang báo.')}
+                            </p>
+                        </div>
+
+                        <!-- Published time & source info -->
+                        <div class="flex items-center gap-2 text-[11px] font-mono text-zinc-400 pt-1">
+                            <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
+                            <span>&bull;</span>
+                            <span class="truncate">#${index + 1} của hàng đợi</span>
+                        </div>
+
+                        <!-- Read Original Source Link -->
+                        <div class="pt-1">
+                            <a href="${article.url}" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white text-zinc-950 hover:bg-zinc-200 rounded-lg text-xs font-semibold shadow-md transition-all">
+                                <span>Đọc bài gốc trên ${article.sourceName || 'báo'}</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right: TikTok Action Column (Like, Comment, Bookmark, Share) -->
+                    <div class="flex flex-col items-center gap-3.5 shrink-0 pb-1">
+                        
+                        <!-- Source Avatar -->
+                        <div class="w-10 h-10 rounded-full bg-zinc-800 border-2 border-white/20 flex items-center justify-center text-xs font-bold text-white shadow-md">
+                            ${(article.sourceName || 'N')[0]}
+                        </div>
+
+                        <!-- Like Button with Count -->
+                        <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" id="likeBtn-${article.id}"
+                                class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all ${isLiked ? 'text-rose-500' : ''}">
+                                <i id="likeIcon-${article.id}" class="fa-solid fa-heart text-base ${isLiked ? 'text-rose-500 scale-110' : ''}"></i>
+                            </div>
+                            <span id="likeCount-${article.id}" class="text-[10px] font-mono font-medium">${isLiked ? baseLikes + 1 : baseLikes}</span>
+                        </button>
+
+                        <!-- Bookmark Button -->
+                        <button onclick="shareArticle('${escapeHtml(article.title)}', '${article.url}')" title="Chia sẻ"
+                                class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
+                                <i class="fa-solid fa-share text-sm"></i>
+                            </div>
+                            <span class="text-[10px] font-mono font-medium">Share</span>
+                        </button>
+
+                        <!-- External Link Icon -->
+                        <a href="${article.url}" target="_blank" title="Mở trang gốc"
+                           class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </div>
+                            <span class="text-[10px] font-mono font-medium">Link</span>
+                        </a>
+
+                    </div>
+
+                </div>
+            `;
+            return card;
+        }
+
+        // ==========================================
+        // AUTOMATIC VIEW OBSERVATION & READ TRACKING
+        // ==========================================
+        let viewTimers = {};
+
+        function initCardViewObserver() {
+            const feed = document.getElementById('tiktokFeed');
+            const options = {
+                root: feed,
+                threshold: 0.65 // Card is considered viewed when 65% visible
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const cardId = entry.target.id;
+                    const articleId = parseInt(cardId.replace('tiktok-card-', ''));
+
+                    if (entry.isIntersecting) {
+                        // User started viewing this card: Start 1.2s timer to mark read
+                        viewTimers[articleId] = setTimeout(() => {
+                            recordArticleAsRead(articleId);
+                        }, 1200);
+                    } else {
+                        // User scrolled away
+                        if (viewTimers[articleId]) {
+                            clearTimeout(viewTimers[articleId]);
+                            delete viewTimers[articleId];
+                        }
+                    }
+                });
+            }, options);
+
+            document.querySelectorAll('.tiktok-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        function recordArticleAsRead(articleId) {
+            if (!state.readArticleIds.has(articleId)) {
+                state.readArticleIds.add(articleId);
+                localStorage.setItem('read_articles_v2', JSON.stringify(Array.from(state.readArticleIds)));
+                updateStatsBadges();
+
+                const tag = document.getElementById(`readTag-${articleId}`);
+                if (tag) {
+                    tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-800/80 text-zinc-400 border border-zinc-700/60';
+                    tag.textContent = 'Đã xem';
+                }
+            }
+        }
+
+        function scrollTikTok(direction) {
+            const feed = document.getElementById('tiktokFeed');
+            feed.scrollBy({ top: direction * feed.clientHeight, behavior: 'smooth' });
+        }
+
+        function initKeyboardShortcuts() {
+            window.addEventListener('keydown', (e) => {
+                if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+                if (state.viewMode === 'reels') {
+                    if (e.key === 'ArrowDown' || e.key === 'j' || e.key === ' ') {
+                        e.preventDefault();
+                        scrollTikTok(1);
+                    } else if (e.key === 'ArrowUp' || e.key === 'k') {
+                        e.preventDefault();
+                        scrollTikTok(-1);
+                    } else if (e.key === 'r') {
+                        handleReloadAction();
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // USER BEHAVIOR: LIKE & INTEREST PROFILING
+        // ==========================================
+        function toggleLike(articleId, categorySlug) {
+            const icon = document.getElementById(`likeIcon-${articleId}`);
+            const countEl = document.getElementById(`likeCount-${articleId}`);
+            let count = parseInt(countEl.textContent || '0');
+
+            if (state.likedArticleIds.has(articleId)) {
+                state.likedArticleIds.delete(articleId);
+                icon.className = 'fa-solid fa-heart text-base';
+                countEl.textContent = Math.max(0, count - 1);
+                showToast('Đã bỏ thích bài viết', 'info');
+            } else {
+                state.likedArticleIds.add(articleId);
+                icon.className = 'fa-solid fa-heart text-base text-rose-500 scale-110 heart-animate';
+                countEl.textContent = count + 1;
+
+                // Train User Interest Profile: Boost weight of this category
+                const cat = categorySlug || 'thoi-su';
+                state.categoryInterests[cat] = (state.categoryInterests[cat] || 0) + 1;
+                localStorage.setItem('user_category_interests', JSON.stringify(state.categoryInterests));
+
+                updateInterestSummaryUI();
+                showToast('Đã thích! Hệ thống sẽ ưu tiên các tin thuộc lĩnh vực này khi làm mới ❤️', 'success');
+            }
+
+            localStorage.setItem('liked_articles_v2', JSON.stringify(Array.from(state.likedArticleIds)));
+            updateStatsBadges();
+        }
+
+        function updateInterestSummaryUI() {
+            const summaryEl = document.getElementById('interestSummary');
+            const entries = Object.entries(state.categoryInterests);
+            if (entries.length === 0) {
+                summaryEl.textContent = 'Chưa có dữ liệu';
+                return;
+            }
+            // Find category with highest likes
+            entries.sort((a, b) => b[1] - a[1]);
+            const topCategorySlug = entries[0][0];
+            const catMap = {
+                'cong-nghe': 'Công nghệ & AI',
+                'kinh-doanh': 'Kinh doanh & Tài chính',
+                'the-gioi': 'Tin tức Quốc tế',
+                'thoi-su': 'Thời sự & Xã hội'
+            };
+            summaryEl.textContent = catMap[topCategorySlug] || topCategorySlug;
+        }
+
+        function updateStatsBadges() {
+            document.getElementById('likedCountBadge').textContent = state.likedArticleIds.size;
+            document.getElementById('readCountBadge').textContent = state.readArticleIds.size;
+        }
+
+        function handleReloadAction() {
+            fetchArticlesAndBuildFeed(true);
+        }
+
+        function resetReadHistory() {
+            state.readArticleIds.clear();
+            localStorage.removeItem('read_articles_v2');
+            updateStatsBadges();
+            fetchArticlesAndBuildFeed(false);
+            showToast('Đã xóa lịch sử đã xem!', 'info');
+        }
+
+        function shareArticle(title, url) {
+            if (navigator.share) {
+                navigator.share({ title, url }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('Đã sao chép liên kết vào bộ nhớ tạm!', 'success');
+                });
+            }
+        }
+
+        // ==========================================
+        // RENDER 2: EDITORIAL BENTO GRID (BY DATE)
+        // ==========================================
+        function renderDateGroupedGrid() {
+            const container = document.getElementById('gridDateGroupedContainer');
+            document.getElementById('gridTotalElements').textContent = `${state.allArticles.length} bài viết`;
+            container.innerHTML = '';
+
+            if (state.allArticles.length === 0) {
+                container.innerHTML = '<div class="text-center py-16 text-zinc-500 text-xs">Không có bài viết nào.</div>';
+                return;
+            }
+
+            // Group articles by date string: "Hôm nay", "Hôm qua", or "dd/MM/yyyy"
+            const groups = {};
+            const todayStr = new Date().toDateString();
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toDateString();
+
+            state.allArticles.forEach(article => {
+                let dateKey = 'Tin gần đây';
+                if (article.publishedAt) {
+                    const d = new Date(article.publishedAt);
+                    const ds = d.toDateString();
+                    if (ds === todayStr) {
+                        dateKey = 'Hôm nay';
+                    } else if (ds === yesterdayStr) {
+                        dateKey = 'Hôm qua';
+                    } else {
+                        dateKey = `Ngày ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+                    }
+                }
+                if (!groups[dateKey]) groups[dateKey] = [];
+                groups[dateKey].push(article);
+            });
+
+            // Render each date section
+            for (const [dateLabel, articles] of Object.entries(groups)) {
+                const section = document.createElement('div');
+                section.className = 'space-y-4';
+
+                section.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 rounded-md text-xs font-mono font-bold bg-zinc-800/80 text-zinc-200 border border-zinc-700/60">
+                            ${dateLabel}
+                        </span>
+                        <div class="h-px bg-zinc-800/80 flex-1"></div>
+                        <span class="text-[11px] font-mono text-zinc-500">${articles.length} tin tức</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        ${articles.map(a => createBentoGridCard(a)).join('')}
+                    </div>
+                `;
+                container.appendChild(section);
+            }
+        }
+
+        function createBentoGridCard(article) {
+            const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
+            const timeAgo = formatRelativeTime(article.publishedAt);
+            const isLiked = state.likedArticleIds.has(article.id);
+
+            return `
+                <div class="group bg-[#111115] rounded-xl overflow-hidden border border-[rgba(255,255,255,0.07)] hover:border-zinc-500/40 transition-all flex flex-col justify-between">
+                    <div>
+                        <!-- Cover Image -->
+                        <div class="h-40 w-full relative overflow-hidden bg-zinc-900">
+                            <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
+                            <div class="absolute top-2.5 left-2.5 flex gap-1.5">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-black/70 backdrop-blur-md text-zinc-200 border border-white/10">
+                                    ${article.sourceName || 'Tin tức'}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Text details -->
+                        <div class="p-4 space-y-2">
+                            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+                                <span>${escapeHtml(article.categoryName || 'Chung')}</span>
+                                <span>${timeAgo}</span>
+                            </div>
+
+                            <h3 class="text-sm font-bold text-zinc-100 group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
+                                <a href="${article.url}" target="_blank">${escapeHtml(article.title)}</a>
+                            </h3>
+
+                            <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                                ${escapeHtml(article.summary || 'Không có mô tả chi tiết.')}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 pt-0 flex items-center justify-between border-t border-zinc-800/80 mt-2">
+                        <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-1 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
+                            <span>Đọc tiếp</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                        </a>
+                        <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" class="text-xs text-zinc-500 hover:text-rose-500 p-1">
+                            <i class="fa-solid fa-heart ${isLiked ? 'text-rose-500' : ''}"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // SIDEBAR, CATEGORIES, SEARCH & MODES
+        // ==========================================
+        function switchViewMode(mode) {
             state.viewMode = mode;
             const reelsSection = document.getElementById('reelsViewSection');
             const gridSection = document.getElementById('gridViewSection');
@@ -457,517 +1026,114 @@
             if (mode === 'reels') {
                 reelsSection.classList.remove('hidden');
                 gridSection.classList.add('hidden');
-                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all';
-                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all';
+                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all';
+                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all';
+                renderTikTokDeck();
             } else {
                 reelsSection.classList.add('hidden');
                 gridSection.classList.remove('hidden');
-                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all';
-                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition-all';
-                loadGridArticles();
+                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all';
+                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all';
+                renderDateGroupedGrid();
             }
         }
 
-        // ================= REELS (TIKTOK NEWS SWIPE) ENGINE =================
-        async function loadInitialReelsFeed(resetReadHistory = false) {
-            const feedContainer = document.getElementById('reelsFeed');
-            const rotateIcon = document.getElementById('reloadIcon');
-            rotateIcon.classList.add('animate-spin');
+        function selectFeedFilter(filter) {
+            state.feedFilter = filter;
+            state.currentCategoryId = null;
+            state.currentSearchKeyword = null;
 
-            try {
-                // Fetch up to 40 latest articles
-                let url = `${API.articles}?page=0&size=40`;
-                if (state.currentSearchKeyword) {
-                    url += `&q=${encodeURIComponent(state.currentSearchKeyword)}`;
-                } else if (state.currentCategoryId) {
-                    url += `&categoryId=${state.currentCategoryId}`;
-                }
-
-                const res = await fetch(url);
-                if (!res.ok) throw new Error('Không thể tải tin');
-                const pageData = await res.json();
-                const fetchedArticles = pageData.content || [];
-
-                if (resetReadHistory) {
-                    // When user clicks Reload: Keep previously read articles in history,
-                    // but FILTER THEM OUT of current unread deck so user only reads NEW articles!
-                    state.reelsArticles = fetchedArticles.filter(a => !state.readArticleIds.has(a.id));
-                    showToast(`Đã làm mới! Đang hiển thị ${state.reelsArticles.length} tin chưa đọc`, 'success');
-                } else {
-                    // On initial load: show unread first, then read articles at bottom
-                    const unread = fetchedArticles.filter(a => !state.readArticleIds.has(a.id));
-                    const read = fetchedArticles.filter(a => state.readArticleIds.has(a.id));
-                    state.reelsArticles = [...unread, ...read];
-                }
-
-                updateReelsCounter();
-                renderReelsFeed();
-
-            } catch (err) {
-                feedContainer.innerHTML = `
-                    <div class="reel-card w-full h-full flex flex-col items-center justify-center p-6 text-center">
-                        <i class="fa-solid fa-triangle-exclamation text-4xl text-rose-500 mb-3"></i>
-                        <p class="text-sm font-bold text-slate-300">${err.message}</p>
-                        <button onclick="loadInitialReelsFeed()" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold">Thử lại</button>
-                    </div>
-                `;
-            } finally {
-                setTimeout(() => rotateIcon.classList.remove('animate-spin'), 600);
-            }
-        }
-
-        function reloadUnreadFeed() {
-            // Reload action: Filter out already read articles and show only unread!
-            loadInitialReelsFeed(true);
-            loadTrendingKeywords();
-        }
-
-        function renderReelsFeed() {
-            const container = document.getElementById('reelsFeed');
-            container.innerHTML = '';
-
-            if (state.reelsArticles.length === 0) {
-                container.innerHTML = `
-                    <div class="reel-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-slate-900">
-                        <div class="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-2xl mb-4">
-                            <i class="fa-solid fa-check-double text-indigo-400"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Bạn đã đọc hết tất cả các tin mới!</h3>
-                        <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto">Hệ thống liên tục cào tin mới từ các nguồn báo. Bấm làm mới để tải thêm.</p>
-                        <div class="mt-6 flex items-center gap-3">
-                            <button onclick="resetReadHistoryAndReload()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold border border-slate-700">
-                                Đọc lại từ đầu
-                            </button>
-                            <button onclick="reloadUnreadFeed()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-indigo-900/40">
-                                <i class="fa-solid fa-rotate mr-1"></i> Làm mới tin
-                            </button>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            state.reelsArticles.forEach((article, index) => {
-                container.appendChild(createReelCardElement(article, index));
-            });
-
-            // Set up IntersectionObserver to mark article as read when scrolled into view
-            setupIntersectionObserver();
-        }
-
-        function createReelCardElement(article, index) {
-            const card = document.createElement('div');
-            card.id = `reel-card-${article.id}`;
-            card.className = 'reel-card w-full h-full flex flex-col justify-end relative overflow-hidden bg-slate-950';
-
-            const sourceStyle = SOURCE_COLORS[article.sourceName] || { bg: 'bg-slate-800', text: 'text-slate-300', border: 'border-slate-700' };
-            const timeAgo = formatRelativeTime(article.publishedAt);
-            const isLiked = state.likedArticleIds.has(article.id);
-            const isRead = state.readArticleIds.has(article.id);
-
-            // Image handling with fallback
-            const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
-
-            card.innerHTML = `
-                <!-- Background Image with Gradient Overlay -->
-                <div class="absolute inset-0 z-0">
-                    <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
-                         class="w-full h-full object-cover object-center filter brightness-75 scale-105 transition-transform duration-700"
-                         onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
-                    <!-- Strong Dark Gradients for Maximum Readability -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-transparent"></div>
-                    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-transparent to-transparent"></div>
-                </div>
-
-                <!-- Card Content Layer -->
-                <div class="relative z-10 p-5 sm:p-7 flex flex-col justify-end h-full">
-
-                    <!-- Top Metadata Badges -->
-                    <div class="flex items-center justify-between gap-2 mb-auto pt-2">
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wide border backdrop-blur-md ${sourceStyle.bg} ${sourceStyle.text} ${sourceStyle.border}">
-                                ${article.sourceName || 'Báo điện tử'}
-                            </span>
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-900/80 backdrop-blur-md text-slate-300 border border-slate-700/60">
-                                <i class="fa-solid fa-tag text-[9px] text-indigo-400"></i> ${escapeHtml(article.categoryName || 'Tin tức')}
-                            </span>
-                        </div>
-                        <span id="readStatus-${article.id}" class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isRead ? 'bg-slate-800/80 text-slate-400 border border-slate-700' : 'bg-rose-500/30 text-rose-300 border border-rose-500/40'}">
-                            ${isRead ? 'Đã xem' : 'Mới'}
-                        </span>
-                    </div>
-
-                    <!-- Main Article Summary Section -->
-                    <div class="mb-4 space-y-2.5 max-w-lg">
-                        
-                        <!-- Headline -->
-                        <h2 class="text-lg sm:text-xl md:text-2xl font-black text-white leading-snug drop-shadow-md">
-                            ${escapeHtml(article.title)}
-                        </h2>
-
-                        <!-- Short, Punchy Summary Card (TikTok Style) -->
-                        <div class="p-3.5 rounded-xl bg-slate-900/80 backdrop-blur-md border border-slate-700/60 text-slate-200 text-xs sm:text-sm leading-relaxed shadow-lg">
-                            <p class="line-clamp-4">
-                                <span class="text-rose-400 font-bold mr-1.5"><i class="fa-solid fa-bolt"></i> Tóm tắt:</span>
-                                ${escapeHtml(article.summary || 'Nhấn đọc tin gốc để xem toàn bộ thông tin chi tiết của sự kiện này.')}
-                            </p>
-                        </div>
-
-                        <!-- Published Time -->
-                        <div class="flex items-center gap-2 text-[11px] text-slate-400">
-                            <i class="fa-regular fa-clock text-slate-400"></i>
-                            <span>${timeAgo}</span>
-                            <span>&bull;</span>
-                            <span>Tin số #${index + 1}</span>
-                        </div>
-                    </div>
-
-                    <!-- Bottom Action Bar & External Link -->
-                    <div class="flex items-center justify-between gap-3 pt-3 border-t border-slate-800/80">
-                        <a href="${article.url}" target="_blank" rel="noopener noreferrer"
-                           class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-indigo-900/50 hover:scale-105 active:scale-95 transition-all">
-                            <span>Đọc bài gốc trên ${article.sourceName || 'báo'}</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                        </a>
-
-                        <!-- Social / Interaction Buttons (TikTok sidebar style) -->
-                        <div class="flex items-center gap-2">
-                            <!-- Like Button -->
-                            <button onclick="toggleLikeArticle(${article.id})" id="likeBtn-${article.id}"
-                                    class="w-10 h-10 rounded-full flex items-center justify-center transition-all ${isLiked ? 'bg-rose-600 text-white scale-110' : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700'}">
-                                <i class="fa-solid fa-heart ${isLiked ? 'text-white' : 'text-slate-400'}"></i>
-                            </button>
-                            <!-- Share Button -->
-                            <button onclick="shareArticle('${escapeHtml(article.title)}', '${article.url}')" title="Chia sẻ"
-                                    class="w-10 h-10 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center justify-center transition-all">
-                                <i class="fa-solid fa-share-nodes"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            `;
-            return card;
-        }
-
-        function setupIntersectionObserver() {
-            const options = {
-                root: document.getElementById('reelsFeed'),
-                threshold: 0.6 // Trigger when 60% of card is in view
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const cardId = entry.target.id;
-                        const articleId = parseInt(cardId.replace('reel-card-', ''));
-                        markArticleAsRead(articleId);
-                    }
-                });
-            }, options);
-
-            document.querySelectorAll('.reel-card').forEach(card => {
-                observer.observe(card);
-            });
-        }
-
-        function markArticleAsRead(articleId) {
-            if (!state.readArticleIds.has(articleId)) {
-                state.readArticleIds.add(articleId);
-                // Save to localStorage
-                localStorage.setItem('read_articles_history', JSON.stringify(Array.from(state.readArticleIds)));
-                updateReelsCounter();
-
-                // Update badge on card
-                const badge = document.getElementById(`readStatus-${articleId}`);
-                if (badge) {
-                    badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800/80 text-slate-400 border border-slate-700';
-                    badge.textContent = 'Đã xem';
-                }
-            }
-        }
-
-        function updateReelsCounter() {
-            const unread = state.reelsArticles.filter(a => !state.readArticleIds.has(a.id)).length;
-            const read = state.readArticleIds.size;
-            document.getElementById('reelsUnreadCount').innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span> ${unread} tin chưa đọc`;
-            document.getElementById('reelsReadCount').textContent = `Đã đọc: ${read}`;
-        }
-
-        function resetReadHistoryAndReload() {
-            state.readArticleIds.clear();
-            localStorage.removeItem('read_articles_history');
-            loadInitialReelsFeed(false);
-            showToast('Đã đặt lại lịch sử đọc tin!', 'info');
-        }
-
-        function scrollReels(direction) {
-            const container = document.getElementById('reelsFeed');
-            const cardHeight = container.clientHeight;
-            container.scrollBy({ top: direction * cardHeight, behavior: 'smooth' });
-        }
-
-        function initKeyboardNavigation() {
-            window.addEventListener('keydown', (e) => {
-                // If user is typing in search or modal, ignore
-                if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-
-                if (state.viewMode === 'reels') {
-                    if (e.key === 'ArrowDown' || e.key === 'j' || e.key === ' ') {
-                        e.preventDefault();
-                        scrollReels(1);
-                    } else if (e.key === 'ArrowUp' || e.key === 'k') {
-                        e.preventDefault();
-                        scrollReels(-1);
-                    } else if (e.key === 'r') {
-                        reloadUnreadFeed();
-                    }
+            // Reset active states
+            ['for-you', 'trending', 'liked', 'history'].forEach(f => {
+                const btn = document.getElementById(`nav-${f}`);
+                if (btn) {
+                    btn.className = f === filter 
+                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 transition-all'
+                        : 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
                 }
             });
+
+            document.querySelectorAll('#sidebarCategoriesList button').forEach(b => {
+                b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
+            });
+
+            fetchArticlesAndBuildFeed();
         }
 
-        function toggleLikeArticle(id) {
-            const btn = document.getElementById(`likeBtn-${id}`);
-            const icon = btn.querySelector('i');
-            if (state.likedArticleIds.has(id)) {
-                state.likedArticleIds.delete(id);
-                btn.className = 'w-10 h-10 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center justify-center transition-all';
-                icon.className = 'fa-solid fa-heart text-slate-400';
-                showToast('Đã bỏ yêu thích', 'info');
-            } else {
-                state.likedArticleIds.add(id);
-                btn.className = 'w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center transition-all scale-110';
-                icon.className = 'fa-solid fa-heart text-white';
-                showToast('Đã lưu bài viết vào mục Yêu thích! ❤️', 'success');
-            }
-            localStorage.setItem('liked_articles', JSON.stringify(Array.from(state.likedArticleIds)));
-        }
-
-        function shareArticle(title, url) {
-            if (navigator.share) {
-                navigator.share({ title: title, url: url }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(url).then(() => {
-                    showToast('Đã sao chép liên kết bài báo vào bộ nhớ tạm!', 'success');
-                });
-            }
-        }
-
-        // ================= GRID VIEW ENGINE =================
-        async function loadGridArticles() {
-            const grid = document.getElementById('articlesGrid');
-            grid.innerHTML = `
-                <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800 animate-pulse space-y-4">
-                    <div class="h-4 bg-slate-800 rounded w-1/3"></div>
-                    <div class="h-6 bg-slate-700 rounded w-5/6"></div>
-                    <div class="h-16 bg-slate-800 rounded"></div>
-                </div>
-            `;
-
-            try {
-                let url = `${API.articles}?page=${state.gridPage}&size=${state.gridPageSize}`;
-                if (state.currentSearchKeyword) {
-                    url += `&q=${encodeURIComponent(state.currentSearchKeyword)}`;
-                } else if (state.currentCategoryId) {
-                    url += `&categoryId=${state.currentCategoryId}`;
-                }
-
-                const res = await fetch(url);
-                if (!res.ok) throw new Error('Không thể tải danh sách bài viết');
-                const pageData = await res.json();
-
-                state.gridTotalPages = pageData.totalPages || 1;
-                document.getElementById('currentPageNum').textContent = state.gridPage + 1;
-                document.getElementById('totalPagesNum').textContent = state.gridTotalPages;
-                document.getElementById('prevPageBtn').disabled = state.gridPage <= 0;
-                document.getElementById('nextPageBtn').disabled = state.gridPage >= state.gridTotalPages - 1;
-                document.getElementById('gridTotalBadge').textContent = `${pageData.totalElements || 0} bài viết`;
-
-                if (!pageData.content || pageData.content.length === 0) {
-                    grid.innerHTML = '<div class="col-span-full text-center text-slate-400 py-12">Không tìm thấy bài viết nào.</div>';
-                    return;
-                }
-
-                grid.innerHTML = '';
-                pageData.content.forEach(article => {
-                    grid.appendChild(createGridCard(article));
-                });
-
-            } catch (err) {
-                grid.innerHTML = `<div class="col-span-full text-center text-rose-500 py-10">${err.message}</div>`;
-            }
-        }
-
-        function createGridCard(article) {
-            const sourceStyle = SOURCE_COLORS[article.sourceName] || { bg: 'bg-slate-800', text: 'text-slate-300', border: 'border-slate-700' };
-            const timeAgo = formatRelativeTime(article.publishedAt);
-            const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
-
-            const card = document.createElement('div');
-            card.className = 'group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-indigo-500/50 hover:shadow-xl hover:shadow-indigo-950/50 transition-all flex flex-col justify-between';
-
-            card.innerHTML = `
-                <div>
-                    <!-- Image header -->
-                    <div class="h-44 w-full relative overflow-hidden bg-slate-800">
-                        <img src="${imgUrl}" alt="${escapeHtml(article.title)}"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
-                        <div class="absolute top-3 left-3 flex gap-2">
-                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold border backdrop-blur-md ${sourceStyle.bg} ${sourceStyle.text} ${sourceStyle.border}">
-                                ${article.sourceName || 'Báo điện tử'}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="p-4">
-                        <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2">
-                            <span><i class="fa-solid fa-tag text-indigo-400 text-[9px] mr-1"></i> ${escapeHtml(article.categoryName || 'Chung')}</span>
-                            <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
-                        </div>
-
-                        <!-- Title -->
-                        <h3 class="text-sm font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug mb-2">
-                            <a href="${article.url}" target="_blank">${escapeHtml(article.title)}</a>
-                        </h3>
-
-                        <!-- Summary -->
-                        <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
-                            ${escapeHtml(article.summary || 'Không có mô tả chi tiết.')}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="p-4 pt-0 flex items-center justify-between border-t border-slate-800/80 mt-2">
-                    <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
-                       class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
-                        Đọc tin gốc <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                    </a>
-                    <button onclick="shareArticle('${escapeHtml(article.title)}', '${article.url}')" class="text-slate-400 hover:text-white text-xs p-1">
-                        <i class="fa-solid fa-share-nodes"></i>
-                    </button>
-                </div>
-            `;
-            return card;
-        }
-
-        function changeGridPage(delta) {
-            const newPage = state.gridPage + delta;
-            if (newPage >= 0 && newPage < state.gridTotalPages) {
-                state.gridPage = newPage;
-                loadGridArticles();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        // ================= CATEGORIES & TRENDING =================
         async function loadCategories() {
             try {
                 const res = await fetch(API.categories);
                 if (!res.ok) return;
                 state.categories = await res.json();
 
-                const container = document.getElementById('categoryTabs');
+                const container = document.getElementById('sidebarCategoriesList');
                 state.categories.forEach(cat => {
                     const btn = document.createElement('button');
-                    btn.id = `tab-cat-${cat.id}`;
-                    btn.className = 'category-tab px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 shrink-0 transition-all';
+                    btn.id = `cat-btn-${cat.id}`;
+                    btn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
                     btn.textContent = cat.name;
                     btn.onclick = () => selectCategory(cat.id, cat.name);
                     container.appendChild(btn);
                 });
             } catch (err) {
-                console.error('Error loading categories:', err);
-            }
-        }
-
-        async function loadTrendingKeywords() {
-            try {
-                const res = await fetch(`${API.trending}?limit=8`);
-                if (!res.ok) return;
-                const keywords = await res.json();
-                const container = document.getElementById('trendingKeywordsList');
-                container.innerHTML = '';
-
-                if (!keywords || keywords.length === 0) {
-                    container.innerHTML = '<span class="text-slate-500 text-xs italic">Chưa có đủ từ khóa nóng</span>';
-                    return;
-                }
-
-                keywords.forEach(kw => {
-                    const pill = document.createElement('button');
-                    pill.className = 'inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white border border-slate-700/80 hover:border-indigo-500 font-semibold transition-all shrink-0';
-                    pill.innerHTML = `<span>#${kw.keyword}</span><span class="text-[9px] opacity-70">(${kw.frequency})</span>`;
-                    pill.onclick = () => searchByKeyword(kw.keyword);
-                    container.appendChild(pill);
-                });
-            } catch (err) {
-                console.error('Error loading trending:', err);
+                console.error(err);
             }
         }
 
         function selectCategory(id, name) {
             state.currentCategoryId = id;
             state.currentSearchKeyword = null;
-            state.gridPage = 0;
-            document.getElementById('searchInput').value = '';
-            document.getElementById('mobileSearchInput').value = '';
 
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.className = 'category-tab px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 shrink-0 transition-all';
+            document.querySelectorAll('#sidebarCategoriesList button').forEach(b => {
+                b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
             });
 
-            if (id === null) {
-                document.getElementById('tab-all').className = 'category-tab active px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm shrink-0 transition-all';
-            } else {
-                const activeTab = document.getElementById(`tab-cat-${id}`);
-                if (activeTab) {
-                    activeTab.className = 'category-tab active px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow-sm shrink-0 transition-all';
-                }
+            const activeBtn = id ? document.getElementById(`cat-btn-${id}`) : document.getElementById('cat-btn-all');
+            if (activeBtn) {
+                activeBtn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-200 bg-zinc-800/60 transition-all';
             }
 
-            if (state.viewMode === 'reels') {
-                loadInitialReelsFeed(false);
-            } else {
-                loadGridArticles();
-            }
+            document.getElementById('gridCategoryBadge').textContent = name || 'Tất cả tin';
+            fetchArticlesAndBuildFeed();
         }
 
-        function searchByKeyword(keyword) {
+        function renderSidebarTrendingCloud() {
+            const container = document.getElementById('sidebarTrendingCloud');
+            container.innerHTML = '';
+            if (state.trendingKeywords.length === 0) {
+                container.innerHTML = '<span class="text-[11px] text-zinc-600 italic">Chưa có từ khóa hot</span>';
+                return;
+            }
+            state.trendingKeywords.forEach(kw => {
+                const tag = document.createElement('button');
+                tag.className = 'text-[10px] font-mono px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-[rgba(255,255,255,0.06)] transition-all';
+                tag.innerHTML = `#${kw.keyword}`;
+                tag.onclick = () => searchByTag(kw.keyword);
+                container.appendChild(tag);
+            });
+        }
+
+        function searchByTag(keyword) {
             state.currentSearchKeyword = keyword;
             state.currentCategoryId = null;
-            state.gridPage = 0;
-
             document.getElementById('searchInput').value = keyword;
-            document.getElementById('mobileSearchInput').value = keyword;
-
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.className = 'category-tab px-3 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 shrink-0 transition-all';
-            });
-
-            showToast(`Tìm kiếm từ khóa: "${keyword}"`, 'info');
-            if (state.viewMode === 'reels') {
-                loadInitialReelsFeed(false);
-            } else {
-                loadGridArticles();
-            }
+            showToast(`Tìm kiếm: #${keyword}`, 'info');
+            fetchArticlesAndBuildFeed();
         }
 
-        function handleSearch() {
+        function triggerSearch() {
             const kw = document.getElementById('searchInput').value.trim();
-            if (kw) searchByKeyword(kw);
-        }
-
-        function handleMobileSearch() {
-            const kw = document.getElementById('mobileSearchInput').value.trim();
-            if (kw) searchByKeyword(kw);
+            if (kw) searchByTag(kw);
         }
 
         function resetFilters() {
-            selectCategory(null);
+            document.getElementById('searchInput').value = '';
+            selectFeedFilter('for-you');
         }
 
-        // ================= AUTH MANAGEMENT =================
+        // ==========================================
+        // AUTH & SUBSCRIPTIONS
+        // ==========================================
         function initAuth() {
             const token = localStorage.getItem('jwt_token');
             const email = localStorage.getItem('user_email');
@@ -978,6 +1144,7 @@
                 document.getElementById('unauthSection').classList.add('hidden');
                 document.getElementById('authSection').classList.remove('hidden');
                 document.getElementById('authSection').classList.add('flex');
+                document.getElementById('userBadge').textContent = fullName || email.split('@')[0];
             } else {
                 state.user = null;
                 document.getElementById('unauthSection').classList.remove('hidden');
@@ -1006,13 +1173,13 @@
             document.getElementById('authAlert').classList.add('hidden');
 
             if (tab === 'login') {
-                loginTab.className = 'flex-1 pb-3 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500';
-                regTab.className = 'flex-1 pb-3 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-300';
+                loginTab.className = 'flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-indigo-500';
+                regTab.className = 'flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300';
                 nameGroup.classList.add('hidden');
                 submitBtn.textContent = 'Đăng nhập';
             } else {
-                regTab.className = 'flex-1 pb-3 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500';
-                loginTab.className = 'flex-1 pb-3 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:text-slate-300';
+                regTab.className = 'flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-indigo-500';
+                loginTab.className = 'flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300';
                 nameGroup.classList.remove('hidden');
                 submitBtn.textContent = 'Tạo tài khoản';
             }
@@ -1025,44 +1192,30 @@
             const fullName = document.getElementById('authFullName').value.trim();
             const alertEl = document.getElementById('authAlert');
 
-            alertEl.className = 'p-3 rounded-xl text-xs font-medium bg-slate-800 text-slate-300';
+            alertEl.className = 'p-2.5 rounded-lg text-xs font-medium bg-zinc-800 text-zinc-300';
             alertEl.textContent = 'Đang xử lý...';
             alertEl.classList.remove('hidden');
 
             try {
-                if (currentAuthTab === 'login') {
-                    const res = await fetch(`${API.auth}/login`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, password })
-                    });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.message || 'Sai thông tin đăng nhập');
+                const endpoint = currentAuthTab === 'login' ? `${API.auth}/login` : `${API.auth}/register`;
+                const body = currentAuthTab === 'login' ? { email, password } : { email, password, fullName };
 
-                    localStorage.setItem('jwt_token', data.token);
-                    localStorage.setItem('user_email', data.email);
-                    localStorage.setItem('user_fullname', data.fullName || data.email);
-                    initAuth();
-                    closeAuthModal();
-                    showToast('Đăng nhập thành công!', 'success');
-                } else {
-                    const res = await fetch(`${API.auth}/register`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, password, fullName })
-                    });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.message || 'Không thể tạo tài khoản');
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Lỗi xác thực');
 
-                    localStorage.setItem('jwt_token', data.token);
-                    localStorage.setItem('user_email', data.email);
-                    localStorage.setItem('user_fullname', data.fullName || data.email);
-                    initAuth();
-                    closeAuthModal();
-                    showToast('Đăng ký thành công và đã tự động đăng nhập!', 'success');
-                }
+                localStorage.setItem('jwt_token', data.token);
+                localStorage.setItem('user_email', data.email);
+                localStorage.setItem('user_fullname', data.fullName || data.email);
+                initAuth();
+                closeAuthModal();
+                showToast(currentAuthTab === 'login' ? 'Đăng nhập thành công!' : 'Đăng ký thành công!', 'success');
             } catch (err) {
-                alertEl.className = 'p-3 rounded-xl text-xs font-medium bg-rose-900/30 text-rose-400 border border-rose-800';
+                alertEl.className = 'p-2.5 rounded-lg text-xs font-medium bg-rose-950/40 text-rose-300 border border-rose-800';
                 alertEl.textContent = err.message;
             }
         }
@@ -1075,23 +1228,22 @@
             showToast('Đã đăng xuất', 'info');
         }
 
-        // ================= SUBSCRIPTIONS & DIGEST =================
-        async function openSubscriptionModal() {
+        async function openSubModal() {
             if (!state.user) {
                 openAuthModal('login');
                 return;
             }
             document.getElementById('subModal').classList.remove('hidden');
-            await loadUserSubscriptions();
+            await loadSubscriptions();
         }
 
         function closeSubModal() {
             document.getElementById('subModal').classList.add('hidden');
         }
 
-        async function loadUserSubscriptions() {
-            const list = document.getElementById('subscriptionCategoryList');
-            list.innerHTML = '<div class="text-center py-6 text-slate-500 text-xs">Đang tải danh mục...</div>';
+        async function loadSubscriptions() {
+            const list = document.getElementById('subCategoryList');
+            list.innerHTML = '<div class="text-center py-4 text-xs text-zinc-500 font-mono">Đang tải...</div>';
 
             try {
                 const subRes = await fetch(API.subscriptions, {
@@ -1105,22 +1257,21 @@
                 state.categories.forEach(cat => {
                     const isSubscribed = state.userSubscriptions.has(cat.id);
                     const item = document.createElement('div');
-                    item.className = 'flex items-center justify-between p-3 rounded-xl bg-slate-800/80 border border-slate-700/80 hover:border-violet-500/50 transition-all';
+                    item.className = 'flex items-center justify-between p-2.5 rounded-xl bg-zinc-900 border border-zinc-800';
                     item.innerHTML = `
                         <div>
-                            <span class="text-sm font-bold text-white">${escapeHtml(cat.name)}</span>
-                            <span class="text-xs text-slate-400 block">/chuyen-muc/${escapeHtml(cat.slug)}</span>
+                            <span class="text-xs font-semibold text-white">${escapeHtml(cat.name)}</span>
+                            <span class="text-[10px] font-mono text-zinc-500 block">/chuyen-muc/${escapeHtml(cat.slug)}</span>
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" ${isSubscribed ? 'checked' : ''} onchange="toggleSubscription(${cat.id}, this.checked)" class="sr-only peer">
-                            <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-violet-600"></div>
+                            <div class="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
                         </label>
                     `;
                     list.appendChild(item);
                 });
-
             } catch (err) {
-                list.innerHTML = `<div class="text-center text-rose-400 py-4 text-xs">${err.message}</div>`;
+                list.innerHTML = `<div class="text-center text-rose-400 py-3 text-xs">${err.message}</div>`;
             }
         }
 
@@ -1146,7 +1297,7 @@
                     showToast('Đã hủy theo dõi chuyên mục!', 'info');
                 }
             } catch (err) {
-                showToast('Lỗi khi cập nhật theo dõi', 'error');
+                showToast('Lỗi cập nhật theo dõi', 'error');
             }
         }
 
@@ -1158,9 +1309,7 @@
                 });
                 if (!res.ok) throw new Error('Không thể tạo bản tin xem trước');
                 const html = await res.text();
-
-                const iframe = document.getElementById('previewIframe');
-                iframe.srcdoc = html;
+                document.getElementById('previewIframe').srcdoc = html;
                 document.getElementById('previewModal').classList.remove('hidden');
             } catch (err) {
                 showToast(err.message, 'error');
@@ -1171,23 +1320,9 @@
             document.getElementById('previewModal').classList.add('hidden');
         }
 
-        async function sendEmailDigestNow() {
-            if (!state.user) return;
-            try {
-                showToast('Đang điều phối gửi email...', 'info');
-                const res = await fetch(`${API.digest}/send`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${state.user.token}` }
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Lỗi khi gửi email');
-                showToast(data.message || 'Đã gửi bản tin thành công tới email của bạn!', 'success');
-            } catch (err) {
-                showToast(err.message, 'error');
-            }
-        }
-
-        // ================= HELPERS =================
+        // ==========================================
+        // HELPERS
+        // ==========================================
         function formatRelativeTime(dateString) {
             if (!dateString) return 'Gần đây';
             const date = new Date(dateString);
@@ -1198,11 +1333,11 @@
             const diffDays = Math.floor(diffMs / 86400000);
 
             if (diffMinutes < 1) return 'Vừa xong';
-            if (diffMinutes < 60) return `${diffMinutes} phút trước`;
-            if (diffHours < 24) return `${diffHours} giờ trước`;
+            if (diffMinutes < 60) return `${diffMinutes}m trước`;
+            if (diffHours < 24) return `${diffHours}h trước`;
             if (diffDays === 1) return 'Hôm qua';
-            if (diffDays < 7) return `${diffDays} ngày trước`;
-            return date.toLocaleDateString('vi-VN');
+            if (diffDays < 7) return `${diffDays}d trước`;
+            return `${date.getDate()}/${date.getMonth() + 1}`;
         }
 
         function escapeHtml(str) {
@@ -1219,17 +1354,17 @@
             const toast = document.getElementById('toast');
             const content = document.getElementById('toastContent');
 
-            let bg = 'bg-slate-800 border border-slate-700';
+            let bg = 'bg-[#18181b] border-zinc-700 text-zinc-200';
             let icon = 'fa-solid fa-circle-info text-indigo-400';
             if (type === 'success') {
-                bg = 'bg-emerald-950 border border-emerald-800 text-emerald-200';
+                bg = 'bg-[#121c16] border-emerald-800/80 text-emerald-200';
                 icon = 'fa-solid fa-circle-check text-emerald-400';
             } else if (type === 'error') {
-                bg = 'bg-rose-950 border border-rose-800 text-rose-200';
+                bg = 'bg-[#201315] border-rose-800/80 text-rose-200';
                 icon = 'fa-solid fa-triangle-exclamation text-rose-400';
             }
 
-            content.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold ${bg}`;
+            content.className = `flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium border ${bg}`;
             content.innerHTML = `<i class="${icon}"></i> <span>${message}</span>`;
             toast.classList.remove('hidden');
 
