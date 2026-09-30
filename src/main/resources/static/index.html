@@ -20,13 +20,14 @@
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        linear: {
-                            base: '#09090b',
-                            surface: '#111115',
-                            card: '#16161c',
+                        brand: {
+                            base: '#0c0d0e',
+                            surface: '#141417',
+                            card: '#18191c',
                             border: 'rgba(255, 255, 255, 0.08)',
-                            accent: '#6366f1',
-                            accentLight: '#818cf8',
+                            vermilion: '#e11d48',
+                            cream: '#f5f3ef',
+                            amber: '#d97706',
                         }
                     }
                 }
@@ -46,8 +47,8 @@
             padding: 0;
             overflow: hidden !important; /* Cố định hoàn toàn giao diện bên ngoài, tuyệt đối không cuộn cả trang */
             overscroll-behavior: none;
-            background-color: #09090b;
-            color: #f4f4f5;
+            background-color: #0c0d0e;
+            color: #f5f3ef;
             letter-spacing: -0.015em;
         }
 
@@ -107,27 +108,27 @@
         }
     </style>
 </head>
-<body class="bg-[#09090b] text-zinc-100 h-screen w-screen overflow-hidden flex flex-col antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="bg-[#0c0d0e] text-[#f5f3ef] h-screen w-screen overflow-hidden flex flex-col antialiased selection:bg-rose-500/25 selection:text-rose-200">
 
     <!-- Top Navigation Header -->
-    <header class="h-14 shrink-0 border-b border-[rgba(255,255,255,0.07)] bg-[#09090b]/85 backdrop-blur-xl sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between gap-4">
+    <header class="h-14 shrink-0 border-b border-[rgba(255,255,255,0.07)] bg-[#0c0d0e]/90 backdrop-blur-xl sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between gap-4">
         
         <!-- Left: Logo & View Switcher -->
         <div class="flex items-center gap-4 sm:gap-6">
             <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetFilters()">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-sm shadow-indigo-900/40">
-                    <i class="fa-solid fa-bolt text-xs"></i>
+                <div class="w-8 h-8 rounded-lg bg-[#e11d48] flex items-center justify-center text-white shadow-sm shadow-rose-950/40 font-black text-sm tracking-tighter">
+                    <span>N</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="font-black text-sm sm:text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">VNNews Hub</span>
-                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">TikTok Algorithmic Feed</span>
+                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-white">VNNews Hub</span>
+                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-300 border border-rose-500/20">Micro-Article Feed</span>
                 </div>
             </div>
 
             <!-- Mode Switcher: Reels vs Grid -->
-            <div class="flex items-center bg-[#18181b] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
+            <div class="flex items-center bg-[#141417] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
                 <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ Micro-Content (TikTok)"
-                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all">
+                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-800 text-white shadow-xs transition-all">
                     <i class="fa-solid fa-mobile-screen text-[11px]"></i>
                     <span class="hidden sm:inline">Lướt Thẻ</span>
                 </button>
@@ -144,7 +145,7 @@
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
                 <input type="text" id="searchInput" placeholder="Tìm kiếm tin tức (Full-Text Search)..." 
-                       class="w-full pl-8 pr-16 py-1.5 bg-[#141418] border border-[rgba(255,255,255,0.08)] rounded-lg text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-indigo-500/80 focus:ring-1 focus:ring-indigo-500/40 transition-all"
+                       class="w-full pl-8 pr-16 py-1.5 bg-[#141417] border border-[rgba(255,255,255,0.08)] rounded-lg text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-rose-500/80 focus:ring-1 focus:ring-rose-500/30 transition-all"
                        onkeydown="if(event.key === 'Enter') triggerSearch()">
                 <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-500 bg-zinc-800/80 px-1 rounded border border-zinc-700/50">↵ Enter</span>
             </div>
@@ -156,7 +157,7 @@
             <!-- Reload Unread Deck Button with Recommendation Trigger -->
             <button onclick="handleReloadAction()" title="Làm mới hàng đợi (Học tức thì theo sở thích phiên hiện tại)" 
                     class="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
-                <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-indigo-400"></i>
+                <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-rose-400"></i>
                 <span class="hidden sm:inline">Làm Mới</span>
             </button>
 
@@ -177,7 +178,7 @@
             </div>
 
             <div id="authSection" class="hidden items-center gap-2">
-                <button onclick="openSubModal()" class="flex items-center gap-1 px-2.5 py-1.5 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hover:bg-indigo-500/20 rounded-lg text-xs font-medium transition-all">
+                <button onclick="openSubModal()" class="flex items-center gap-1 px-2.5 py-1.5 bg-rose-500/10 text-rose-300 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg text-xs font-medium transition-all">
                     <i class="fa-regular fa-envelope text-[11px]"></i>
                     <span class="hidden sm:inline">Bản tin</span>
                 </button>
@@ -201,11 +202,11 @@
                 <!-- Main Nav Tabs -->
                 <div class="space-y-1">
                     <button onclick="selectFeedFilter('for-you')" id="nav-for-you" 
-                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 transition-all">
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20 transition-all">
                         <span class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Dành Cho Bạn (70-20-10)
+                            <i class="fa-solid fa-layer-group text-rose-400"></i> Dành Cho Bạn (70-20-10)
                         </span>
-                        <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                        <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
                     </button>
 
                     <button onclick="selectFeedFilter('trending')" id="nav-trending" 
@@ -255,11 +256,11 @@
 
             </div>
 
-            <!-- TIKTOK RECOMMENDATION ENGINE: LIVE SIGNALS HUD -->
-            <div class="p-3.5 rounded-xl bg-zinc-900/80 border border-[rgba(255,255,255,0.08)] text-[11px] space-y-2 mt-4">
-                <div class="flex items-center justify-between font-mono text-[10px] text-indigo-400 font-bold">
+            <!-- EDITORIAL RECOMMENDATION ENGINE: LIVE SIGNALS HUD -->
+            <div class="p-3.5 rounded-xl bg-[#141417] border border-[rgba(255,255,255,0.08)] text-[11px] space-y-2 mt-4">
+                <div class="flex items-center justify-between font-mono text-[10px] text-rose-400 font-bold">
                     <span class="flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> THUẬT TOÁN TIKTOK
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping"></span> ĐIỀU PHỐI BẢN TIN
                     </span>
                     <span id="coldStartBadge" class="text-[9px] bg-zinc-800 px-1 rounded text-zinc-400">Cold-Start</span>
                 </div>
@@ -272,9 +273,9 @@
                     </div>
                     <!-- Interest score distribution bar -->
                     <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1.5 flex" id="interestBar">
-                        <div class="bg-indigo-500 h-full w-1/4"></div>
                         <div class="bg-rose-500 h-full w-1/4"></div>
                         <div class="bg-amber-500 h-full w-1/4"></div>
+                        <div class="bg-zinc-600 h-full w-1/4"></div>
                         <div class="bg-emerald-500 h-full w-1/4"></div>
                     </div>
                 </div>
@@ -296,7 +297,7 @@
         <!-- ========================================== -->
         <!-- MAIN STAGE: REELS VIEW & GRID VIEW -->
         <!-- ========================================== -->
-        <main class="flex-1 h-full flex flex-col items-center justify-center relative overflow-hidden bg-[#09090b]">
+        <main class="flex-1 h-full flex flex-col items-center justify-center relative overflow-hidden bg-[#0c0d0e]">
 
             <!-- VIEW 1: TIKTOK REELS SWIPE (ONE-CARD-PER-SCREEN) -->
             <section id="reelsViewSection" class="w-full h-full flex items-center justify-center p-2 sm:p-4 relative overflow-hidden select-none">
@@ -306,7 +307,7 @@
                     
                     <!-- Floating Position & Pre-fetch Status Badge -->
                     <div class="absolute top-3.5 right-3.5 z-30 flex items-center gap-2 pointer-events-none">
-                        <div id="feedLoadingMoreBadge" class="hidden bg-indigo-600/90 backdrop-blur-md border border-indigo-400/40 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium text-white shadow-xl items-center gap-1.5 animate-pulse">
+                        <div id="feedLoadingMoreBadge" class="hidden bg-rose-600/90 backdrop-blur-md border border-rose-400/40 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium text-white shadow-xl items-center gap-1.5 animate-pulse">
                             <i class="fa-solid fa-spinner fa-spin text-[10px]"></i> <span>Đang nạp thêm tin...</span>
                         </div>
                         <div id="feedProgressBadge" class="bg-black/75 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full text-[11px] font-mono font-bold text-zinc-200 shadow-xl flex items-center gap-1.5">
@@ -316,9 +317,9 @@
                     </div>
 
                     <!-- The Snap Scroll Feed -->
-                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-2xl sm:rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[#121216] shadow-2xl relative">
+                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-2xl sm:rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[#141417] shadow-2xl relative">
                         <!-- Loading State Card -->
-                        <div class="tiktok-card w-full h-full flex flex-col justify-end p-6 relative bg-zinc-900 animate-pulse">
+                        <div class="tiktok-card w-full h-full flex flex-col justify-end p-6 relative bg-[#141417] animate-pulse">
                             <div class="absolute inset-0 bg-zinc-800/40"></div>
                             <div class="relative z-10 space-y-3">
                                 <div class="h-4 bg-zinc-700 rounded w-1/3"></div>
@@ -377,7 +378,7 @@
 
             <!-- Tabs -->
             <div class="flex border-b border-zinc-800 mb-5">
-                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-indigo-500">
+                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-rose-500">
                     Đăng nhập
                 </button>
                 <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300">
@@ -389,20 +390,20 @@
             <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
                 <div id="fullNameGroup" class="hidden">
                     <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Họ và tên</label>
-                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-rose-500">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Địa chỉ Email</label>
-                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
+                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-rose-500">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Mật khẩu</label>
-                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-indigo-500">
+                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-rose-500">
                 </div>
 
                 <div id="authAlert" class="hidden p-2.5 rounded-lg text-xs font-medium"></div>
 
-                <button type="submit" id="authSubmitBtn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs shadow-md transition-all">
+                <button type="submit" id="authSubmitBtn" class="w-full py-2 bg-[#e11d48] hover:bg-rose-600 text-white font-semibold rounded-lg text-xs shadow-md shadow-rose-950/40 transition-all">
                     Đăng nhập
                 </button>
             </form>
@@ -417,7 +418,7 @@
             </button>
 
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-9 h-9 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-sm border border-indigo-500/20">
+                <div class="w-9 h-9 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center text-sm border border-rose-500/20">
                     <i class="fa-regular fa-envelope"></i>
                 </div>
                 <div>
@@ -853,9 +854,9 @@
                 if (!endLoader && state.reelsDeck.length > 0) {
                     endLoader = document.createElement('div');
                     endLoader.id = 'feedEndLoaderCard';
-                    endLoader.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#121216] select-none';
+                    endLoader.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417] select-none';
                     endLoader.innerHTML = `
-                        <div class="w-14 h-14 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl mb-4 animate-pulse">
+                        <div class="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-xl mb-4 animate-pulse">
                             <i class="fa-solid fa-bolt-lightning"></i>
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1">Đang nạp luồng tin tiếp theo...</h3>
@@ -869,7 +870,7 @@
                 if (!endCompleted && state.reelsDeck.length > 0) {
                     endCompleted = document.createElement('div');
                     endCompleted.id = 'feedEndCompletedCard';
-                    endCompleted.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#121216] select-none';
+                    endCompleted.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417] select-none';
                     endCompleted.innerHTML = `
                         <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-4 shadow-xl">
                             <i class="fa-solid fa-check-double"></i>
@@ -878,7 +879,7 @@
                         <h3 class="text-base font-bold text-white mb-1">Bạn đã theo kịp toàn bộ diễn biến!</h3>
                         <p class="text-xs text-zinc-400 max-w-xs leading-relaxed mb-6">Hệ thống tổng hợp tất cả các nguồn tin chính thống hôm nay. Bạn có thể quét lại tin mới hoặc đọc lại từ đầu.</p>
                         <div class="flex flex-wrap gap-2.5 justify-center">
-                            <button onclick="handleReloadAction()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition-all">
+                            <button onclick="handleReloadAction()" class="px-4 py-2 rounded-xl bg-[#e11d48] hover:bg-rose-600 text-white text-xs font-semibold shadow-lg shadow-rose-950/40 transition-all">
                                 <i class="fa-solid fa-rotate-right mr-1.5"></i> Quét tin mới nhất
                             </button>
                             <button onclick="resetReadHistory()" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold border border-zinc-700 transition-all">
@@ -912,14 +913,14 @@
 
             if (state.reelsDeck.length === 0) {
                 feed.innerHTML = `
-                    <div class="tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#121216]">
+                    <div class="tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417]">
                         <div class="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-xl mb-3 border border-zinc-700/60">
-                            <i class="fa-solid fa-check-double text-indigo-400"></i>
+                            <i class="fa-solid fa-check-double text-zinc-400"></i>
                         </div>
                         <h3 class="text-base font-bold text-white">Chưa có bài viết phù hợp</h3>
                         <p class="text-xs text-zinc-400 mt-1 max-w-xs">Hệ thống đang liên tục quét thêm tin tức. Bấm làm mới để tải lại.</p>
                         <div class="mt-4 flex gap-2">
-                            <button onclick="handleReloadAction()" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">
+                            <button onclick="handleReloadAction()" class="px-3.5 py-1.5 rounded-lg bg-[#e11d48] hover:bg-rose-600 text-white text-xs font-semibold shadow-md shadow-rose-950/40">
                                 Làm mới
                             </button>
                         </div>
@@ -960,11 +961,11 @@
             // Slot badge indicator (70 - 20 - 10)
             let slotBadgeHtml = '';
             if (article.slotType === 'breaking') {
-                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/30 text-rose-300 border border-rose-400/30 flex items-center gap-1"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng (10%)</span>`;
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 flex items-center gap-1"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng (10%)</span>`;
             } else if (article.slotType === 'exploration') {
                 slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center gap-1"><i class="fa-solid fa-compass text-amber-400"></i> Khám Phá (20%)</span>`;
             } else {
-                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 flex items-center gap-1"><i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> Sở Thích (70%)</span>`;
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-zinc-200 border border-white/15 flex items-center gap-1"><i class="fa-solid fa-sliders text-zinc-300"></i> Sở Thích (70%)</span>`;
             }
 
             const baseLikes = 120 + ((article.id * 37) % 890);
@@ -972,7 +973,7 @@
             card.innerHTML = `
                 <!-- Reading Dwell Time Progress Bar on Top -->
                 <div class="absolute top-0 left-0 right-0 h-1 bg-zinc-900 z-30 overflow-hidden">
-                    <div id="readProgress-${article.id}" class="read-progress-bar h-full bg-gradient-to-r from-indigo-500 to-rose-500 w-0"></div>
+                    <div id="readProgress-${article.id}" class="read-progress-bar h-full bg-[#e11d48] w-0"></div>
                 </div>
 
                 <!-- Background Media with Dark Cinematic Gradient Overlay -->
@@ -1018,7 +1019,7 @@
                         <!-- Micro-Article Summary Box (Linear Card) -->
                         <div class="p-3 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-zinc-200 text-xs leading-relaxed space-y-1 shadow-2xl">
                             <p class="line-clamp-3">
-                                <span class="text-indigo-400 font-bold mr-1">⚡ Tóm tắt:</span>
+                                <span class="text-rose-400 font-bold mr-1">⚡ Tóm tắt:</span>
                                 ${escapeHtml(article.summary || 'Nhấn nút bên dưới để đọc bài viết gốc đầy đủ trên trang báo.')}
                             </p>
                         </div>
@@ -1448,7 +1449,7 @@
                 loadMoreBtnContainer.className = 'text-center pt-6 pb-12';
                 loadMoreBtnContainer.innerHTML = `
                     <button onclick="loadMoreArticles()" class="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold text-xs shadow-lg transition-all inline-flex items-center gap-2">
-                        <i class="fa-solid fa-arrow-down text-indigo-400"></i>
+                        <i class="fa-solid fa-arrow-down text-zinc-400"></i>
                         <span>Tải thêm tin tức cũ hơn (Trang ${state.currentPage + 2})</span>
                     </button>
                 `;
@@ -1483,7 +1484,7 @@
                                 <span>${timeAgo}</span>
                             </div>
 
-                            <h3 class="text-sm font-bold text-zinc-100 group-hover:text-indigo-400 transition-colors line-clamp-2 leading-snug">
+                            <h3 class="text-sm font-bold text-zinc-100 group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
                                 <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
                             </h3>
 
@@ -1542,7 +1543,7 @@
                 const btn = document.getElementById(`nav-${f}`);
                 if (btn) {
                     btn.className = f === filter 
-                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 transition-all'
+                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20 transition-all'
                         : 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
                 }
             });
@@ -1667,12 +1668,12 @@
             document.getElementById('authAlert').classList.add('hidden');
 
             if (tab === 'login') {
-                loginTab.className = 'flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-indigo-500';
+                loginTab.className = 'flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-rose-500';
                 regTab.className = 'flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300';
                 nameGroup.classList.add('hidden');
                 submitBtn.textContent = 'Đăng nhập';
             } else {
-                regTab.className = 'flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-indigo-500';
+                regTab.className = 'flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-rose-500';
                 loginTab.className = 'flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300';
                 nameGroup.classList.remove('hidden');
                 submitBtn.textContent = 'Tạo tài khoản';
@@ -1759,7 +1760,7 @@
                         </div>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" ${isSubscribed ? 'checked' : ''} onchange="toggleSubscription(${cat.id}, this.checked)" class="sr-only peer">
-                            <div class="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                            <div class="w-9 h-5 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-zinc-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#e11d48]"></div>
                         </label>
                     `;
                     list.appendChild(item);
@@ -1849,7 +1850,7 @@
             const content = document.getElementById('toastContent');
 
             let bg = 'bg-[#18181b] border-zinc-700 text-zinc-200';
-            let icon = 'fa-solid fa-circle-info text-indigo-400';
+            let icon = 'fa-solid fa-circle-info text-zinc-300';
             if (type === 'success') {
                 bg = 'bg-[#121c16] border-emerald-800/80 text-emerald-200';
                 icon = 'fa-solid fa-circle-check text-emerald-400';
