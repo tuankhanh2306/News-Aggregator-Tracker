@@ -28,6 +28,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findByPublishedAtAfter(java.time.LocalDateTime since);
 
+    @EntityGraph(attributePaths = {"source", "category"})
+    List<Article> findByPublishedAtBetween(java.time.LocalDateTime start, java.time.LocalDateTime end);
+
     List<Article> findTop500ByOrderByPublishedAtDesc();
 
     @EntityGraph(attributePaths = {"source", "category"})

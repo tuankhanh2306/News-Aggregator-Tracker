@@ -1,6 +1,8 @@
 package com.khanh.newsaggregator.article;
 
 import com.khanh.newsaggregator.article.dto.ArticleResponse;
+import com.khanh.newsaggregator.article.dto.StoryTimelineResponse;
+import com.khanh.newsaggregator.article.dto.TimelineEventResponse;
 import com.khanh.newsaggregator.common.dto.PageResponse;
 import com.khanh.newsaggregator.common.exception.GlobalExceptionHandler;
 import com.khanh.newsaggregator.common.exception.ResourceNotFoundException;
@@ -33,6 +35,9 @@ class ArticleControllerTest {
 
     @MockitoBean
     private ArticleService articleService;
+
+    @MockitoBean
+    private StoryTimelineService storyTimelineService;
 
     @MockitoBean
     private com.khanh.newsaggregator.auth.JwtTokenProvider jwtTokenProvider;
@@ -112,5 +117,72 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.path").value("/api/articles/not-a-number"));
+    }
+
+    @Test
+    void getArticleTimeline_whenFound_shouldReturnApiResponseWithTimeline() throws Exception {
+        TimelineEventResponse event1 = TimelineEventResponse.builder()
+                .articleId(101L)
+                .title("Giá vàng chạm đỉnh 91 triệu")
+                .url("https://vnexpress.net/gia-vang-101")
+                .sourceName("VnExpress")
+                .publishedAt(LocalDateTime.of(2026, 10, 1, 8, 30))
+                .phase("GENESIS")
+                .phaseLabel("Khởi nguồn")
+                .build();
+
+        TimelineEventResponse event2 = TimelineEventResponse.builder()
+                .articleId(102L)
+                .title("Ngân hàng can thiệp thị trường vàng")
+                .url("https://tuoitre.vn/ngan-hang-102")
+                .sourceName("Tuổi Trẻ")
+                .publishedAt(LocalDateTime.of(2026, 10, 2, 14, 0))
+                .phase("PROGRESSION")
+                .phaseLabel("Diễn biến")
+                .build();
+
+        TimelineEventResponse event3 = TimelineEventResponse.builder()
+                .articleId(103L)
+                .title("Giá vàng hạ nhiệt về 87 triệu")
+                .url("https://dantri.com.vn/gia-vang-103")
+                .sourceName("Dân Trí")
+                .publishedAt(LocalDateTime.of(2026, 10, 3, 9, 0))
+                .phase("LATEST")
+                .phaseLabel("Mới nhất")
+                .build();
+
+        StoryTimelineResponse timelineResponse = StoryTimelineResponse.builder()
+                .articleId(103L)
+                .topicTitle("Biến động thị trường vàng miếng SJC")
+                .events(List.of(event1, event2, event3))
+                .build();
+
+        when(storyTimelineService.getTimelineForArticle(103L)).thenReturn(timelineResponse);
+
+        mockMvc.perform(get("/api/articles/103/timeline")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.articleId").value(103))
+                .andExpect(jsonPath("$.data.topicTitle").value("Biến động thị trường vàng miếng SJC"))
+                .andExpect(jsonPath("$.data.events.length()").value(3))
+                .andExpect(jsonPath("$.data.events[0].phase").value("GENESIS"))
+                .andExpect(jsonPath("$.data.events[0].phaseLabel").value("Khởi nguồn"))
+                .andExpect(jsonPath("$.data.events[1].phase").value("PROGRESSION"))
+                .andExpect(jsonPath("$.data.events[1].phaseLabel").value("Diễn biến"))
+                .andExpect(jsonPath("$.data.events[2].phase").value("LATEST"))
+                .andExpect(jsonPath("$.data.events[2].phaseLabel").value("Mới nhất"));
+    }
+
+    @Test
+    void getArticleTimeline_whenNotFound_shouldReturn404() throws Exception {
+        when(storyTimelineService.getTimelineForArticle(999L))
+                .thenThrow(new ResourceNotFoundException("Article", "id", 999L));
+
+        mockMvc.perform(get("/api/articles/999/timeline")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Not Found"));
     }
 }

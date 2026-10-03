@@ -37,6 +37,90 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* =========================================================
+           1. WCAG AAA HIGH CONTRAST DESIGN TOKENS (DARK & LIGHT)
+           ========================================================= */
+        :root {
+            color-scheme: dark;
+
+            /* Surface & Canvas (Dark Obsidian) */
+            --bg-canvas: #090a0d;
+            --bg-surface: #12141a;
+            --bg-surface-elevated: #1a1d26;
+            --bg-surface-glass: rgba(18, 20, 26, 0.88);
+            --bg-modal: #12141a;
+            --bg-input: #15171f;
+
+            /* High Contrast Borders (>= 3.0:1 UI Boundaries) */
+            --border-subtle: rgba(255, 255, 255, 0.16);
+            --border-strong: rgba(255, 255, 255, 0.32);
+            --border-focus: #f43f5e;
+
+            /* Typography (WCAG AAA >= 7.0:1) */
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-muted: #cbd5e1;
+            --text-caption: #cbd5e1;
+            --text-inverted: #090d16;
+
+            /* Editorial Accents */
+            --accent-editorial: #f43f5e;
+            --accent-editorial-hover: #fb7185;
+            --accent-serendipity: #fbbf24;
+            --accent-serendipity-bg: rgba(251, 191, 36, 0.18);
+            --accent-live: #10b981;
+
+            /* Elevation & Effects */
+            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
+            --shadow-pop: 0 20px 35px -5px rgba(0, 0, 0, 0.7);
+            --bezel-ring: 0 0 0 1px rgba(255, 255, 255, 0.10);
+            --glow-achievement: 0 0 28px rgba(244, 63, 94, 0.45);
+            --scrollbar-thumb: #2d3139;
+            --scrollbar-hover: #454a54;
+        }
+
+        html.light {
+            color-scheme: light;
+
+            /* Surface & Canvas (Pristine Editorial Paper) */
+            --bg-canvas: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-elevated: #f1f5f9;
+            --bg-surface-glass: rgba(255, 255, 255, 0.94);
+            --bg-modal: #ffffff;
+            --bg-input: #f1f5f9;
+
+            /* High Contrast Borders (>= 3.0:1 on #ffffff) */
+            --border-subtle: #94a3b8;
+            --border-strong: #475569;
+            --border-focus: #be123c;
+
+            /* Typography (WCAG AAA >= 7.0:1 on #ffffff) */
+            --text-primary: #090d16;
+            --text-secondary: #1e293b;
+            --text-muted: #334155;
+            --text-caption: #475569;
+            --text-inverted: #ffffff;
+
+            /* Editorial Accents */
+            --accent-editorial: #be123c;
+            --accent-editorial-hover: #9f1239;
+            --accent-serendipity: #b45309;
+            --accent-serendipity-bg: rgba(180, 83, 9, 0.14);
+            --accent-live: #047857;
+
+            /* Elevation & Effects */
+            --shadow-card: 0 4px 18px -2px rgba(15, 23, 42, 0.08);
+            --shadow-pop: 0 20px 35px -5px rgba(15, 23, 42, 0.16);
+            --bezel-ring: 0 0 0 1px rgba(15, 23, 42, 0.14);
+            --glow-achievement: 0 0 28px rgba(190, 18, 60, 0.35);
+            --scrollbar-thumb: #cbd5e1;
+            --scrollbar-hover: #94a3b8;
+        }
+
+        /* =========================================================
+           2. BASE LAYOUT & HARDWARE-ACCELERATED PERFORMANCE
+           ========================================================= */
         html, body {
             height: 100%;
             height: 100vh;
@@ -45,40 +129,46 @@
             width: 100vw;
             margin: 0;
             padding: 0;
-            overflow: hidden !important; /* Cố định hoàn toàn giao diện bên ngoài, tuyệt đối không cuộn cả trang */
+            overflow: hidden !important;
             overscroll-behavior: none;
-            background-color: #0c0d0e;
-            color: #f5f3ef;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
             letter-spacing: -0.015em;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Snap Scroll TikTok Deck */
+        /* Snap Scroll TikTok Deck with Compositor Optimization */
         .tiktok-feed {
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             overscroll-behavior-y: contain;
+            transform: translate3d(0, 0, 0);
+            will-change: scroll-position;
         }
+
         .tiktok-card {
             scroll-snap-align: center;
             scroll-snap-stop: always;
+            transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
+            transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
-        /* Subtle scrollbar */
+        /* Fast Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: #27272a;
+            background: var(--scrollbar-thumb);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
+            background: var(--scrollbar-hover);
         }
 
         .line-clamp-2 {
@@ -94,6 +184,92 @@
             overflow: hidden;
         }
 
+        /* =========================================================
+           3. GPU-ACCELERATED READING PROGRESS & ACHIEVEMENT HORIZON
+           ========================================================= */
+        .read-progress-bar {
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: left center;
+            will-change: transform;
+            background-color: var(--accent-editorial);
+        }
+
+        .achievement-glow {
+            animation: achievementGlowPulse 1.8s ease-in-out infinite alternate;
+            box-shadow: var(--glow-achievement);
+        }
+
+        @keyframes achievementGlowPulse {
+            0% {
+                box-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
+                border-color: rgba(244, 63, 94, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 28px rgba(244, 63, 94, 0.8);
+                border-color: rgba(244, 63, 94, 0.95);
+            }
+        }
+
+        /* =========================================================
+           4. KINETIC DOUBLE-TAP LIKE WITH BURSTING PARTICLES
+           ========================================================= */
+        .kinetic-heart-wrapper {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%, -50%);
+        }
+
+        .kinetic-heart-icon {
+            font-size: 4.5rem;
+            color: #f43f5e;
+            filter: drop-shadow(0 4px 14px rgba(244, 63, 94, 0.6));
+            animation: heartBurst 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes heartBurst {
+            0% {
+                opacity: 0;
+                transform: scale(0.2) rotate(-15deg);
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1.35) rotate(4deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.5) translateY(-25px);
+            }
+        }
+
+        .kinetic-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFly 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes particleFly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--dx), var(--dy)) scale(0.2);
+            }
+        }
+
         @keyframes heartPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.3); }
@@ -103,339 +279,167 @@
             animation: heartPulse 0.35s ease-in-out;
         }
 
-        /* Reading Progress Bar Animation */
-        .read-progress-bar {
-            transition: width 0.1s linear;
+        /* =========================================================
+           5. EDITORIAL BENTO GRID STYLING & ASYMMETRIC RHYTHM
+           ========================================================= */
+        .bento-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.22s ease,
+                        box-shadow 0.22s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-card:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-pop);
+        }
+
+        .bento-lead {
+            border-left: 3px solid var(--accent-editorial);
+        }
+
+        .bento-serendipity {
+            border: 1px solid var(--accent-serendipity);
+            background: linear-gradient(145deg, var(--bg-surface), var(--accent-serendipity-bg));
+        }
+
+        /* Summary box styling */
+        .summary-box {
+            background-color: var(--bg-surface-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+        }
+        .summary-text {
+            color: var(--text-secondary);
         }
 
         /* =========================================================
-           HIGH CONTRAST THEME SYSTEM (DARK & LIGHT MODE)
+           6. COMPONENT THEMING (ELIMINATING !important OVERRIDES)
            ========================================================= */
-        /* Dark mode summary box */
-        .summary-box {
-            background-color: rgba(10, 11, 14, 0.85);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #f5f3ef;
-        }
-        .summary-text {
-            color: #f5f3ef;
+        header {
+            background-color: var(--bg-surface-glass);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        /* Light Mode High Contrast Overrides */
-        html.light {
-            color-scheme: light;
-        }
-        html.light,
-        html.light body {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-        }
-        html.light ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-        }
-        html.light ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        aside {
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-subtle);
         }
 
-        /* Header in Light Mode */
-        html.light header {
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            border-bottom-color: #e2e8f0 !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        #searchInput {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
         }
-        html.light header span.text-white,
-        html.light header .text-white {
-            color: #0f172a !important;
-        }
-        html.light header .text-zinc-200 {
-            color: #1e293b !important;
-        }
-        html.light header .text-zinc-300 {
-            color: #334155 !important;
-        }
-        html.light header .text-zinc-400 {
-            color: #64748b !important;
-        }
-        html.light header .text-zinc-500 {
-            color: #94a3b8 !important;
-        }
-        html.light #viewModeToggleContainer {
-            background-color: #f1f5f9 !important;
-            border-color: #e2e8f0 !important;
-        }
-        html.light #searchInput {
-            background-color: #f1f5f9 !important;
-            border-color: #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-        html.light #searchInput::placeholder {
-            color: #94a3b8 !important;
-        }
-        html.light #themeToggleBtn {
-            background-color: #f1f5f9 !important;
-            border-color: #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-        html.light #themeToggleBtn:hover {
-            background-color: #e2e8f0 !important;
-        }
-        html.light button[onclick="handleReloadAction()"] {
-            background-color: #f1f5f9 !important;
-            border-color: #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-        html.light a[title="Tài liệu Swagger API"] {
-            border-color: #cbd5e1 !important;
-            color: #475569 !important;
-        }
-        html.light a[title="Tài liệu Swagger API"]:hover {
-            color: #0f172a !important;
+        #searchInput::placeholder {
+            color: var(--text-caption);
         }
 
-        /* Sidebar in Light Mode */
-        html.light aside {
-            background-color: #ffffff !important;
-            border-right-color: #e2e8f0 !important;
-        }
-        html.light aside .text-zinc-500 {
-            color: #64748b !important;
-        }
-        html.light aside button {
-            color: #475569;
-        }
-        html.light aside button:hover {
-            color: #0f172a !important;
-            background-color: #f1f5f9 !important;
-        }
-        html.light aside button.bg-rose-500\/10 {
-            background-color: #fff1f2 !important;
-            color: #e11d48 !important;
-            border-color: #fecdd3 !important;
-        }
-        html.light aside button.bg-zinc-800\/60,
-        html.light aside button.bg-zinc-800 {
-            background-color: #f1f5f9 !important;
-            color: #0f172a !important;
-        }
-        html.light #likedCountBadge,
-        html.light #readCountBadge {
-            background-color: #e2e8f0 !important;
-            color: #475569 !important;
-        }
-        html.light #sidebarTrendingCloud button {
-            background-color: #f1f5f9 !important;
-            color: #334155 !important;
-            border-color: #e2e8f0 !important;
-        }
-        html.light #sidebarTrendingCloud button:hover {
-            background-color: #e2e8f0 !important;
-            color: #0f172a !important;
+        #themeToggleBtn,
+        #viewModeToggleContainer,
+        button[onclick="handleReloadAction()"] {
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
         }
 
-        /* Main Area & TikTok View in Light Mode */
-        html.light main {
-            background-color: #f8fafc !important;
-        }
-        html.light #tiktokFeed {
-            background-color: #f8fafc !important;
-            border-color: #cbd5e1 !important;
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0,0,0,0.15) !important;
-        }
-        html.light #feedProgressBadge {
-            background-color: rgba(255, 255, 255, 0.92) !important;
-            border-color: #cbd5e1 !important;
-            color: #0f172a !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-        }
-        html.light .tiktok-nav-arrow {
-            background-color: #ffffff !important;
-            border-color: #cbd5e1 !important;
-            color: #1e293b !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-        }
-        html.light .tiktok-nav-arrow:hover {
-            background-color: #f1f5f9 !important;
-            color: #0f172a !important;
+        /* Modal styling */
+        #authModal > div,
+        #subModal > div,
+        #previewModal > div,
+        #timelineModal > div {
+            background-color: var(--bg-modal);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-pop);
         }
 
-        /* Summary Box in Light Mode - High Contrast White Glass Card with Deep Ink Text */
-        html.light .summary-box {
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            border: 1px solid rgba(0, 0, 0, 0.12) !important;
-            color: #0f172a !important;
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.25) !important;
+        #authModal input,
+        #subModal input {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
         }
-        html.light .summary-text {
-            color: #0f172a !important;
-            font-weight: 550 !important;
+        #authModal input::placeholder {
+            color: var(--text-caption);
         }
 
-        /* Bento Grid in Light Mode */
-        html.light #gridViewSection {
-            background-color: #f8fafc !important;
-        }
-        html.light .grid-card {
-            background-color: #ffffff !important;
-            border-color: #e2e8f0 !important;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
-        }
-        html.light .grid-card:hover {
-            border-color: #e11d48 !important;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
-        }
-        html.light .grid-card-title,
-        html.light .grid-card-title a {
-            color: #0f172a !important;
-        }
-        html.light .grid-card-title a:hover {
-            color: #e11d48 !important;
-        }
-        html.light .grid-card-desc {
-            color: #475569 !important;
-        }
-        html.light .grid-card-footer {
-            border-top-color: #f1f5f9 !important;
-        }
-        html.light .grid-card-footer a {
-            color: #334155 !important;
-        }
-        html.light .grid-card-footer a:hover {
-            color: #0f172a !important;
-        }
-        html.light .date-badge {
-            background-color: #0f172a !important;
-            color: #ffffff !important;
-            border-color: #0f172a !important;
-        }
-        html.light .date-divider {
-            background-color: #e2e8f0 !important;
-        }
-        html.light #gridViewSection span.text-zinc-500 {
-            color: #64748b !important;
-        }
-        html.light #loadMoreBtn {
-            background-color: #ffffff !important;
-            color: #1e293b !important;
-            border-color: #cbd5e1 !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
-        }
-        html.light #loadMoreBtn:hover {
-            background-color: #f8fafc !important;
+        #authModal label,
+        #subModal label {
+            color: var(--text-muted);
         }
 
-        /* Modals in Light Mode */
-        html.light #authModal > div,
-        html.light #subModal > div,
-        html.light #previewModal > div {
-            background-color: #ffffff !important;
-            border-color: #e2e8f0 !important;
-            color: #0f172a !important;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-        }
-        html.light #authModal input,
-        html.light #subModal input {
-            background-color: #f8fafc !important;
-            border-color: #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-        html.light #authModal input::placeholder {
-            color: #94a3b8 !important;
-        }
-        html.light #authModal label,
-        html.light #subModal label {
-            color: #334155 !important;
-        }
-        html.light #subCategoryList > div {
-            background-color: #f8fafc !important;
-            border-color: #e2e8f0 !important;
-        }
-        html.light #subCategoryList span.text-white {
-            color: #0f172a !important;
-        }
-        html.light #subCategoryList span.text-zinc-500 {
-            color: #64748b !important;
-        }
-        html.light #previewModal .bg-zinc-900 {
-            background-color: #f1f5f9 !important;
-            border-bottom-color: #e2e8f0 !important;
-        }
-        html.light #previewModal span.text-zinc-300 {
-            color: #0f172a !important;
-        }
-        html.light #authModal .border-zinc-800,
-        html.light #subModal .border-zinc-800 {
-            border-color: #e2e8f0 !important;
-        }
-        html.light #authTabLogin.text-white {
-            color: #0f172a !important;
-        }
-        html.light #authTabRegister.text-white {
-            color: #0f172a !important;
+        #subCategoryList > div {
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
         }
 
-        /* Toast in Light Mode */
-        html.light #toastContent {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-            border-color: #cbd5e1 !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+        /* View Crossfade */
+        .view-section-transition {
+            transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
         }
 
-        /* End Cards in Light Mode */
-        html.light #feedEndCompletedCard,
-        html.light #feedEndLoaderCard {
-            background-color: #f8fafc !important;
+        /* Story Arc Drawer Slide-Up Animation */
+        .drawer-slide-container {
+            animation: drawerSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        html.light #feedEndCompletedCard h3,
-        html.light #feedEndLoaderCard h3 {
-            color: #0f172a !important;
-        }
-        html.light #feedEndCompletedCard p,
-        html.light #feedEndLoaderCard p {
-            color: #475569 !important;
-        }
-        html.light #feedEndCompletedCard button.bg-zinc-800 {
-            background-color: #ffffff !important;
-            color: #1e293b !important;
-            border-color: #cbd5e1 !important;
+
+        @keyframes drawerSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
     </style>
 </head>
-<body class="bg-[#0c0d0e] text-[#f5f3ef] h-screen w-screen overflow-hidden flex flex-col antialiased selection:bg-rose-500/25 selection:text-rose-200">
+<body class="bg-[#0c0d0e] text-[#f5f3ef] h-[100dvh] w-screen overflow-hidden flex flex-col antialiased selection:bg-rose-500/25 selection:text-rose-200">
 
     <!-- Top Navigation Header -->
-    <header class="h-14 shrink-0 border-b border-[rgba(255,255,255,0.07)] bg-[#0c0d0e]/90 backdrop-blur-xl sticky top-0 z-40 flex items-center px-4 sm:px-6 justify-between gap-4">
+    <header class="h-14 shrink-0 border-b border-[rgba(255,255,255,0.07)] bg-[#0c0d0e]/90 backdrop-blur-xl sticky top-0 z-40 flex items-center px-3 sm:px-6 justify-between gap-2 sm:gap-4">
         
         <!-- Left: Logo & View Switcher -->
-        <div class="flex items-center gap-4 sm:gap-6">
-            <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetFilters()">
+        <div class="flex items-center gap-3 sm:gap-6 min-w-0">
+            <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="resetFilters()">
                 <div class="w-8 h-8 rounded-lg bg-[#e11d48] flex items-center justify-center text-white shadow-sm shadow-rose-950/40 font-black text-sm tracking-tighter">
                     <span>N</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-white">VNNews Hub</span>
-                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-300 border border-rose-500/20">Micro-Article Feed</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">VNNews Hub</span>
+                    <span class="hidden md:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-300 border border-rose-500/20">Micro-Article Feed</span>
                 </div>
             </div>
 
-            <!-- Mode Switcher: Reels vs Grid -->
-            <div id="viewModeToggleContainer" class="flex items-center bg-[#141417] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
+            <!-- Mode Switcher: Reels vs Grid (Hidden on mobile, accessible via Bottom Nav) -->
+            <div id="viewModeToggleContainer" class="hidden sm:flex items-center bg-[#141417] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
                 <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ Micro-Content (TikTok)"
                         class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-800 text-white shadow-xs transition-all">
                     <i class="fa-solid fa-mobile-screen text-[11px]"></i>
-                    <span class="hidden sm:inline">Lướt Thẻ</span>
+                    <span>Lướt Thẻ</span>
                 </button>
                 <button id="viewGridBtn" onclick="switchViewMode('grid')" title="Chế độ Xem Lưới Theo Ngày"
                         class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all">
                     <i class="fa-solid fa-table-cells text-[11px]"></i>
-                    <span class="hidden sm:inline">Dạng Lưới</span>
+                    <span>Dạng Lưới</span>
                 </button>
             </div>
         </div>
 
-        <!-- Center: Search Box -->
+        <!-- Center: Search Box (Desktop) -->
         <div class="flex-1 max-w-md hidden md:block">
             <div class="relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
@@ -447,18 +451,24 @@
         </div>
 
         <!-- Right: Actions & User -->
-        <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+
+            <!-- Mobile Quick Search Button -->
+            <button onclick="openMobileCategoryDrawer(true)" title="Tìm kiếm tin nhanh" 
+                    class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg border border-[rgba(255,255,255,0.1)] bg-zinc-800/90 text-zinc-300 hover:text-white text-xs transition-all">
+                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            </button>
 
             <!-- Theme Mode Toggle (Trắng / Đen) -->
             <button id="themeToggleBtn" onclick="toggleThemeMode()" title="Chuyển chế độ Sáng / Tối (Trắng / Đen)" 
-                    class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.1)] bg-zinc-800/90 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold transition-all">
+                    class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.1)] bg-zinc-800/90 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold transition-all">
                 <i id="themeToggleIcon" class="fa-solid fa-sun text-amber-400 text-xs"></i>
                 <span id="themeToggleText" class="hidden sm:inline text-[11px]">Nền sáng</span>
             </button>
             
             <!-- Reload Unread Deck Button -->
             <button onclick="handleReloadAction()" title="Làm mới bản tin" 
-                    class="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
+                    class="group flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
                 <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-rose-400"></i>
                 <span class="hidden sm:inline">Làm Mới</span>
             </button>
@@ -493,7 +503,7 @@
     </header>
 
     <!-- App Body: Sidebar + Main Content Layout -->
-    <div class="flex-1 h-[calc(100vh-56px)] h-[calc(100dvh-56px)] flex max-w-[1600px] w-full mx-auto relative overflow-hidden">
+    <div class="flex-1 h-[calc(100dvh-56px-56px)] md:h-[calc(100dvh-56px)] flex max-w-[1600px] w-full mx-auto relative overflow-hidden">
         
         <!-- ========================================== -->
         <!-- LEFT SIDEBAR: Linear / TikTok Navigation -->
@@ -524,6 +534,14 @@
                             <i class="fa-solid fa-heart text-rose-500"></i> Tin Đã Thích
                         </span>
                         <span id="likedCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
+                    </button>
+
+                    <button onclick="selectFeedFilter('saved')" id="nav-saved" 
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-bookmark text-amber-500"></i> Đã Lưu (Bookmarks)
+                        </span>
+                        <span id="savedCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
                     </button>
 
                     <button onclick="selectFeedFilter('history')" id="nav-history" 
@@ -595,24 +613,24 @@
         <main class="flex-1 h-full flex flex-col items-center justify-center relative overflow-hidden bg-[#0c0d0e]">
 
             <!-- VIEW 1: TIKTOK REELS SWIPE (ONE-CARD-PER-SCREEN) -->
-            <section id="reelsViewSection" class="w-full h-full flex items-center justify-center p-2 sm:p-4 relative overflow-hidden select-none">
+            <section id="reelsViewSection" class="w-full h-full flex items-center justify-center p-0 sm:p-4 relative overflow-hidden select-none">
                 
                 <!-- TikTok Style Vertical Card Container -->
-                <div class="relative w-full max-w-[460px] h-full max-h-[820px] flex items-center justify-center">
+                <div class="relative w-full sm:max-w-[460px] h-full sm:max-h-[820px] flex items-center justify-center">
                     
                     <!-- Floating Position & Pre-fetch Status Badge -->
-                    <div class="absolute top-3.5 right-3.5 z-30 flex items-center gap-2 pointer-events-none">
+                    <div class="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 z-30 flex items-center gap-2 pointer-events-none">
                         <div id="feedLoadingMoreBadge" class="hidden bg-rose-600/90 backdrop-blur-md border border-rose-400/40 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium text-white shadow-xl items-center gap-1.5 animate-pulse">
                             <i class="fa-solid fa-spinner fa-spin text-[10px]"></i> <span>Đang nạp thêm tin...</span>
                         </div>
-                        <div id="feedProgressBadge" class="bg-black/75 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full text-[11px] font-mono font-bold text-zinc-200 shadow-xl flex items-center gap-1.5">
+                        <div id="feedProgressBadge" class="bg-black/75 backdrop-blur-md border border-white/15 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold text-zinc-200 shadow-xl flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
                             <span id="feedProgressText">Tin 1 / 20</span>
                         </div>
                     </div>
 
                     <!-- The Snap Scroll Feed -->
-                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-2xl sm:rounded-3xl border border-[rgba(255,255,255,0.1)] bg-[#141417] shadow-2xl relative">
+                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-none sm:rounded-3xl border-0 sm:border border-[rgba(255,255,255,0.1)] bg-[#141417] sm:shadow-2xl relative">
                         <!-- Loading State Card -->
                         <div class="tiktok-card w-full h-full flex flex-col justify-end p-6 relative bg-[#141417] animate-pulse">
                             <div class="absolute inset-0 bg-zinc-800/40"></div>
@@ -751,6 +769,119 @@
         </div>
     </div>
 
+    <!-- MODAL / DRAWER: Story Arc / Timeline Continuity -->
+    <div id="timelineModal" onclick="if(event.target === this) closeTimelineModal()" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 transition-all">
+        <div class="drawer-slide-container bg-[#12141a] rounded-2xl max-w-xl w-full max-h-[88vh] shadow-2xl flex flex-col relative overflow-hidden border border-[var(--border-subtle)]">
+            <div class="px-5 py-4 bg-[#1a1d26] border-b border-[var(--border-subtle)] flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs border border-amber-500/30">
+                        <i class="fa-solid fa-timeline"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Mạch Tin Tức (Story Arc)</h3>
+                        <p id="timelineTopicTitle" class="text-[11px] text-zinc-400 line-clamp-1 font-medium">Đang xâu chuỗi sự kiện...</p>
+                    </div>
+                </div>
+                <button onclick="closeTimelineModal()" class="text-zinc-400 hover:text-white p-1 rounded-md transition-colors" title="Đóng (ESC)">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+            <div id="timelineEventsList" class="p-5 overflow-y-auto flex-1 space-y-4">
+                <!-- Timeline events dynamically inserted -->
+            </div>
+            <div class="px-5 py-3 bg-[#15171f] border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                <span><i class="fa-solid fa-compass text-amber-400 mr-1.5"></i>Tự động gom cụm theo thực thể</span>
+                <button onclick="closeTimelineModal()" class="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition-all">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MOBILE BOTTOM NAVIGATION (iOS / Android) -->
+    <!-- ========================================== -->
+    <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 h-14 bg-[var(--bg-surface-glass)] backdrop-blur-xl border-t border-[var(--border-subtle)] z-40 flex items-center justify-around px-1 select-none">
+        <button id="mobileNav-for-you" onclick="selectFeedFilter('for-you'); switchViewMode('reels');" class="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all">
+            <i class="fa-solid fa-layer-group text-sm"></i>
+            <span class="text-[10px] tracking-tight">Dành Cho Bạn</span>
+        </button>
+        <button id="mobileNav-trending" onclick="selectFeedFilter('trending'); switchViewMode('reels');" class="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all">
+            <i class="fa-solid fa-fire text-sm"></i>
+            <span class="text-[10px] tracking-tight">Xu Hướng</span>
+        </button>
+        <button id="mobileNav-grid" onclick="switchViewMode('grid');" class="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all">
+            <i class="fa-solid fa-table-cells text-sm"></i>
+            <span class="text-[10px] tracking-tight">Dạng Lưới</span>
+        </button>
+        <button id="mobileNav-saved" onclick="selectFeedFilter('saved');" class="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all relative">
+            <i class="fa-solid fa-bookmark text-sm"></i>
+            <span class="text-[10px] tracking-tight">Đã Lưu</span>
+            <span id="mobileSavedCountBadge" class="hidden absolute top-1.5 right-4 w-4 h-4 rounded-full bg-amber-500 text-black text-[9px] font-bold items-center justify-center">0</span>
+        </button>
+        <button id="mobileNav-categories" onclick="openMobileCategoryDrawer();" class="flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all">
+            <i class="fa-solid fa-compass text-sm"></i>
+            <span class="text-[10px] tracking-tight">Chuyên Mục</span>
+        </button>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- MOBILE DRAWER: Categories & Quick Search -->
+    <!-- ========================================== -->
+    <div id="mobileCategoryDrawer" onclick="if(event.target === this) closeMobileCategoryDrawer()" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex flex-col justify-end md:hidden transition-all">
+        <div class="drawer-slide-container bg-[var(--bg-modal)] rounded-t-3xl w-full max-h-[85vh] shadow-2xl flex flex-col relative overflow-hidden border-t border-[var(--border-subtle)]">
+            <!-- Header & Drag handle -->
+            <div class="pt-3 pb-2 px-5 flex flex-col items-center border-b border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)]">
+                <div class="w-10 h-1 rounded-full bg-zinc-600 mb-2"></div>
+                <div class="w-full flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-compass text-rose-500 text-sm"></i>
+                        <span class="text-xs font-bold uppercase tracking-wider text-white">Khám Phá Chuyên Mục</span>
+                    </div>
+                    <button onclick="closeMobileCategoryDrawer()" class="p-1 text-zinc-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="p-4 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)]">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs"></i>
+                    <input type="text" id="mobileSearchInput" placeholder="Tìm kiếm tin tức nhanh..."
+                           class="w-full pl-8 pr-14 py-2 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-all"
+                           onkeydown="if(event.key === 'Enter') triggerMobileSearch()">
+                    <button onclick="triggerMobileSearch()" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs font-semibold px-2.5 py-1 rounded-lg bg-rose-600 text-white shadow-xs">
+                        Tìm
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categories List Grid & Topics -->
+            <div class="p-4 overflow-y-auto flex-1 space-y-4">
+                <div>
+                    <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-2">Chuyên Mục Tin Tức</div>
+                    <div id="mobileCategoriesGrid" class="grid grid-cols-2 gap-2">
+                        <button onclick="selectCategory(null, 'Tất cả tin'); closeMobileCategoryDrawer();" class="p-2.5 rounded-xl text-xs font-semibold text-left bg-zinc-800 text-white border border-zinc-700/60 transition-all flex items-center gap-2">
+                            <span>🌐</span> <span>Tất cả tin</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-2">Chủ Đề Nóng</div>
+                    <div id="mobileTrendingCloud" class="flex flex-wrap gap-1.5">
+                        <span class="text-xs text-zinc-500 italic">Đang cập nhật...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-3 bg-[var(--bg-surface-elevated)] border-t border-[var(--border-subtle)] text-center">
+                <button onclick="closeMobileCategoryDrawer()" class="w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-xl text-xs font-semibold transition-all">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Component -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transition-all duration-300">
         <div id="toastContent" class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium border"></div>
@@ -828,6 +959,7 @@
             // Implicit Signals History
             readArticleIds: new Set(JSON.parse(localStorage.getItem('read_articles_v3') || '[]')),
             likedArticleIds: new Set(JSON.parse(localStorage.getItem('liked_articles_v3') || '[]')),
+            bookmarkedArticleIds: new Set(JSON.parse(localStorage.getItem('bookmarked_articles_v3') || '[]')),
 
             // Real-Time In-Session Category Interest Scores
             sessionWeights: JSON.parse(localStorage.getItem('session_category_weights') || '{"cong-nghe": 0, "kinh-doanh": 0, "the-gioi": 0, "thoi-su": 0}'),
@@ -847,7 +979,8 @@
             trending: '/api/trending/keywords',
             auth: '/api/auth',
             subscriptions: '/api/subscriptions',
-            digest: '/api/subscriptions/digest'
+            digest: '/api/subscriptions/digest',
+            timeline: (id) => `/api/articles/${id}/timeline`
         };
 
         // Source Credibility Weights (Anti-Clickbait filter)
@@ -866,6 +999,331 @@
             'thoi-su': 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80',
             'default': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&auto=format&fit=crop&q=80'
         };
+
+        /**
+         * Fix Silent Data Binding Bug: Normalize article objects upon receipt
+         */
+        function normalizeArticle(a) {
+            if (!a) return a;
+            a.sourceName = a.source?.name || a.sourceName || 'Báo điện tử';
+            a.categorySlug = a.category?.slug || a.categorySlug || 'thoi-su';
+            a.categoryName = a.category?.name || a.categoryName || 'Tin tức';
+            return a;
+        }
+
+        // =========================================================================
+        // THOMPSON SAMPLING MULTI-ARMED BANDIT (Beta-Bernoulli Distribution)
+        // =========================================================================
+        const ThompsonSamplingBandit = {
+            STORAGE_KEY: 'thompson_sampling_params_v2',
+            DEFAULT_ALPHA: 2.0,
+            DEFAULT_BETA: 2.0,
+
+            getArms() {
+                try {
+                    const saved = localStorage.getItem(this.STORAGE_KEY);
+                    if (saved) return JSON.parse(saved);
+                } catch (e) {
+                    console.error('Lỗi nạp Thompson Sampling arms:', e);
+                }
+                return {};
+            },
+
+            saveArms(arms) {
+                try {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(arms));
+                } catch (e) {
+                    console.error('Lỗi lưu Thompson Sampling arms:', e);
+                }
+            },
+
+            getArm(categorySlug) {
+                const arms = this.getArms();
+                const slug = categorySlug || 'thoi-su';
+                if (!arms[slug]) {
+                    arms[slug] = {
+                        alpha: this.DEFAULT_ALPHA,
+                        beta: this.DEFAULT_BETA,
+                        pulls: 0,
+                        rewards: 0
+                    };
+                    this.saveArms(arms);
+                }
+                return arms[slug];
+            },
+
+            // Standard Normal Z ~ N(0, 1) using Box-Muller transform
+            sampleStandardNormal() {
+                let u1 = 0, u2 = 0;
+                while (u1 === 0) u1 = Math.random();
+                while (u2 === 0) u2 = Math.random();
+                return Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+            },
+
+            // Marsaglia and Tsang (2000) method for generating Gamma(shape, 1)
+            sampleGamma(shape) {
+                if (shape < 1.0) {
+                    return this.sampleGamma(shape + 1.0) * Math.pow(Math.random(), 1.0 / shape);
+                }
+                const d = shape - 1.0 / 3.0;
+                const c = 1.0 / Math.sqrt(9.0 * d);
+                while (true) {
+                    const z = this.sampleStandardNormal();
+                    const v = Math.pow(1.0 + c * z, 3);
+                    if (v <= 0) continue;
+                    const u = Math.random();
+                    if (u < 1.0 - 0.0331 * Math.pow(z, 4)) {
+                        return d * v;
+                    }
+                    if (Math.log(u) < 0.5 * z * z + d * (1.0 - v + Math.log(v))) {
+                        return d * v;
+                    }
+                }
+            },
+
+            // Beta(alpha, beta) via Marsaglia-Tsang Gamma method: X / (X + Y)
+            sampleBeta(alpha, beta) {
+                const a = Math.max(0.1, alpha);
+                const b = Math.max(0.1, beta);
+                const x = this.sampleGamma(a);
+                const y = this.sampleGamma(b);
+                if (x + y <= 0) return 0.5;
+                return x / (x + y);
+            },
+
+            /**
+             * Samples winning arm among candidate categories
+             * @param {Array<string>} categories
+             * @returns {{categorySlug: string, theta: number, allThetas: Object}}
+             */
+            sampleArm(categories) {
+                const arms = this.getArms();
+                const catList = (categories && categories.length > 0)
+                    ? categories
+                    : ['thoi-su', 'kinh-doanh', 'cong-nghe', 'the-gioi'];
+
+                let bestSlug = catList[0];
+                let maxTheta = -1;
+                const sampledThetas = {};
+
+                catList.forEach(cat => {
+                    const arm = arms[cat] || {
+                        alpha: this.DEFAULT_ALPHA,
+                        beta: this.DEFAULT_BETA,
+                        pulls: 0,
+                        rewards: 0
+                    };
+                    const theta = this.sampleBeta(arm.alpha, arm.beta);
+                    sampledThetas[cat] = theta;
+                    if (theta > maxTheta) {
+                        maxTheta = theta;
+                        bestSlug = cat;
+                    }
+                });
+
+                return {
+                    categorySlug: bestSlug,
+                    theta: maxTheta,
+                    allThetas: sampledThetas
+                };
+            },
+
+            /**
+             * Updates posterior Beta distribution:
+             * updates alpha on engagement, beta on fast skip
+             * @param {string} categorySlug
+             * @param {boolean} isPositive
+             */
+            recordFeedback(categorySlug, isPositive) {
+                const arms = this.getArms();
+                const slug = categorySlug || 'thoi-su';
+                if (!arms[slug]) {
+                    arms[slug] = {
+                        alpha: this.DEFAULT_ALPHA,
+                        beta: this.DEFAULT_BETA,
+                        pulls: 0,
+                        rewards: 0
+                    };
+                }
+
+                arms[slug].pulls += 1;
+                if (isPositive) {
+                    arms[slug].alpha += 1;
+                    arms[slug].rewards += 1;
+                } else {
+                    arms[slug].beta += 1;
+                }
+
+                this.saveArms(arms);
+            }
+        };
+
+        /**
+         * Calculates Serendipity Discovery Score = Novelty * Relevance * Quality
+         * - Novelty: Inverse exposure ratio + unread status
+         * - Relevance: Freshness + trending hot alignment
+         * - Quality: Source credibility weight + summary depth
+         */
+        function calculateSerendipityScore(article) {
+            if (!article) return 0;
+            const catSlug = article.categorySlug || 'thoi-su';
+
+            // 1. Novelty (0.2 to 1.0)
+            const arm = ThompsonSamplingBandit.getArm(catSlug);
+            const totalPulls = Object.values(ThompsonSamplingBandit.getArms())
+                .reduce((sum, a) => sum + (a.pulls || 0), 0);
+            const categoryPullRatio = totalPulls > 0 ? ((arm.pulls || 0) / totalPulls) : 0.25;
+            let novelty = Math.max(0.2, 1.0 - categoryPullRatio * 0.75);
+            if (!state.readArticleIds.has(article.id)) {
+                novelty = Math.min(1.0, novelty + 0.15); // Unread boost
+            }
+
+            // 2. Relevance (0.4 to 1.0)
+            let relevance = 0.5;
+            if (article.isTrendingHot) {
+                relevance += 0.3;
+            }
+            if (article.publishedAt) {
+                const hoursAgo = (new Date() - new Date(article.publishedAt)) / 3600000;
+                if (hoursAgo < 6) relevance += 0.2;
+                else if (hoursAgo < 24) relevance += 0.1;
+            }
+            relevance = Math.min(1.0, relevance);
+
+            // 3. Quality (0.8 to 1.3)
+            const credWeight = SOURCE_CREDIBILITY[article.sourceName] || 1.0;
+            const hasGoodSummary = (article.summary && article.summary.length >= 60) ? 1.05 : 0.95;
+            const quality = credWeight * hasGoodSummary;
+
+            const score = Math.round(novelty * relevance * quality * 100);
+            article.serendipityScore = score;
+            return score;
+        }
+
+        /**
+         * Fetches Story Arc / Timeline Continuity from backend API
+         * @param {number|string} articleId
+         * @returns {Promise<Object>} StoryTimelineResponse
+         */
+        async function fetchArticleTimeline(articleId) {
+            try {
+                const res = await fetch(`/api/articles/${articleId}/timeline`);
+                if (!res.ok) {
+                    throw new Error(`Lỗi tải dòng sự kiện (Mã ${res.status})`);
+                }
+                const json = await res.json();
+                return json.data || json;
+            } catch (err) {
+                console.error('fetchArticleTimeline error:', err);
+                throw err;
+            }
+        }
+
+        async function openTimelineDrawer(articleId) {
+            const modal = document.getElementById('timelineModal');
+            const topicTitleEl = document.getElementById('timelineTopicTitle');
+            const listEl = document.getElementById('timelineEventsList');
+
+            if (!modal || !listEl) return;
+
+            modal.classList.remove('hidden');
+            if (topicTitleEl) topicTitleEl.textContent = 'Đang phân tích mạch tin tức...';
+            listEl.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-12 text-zinc-500 font-mono text-xs">
+                    <i class="fa-solid fa-spinner animate-spin text-xl mb-2 text-amber-400"></i>
+                    <span>Đang xâu chuỗi các mốc diễn biến liên quan...</span>
+                </div>
+            `;
+
+            try {
+                const timeline = await fetchArticleTimeline(articleId);
+                const events = timeline.events || timeline.timelineEvents || [];
+                const topicTitle = timeline.topicTitle || 'Dòng sự kiện liên quan';
+
+                if (topicTitleEl) topicTitleEl.textContent = topicTitle;
+
+                if (events.length === 0) {
+                    listEl.innerHTML = `
+                        <div class="text-center py-8 text-zinc-500 text-xs">
+                            <i class="fa-regular fa-clock text-2xl mb-2 text-zinc-600 block"></i>
+                            Chưa tìm thấy tin liên quan trong 14 ngày qua.
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '<div class="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-[var(--border-strong)]">';
+                events.forEach(ev => {
+                    const isTarget = ev.articleId === articleId;
+                    const timeStr = formatRelativeTime(ev.publishedAt);
+
+                    let badgeColor = 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+                    let dotColor = 'bg-blue-500 ring-blue-500/30';
+
+                    if (ev.phase === 'GENESIS') {
+                        badgeColor = 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30';
+                        dotColor = 'bg-indigo-500 ring-indigo-500/30';
+                    } else if (ev.phase === 'PROGRESSION') {
+                        badgeColor = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+                        dotColor = 'bg-amber-500 ring-amber-500/30';
+                    } else if (ev.phase === 'LATEST') {
+                        badgeColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+                        dotColor = 'bg-emerald-500 ring-emerald-500/30';
+                    }
+
+                    html += `
+                        <div class="relative group">
+                            <!-- Timeline Dot -->
+                            <div class="absolute -left-6 top-2 w-3.5 h-3.5 rounded-full ${dotColor} ring-4 ring-[var(--bg-modal)] ${isTarget ? 'scale-125' : ''} transition-all"></div>
+
+                            <!-- Event Card -->
+                            <div class="p-4 rounded-xl ${isTarget ? 'bg-[var(--bg-surface-elevated)] border-2 border-amber-500/60 shadow-lg' : 'bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--border-strong)]'} transition-all">
+                                <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${badgeColor}">
+                                            ${escapeHtml(ev.phaseLabel || ev.phase)}
+                                        </span>
+                                        <span class="text-[11px] font-mono font-medium text-[var(--text-caption)]">
+                                            ${escapeHtml(ev.sourceName || 'Báo')}
+                                        </span>
+                                    </div>
+                                    <span class="text-[11px] font-mono text-[var(--text-caption)]">
+                                        <i class="fa-regular fa-clock mr-1"></i>${timeStr}
+                                    </span>
+                                </div>
+                                <h4 class="text-xs sm:text-sm font-bold text-[var(--text-primary)] leading-snug line-clamp-2 mb-2.5">
+                                    ${escapeHtml(ev.title)}
+                                </h4>
+                                <div class="flex items-center justify-between pt-1 border-t border-[var(--border-subtle)]">
+                                    <a href="${ev.url}" target="_blank" rel="noopener noreferrer" 
+                                       class="text-[11px] font-semibold text-[var(--accent-editorial)] hover:underline inline-flex items-center gap-1.5 transition-colors">
+                                        <span>Đọc toàn văn bài viết</span>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                    </a>
+                                    ${isTarget ? '<span class="text-[10px] font-mono text-amber-400 font-bold px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30">● Đang xem</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+
+                listEl.innerHTML = html;
+
+            } catch (err) {
+                listEl.innerHTML = `
+                    <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs">
+                        <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+                        ${escapeHtml(err.message || 'Không thể tải dòng thời gian.')}
+                    </div>
+                `;
+            }
+        }
+
+        function closeTimelineModal() {
+            const modal = document.getElementById('timelineModal');
+            if (modal) modal.classList.add('hidden');
+        }
 
         // Initialize application on load
         document.addEventListener('DOMContentLoaded', () => {
@@ -930,6 +1388,7 @@
 
                 const items = pageData.content || [];
                 items.forEach(a => {
+                    normalizeArticle(a);
                     state.loadedArticleIds.add(a.id);
                     state.allArticles.push(a);
                 });
@@ -994,16 +1453,26 @@
         }
 
         /**
-         * 70 - 20 - 10 Slotting Algorithm
+         * Dynamic Slotting Algorithm:
+         * 70% Thompson Sampling Exploitation (Personalized category winner)
+         * 20% Serendipity Horizon (✨ Khám phá discovery badge)
+         * 10% Breaking Urgency (⚡ Tin Nóng trending badge)
          * Preserves ALL items without discarding any remainder
          */
         function slotArticleBatch(pool) {
             if (!pool || pool.length === 0) return [];
 
-            pool.forEach(scoreArticle);
+            pool.forEach(a => {
+                normalizeArticle(a);
+                scoreArticle(a);
+                calculateSerendipityScore(a);
+            });
 
             if (state.feedFilter === 'liked') {
                 return pool.filter(a => state.likedArticleIds.has(a.id));
+            }
+            if (state.feedFilter === 'saved') {
+                return pool.filter(a => state.bookmarkedArticleIds.has(a.id));
             }
             if (state.feedFilter === 'history') {
                 return pool.filter(a => state.readArticleIds.has(a.id));
@@ -1014,62 +1483,107 @@
                 const coldDeck = [];
                 categories.forEach(cat => {
                     const found = pool.find(a => (a.categorySlug || 'thoi-su') === cat && !coldDeck.includes(a));
-                    if (found) coldDeck.push(found);
+                    if (found) {
+                        found.slotType = 'serendipity';
+                        found.slotBadge = '✨ Khám phá';
+                        coldDeck.push(found);
+                    }
                 });
                 pool.forEach(a => {
-                    if (!coldDeck.includes(a)) coldDeck.push(a);
+                    if (!coldDeck.includes(a)) {
+                        a.slotType = 'personalized';
+                        a.slotBadge = 'Dành cho bạn';
+                        coldDeck.push(a);
+                    }
                 });
                 return coldDeck;
             }
 
-            const breakingPool = pool.filter(a => a.isTrendingHot).sort((a, b) => b._score - a._score);
-            const sortedCategories = Object.entries(state.sessionWeights).sort((a, b) => a[1] - b[1]);
-            const leastFavCat = sortedCategories.length > 0 ? sortedCategories[0][0] : 'the-gioi';
-            const explorationPool = pool.filter(a => (a.categorySlug || 'thoi-su') === leastFavCat);
-            const personalizedPool = pool.filter(a => !breakingPool.includes(a) && !explorationPool.includes(a))
-                                         .sort((a, b) => b._score - a._score);
+            // Pool 1: 10% Breaking Urgency
+            const breakingPool = pool.filter(a => a.isTrendingHot).sort((a, b) => (b._score || 0) - (a._score || 0));
+
+            // Pool 2: 20% Serendipity Horizon (Novelty * Relevance * Quality)
+            const serendipityPool = pool.filter(a => !breakingPool.includes(a))
+                .sort((a, b) => (b.serendipityScore || 0) - (a.serendipityScore || 0));
+
+            // Pool 3: 70% Thompson Sampling Exploitation
+            const distinctCategories = Array.from(new Set(pool.map(a => a.categorySlug || 'thoi-su')));
+            const sampledArm = ThompsonSamplingBandit.sampleArm(distinctCategories);
+            const winnerArm = sampledArm.categorySlug;
+
+            const personalizedPool = pool.filter(a => !breakingPool.includes(a))
+                .sort((a, b) => {
+                    const aArmBoost = (a.categorySlug === winnerArm) ? 25 : 0;
+                    const bArmBoost = (b.categorySlug === winnerArm) ? 25 : 0;
+                    const aTheta = sampledArm.allThetas[a.categorySlug] || 0.5;
+                    const bTheta = sampledArm.allThetas[b.categorySlug] || 0.5;
+                    const aTotal = (a._score || 0) + aArmBoost + (aTheta * 20);
+                    const bTotal = (b._score || 0) + bArmBoost + (bTheta * 20);
+                    return bTotal - aTotal;
+                });
 
             const slottedDeck = [];
+            const slottedSet = new Set();
             const maxLen = pool.length;
-            let bIdx = 0, pIdx = 0, eIdx = 0;
+            let bIdx = 0, sIdx = 0, pIdx = 0;
 
             for (let i = 0; i < maxLen; i++) {
                 const slot = i % 10;
                 let picked = null;
 
-                if (slot === 0 || slot === 9) { // 10% Breaking
+                if (slot === 0) { // 10% Breaking Urgency
+                    while (bIdx < breakingPool.length && slottedSet.has(breakingPool[bIdx].id)) {
+                        bIdx++;
+                    }
                     if (bIdx < breakingPool.length) {
                         picked = breakingPool[bIdx++];
                         picked.slotType = 'breaking';
+                        picked.slotBadge = '⚡ Tin Nóng';
                     }
-                } else if (slot === 3 || slot === 7) { // 20% Exploration
-                    if (eIdx < explorationPool.length) {
-                        picked = explorationPool[eIdx++];
-                        picked.slotType = 'exploration';
+                } else if (slot === 3 || slot === 7) { // 20% Serendipity Horizon
+                    while (sIdx < serendipityPool.length && slottedSet.has(serendipityPool[sIdx].id)) {
+                        sIdx++;
+                    }
+                    if (sIdx < serendipityPool.length) {
+                        picked = serendipityPool[sIdx++];
+                        picked.slotType = 'serendipity';
+                        picked.slotBadge = '✨ Khám phá';
                     }
                 }
 
-                if (!picked) { // 70% Personalized fallback
+                if (!picked) { // 70% Thompson Sampling exploitation
+                    while (pIdx < personalizedPool.length && slottedSet.has(personalizedPool[pIdx].id)) {
+                        pIdx++;
+                    }
                     if (pIdx < personalizedPool.length) {
                         picked = personalizedPool[pIdx++];
                         picked.slotType = 'personalized';
-                    } else if (bIdx < breakingPool.length) {
-                        picked = breakingPool[bIdx++];
-                        picked.slotType = 'breaking';
-                    } else if (eIdx < explorationPool.length) {
-                        picked = explorationPool[eIdx++];
-                        picked.slotType = 'exploration';
+                        picked.slotBadge = 'Dành cho bạn';
+                    } else {
+                        // Fallback to remaining
+                        const rem = pool.find(a => !slottedSet.has(a.id));
+                        if (rem) {
+                            picked = rem;
+                            picked.slotType = 'personalized';
+                            picked.slotBadge = 'Dành cho bạn';
+                        }
                     }
                 }
 
-                if (picked && !slottedDeck.includes(picked)) {
+                if (picked && !slottedSet.has(picked.id)) {
+                    slottedSet.add(picked.id);
                     slottedDeck.push(picked);
                 }
             }
 
             // CRITICAL FIX: Ensure any remaining items from pool are appended so NO articles are discarded!
             pool.forEach(a => {
-                if (!slottedDeck.includes(a)) {
+                if (!slottedSet.has(a.id)) {
+                    slottedSet.add(a.id);
+                    if (!a.slotType) {
+                        a.slotType = 'personalized';
+                        a.slotBadge = 'Dành cho bạn';
+                    }
                     slottedDeck.push(a);
                 }
             });
@@ -1094,9 +1608,17 @@
 
         /**
          * Infinite Scroll: Auto-fetches next page when scrolling near the end
+         * Enforces strict 1500ms cooldown to eliminate runaway mouse wheel jumping
          */
+        let lastLoadMoreTimestamp = 0;
+        const LOAD_MORE_COOLDOWN_MS = 1500;
+
         async function loadMoreArticles() {
-            if (state.isLoadingMore || state.isLastPage) return;
+            const now = performance.now();
+            if (state.isLoadingMore || state.isLastPage || (now - lastLoadMoreTimestamp < LOAD_MORE_COOLDOWN_MS)) {
+                return;
+            }
+            lastLoadMoreTimestamp = now;
             state.isLoadingMore = true;
 
             const loadingBadge = document.getElementById('feedLoadingMoreBadge');
@@ -1125,6 +1647,7 @@
 
                 const incoming = (pageData.content || []).filter(a => !state.loadedArticleIds.has(a.id));
                 incoming.forEach(a => {
+                    normalizeArticle(a);
                     state.loadedArticleIds.add(a.id);
                     state.allArticles.push(a);
                 });
@@ -1158,23 +1681,33 @@
             const feed = document.getElementById('tiktokFeed');
             const endLoader = document.getElementById('feedEndLoaderCard');
             const endCompleted = document.getElementById('feedEndCompletedCard');
-            const anchor = endLoader || endCompleted;
+
+            // Remove any existing loader / completion card before appending to prevent browser scroll anchoring jumps
+            if (endLoader) endLoader.remove();
+            if (endCompleted) endCompleted.remove();
+
+            const prevDeckLength = state.reelsDeck.length;
 
             newCards.forEach((article) => {
                 state.reelsDeck.push(article);
                 const cardIndex = state.reelsDeck.length - 1;
                 const cardEl = createTikTokCard(article, cardIndex);
 
-                if (anchor) {
-                    feed.insertBefore(cardEl, anchor);
-                } else {
-                    feed.appendChild(cardEl);
-                }
+                feed.appendChild(cardEl);
 
                 if (signalsObserver) {
                     signalsObserver.observe(cardEl);
                 }
             });
+
+            // Smoothly bring the first newly loaded card into view if reader was waiting at the end
+            const firstNewArticle = newCards[0];
+            if (firstNewArticle && state.currentCardIndex >= prevDeckLength - 1) {
+                const firstNewCardEl = document.getElementById(`tiktok-card-${firstNewArticle.id}`);
+                if (firstNewCardEl) {
+                    firstNewCardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
 
             updateFeedEndCard();
             updateFeedProgressHUD();
@@ -1187,20 +1720,7 @@
 
             if (!state.isLastPage) {
                 if (endCompleted) endCompleted.remove();
-                if (!endLoader && state.reelsDeck.length > 0) {
-                    endLoader = document.createElement('div');
-                    endLoader.id = 'feedEndLoaderCard';
-                    endLoader.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417] select-none';
-                    endLoader.innerHTML = `
-                        <div class="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 text-xl mb-4 animate-pulse">
-                            <i class="fa-solid fa-bolt-lightning"></i>
-                        </div>
-                        <h3 class="text-sm font-bold text-white mb-1">Đang nạp luồng tin tiếp theo...</h3>
-                        <p class="text-xs text-zinc-400 max-w-xs leading-relaxed">Hệ thống đang chuẩn bị thêm tin tức mới nhất dành cho bạn.</p>
-                    `;
-                    feed.appendChild(endLoader);
-                    if (signalsObserver) signalsObserver.observe(endLoader);
-                }
+                if (endLoader) endLoader.remove();
             } else {
                 if (endLoader) endLoader.remove();
                 if (!endCompleted && state.reelsDeck.length > 0) {
@@ -1287,6 +1807,7 @@
             const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
             const timeAgo = formatRelativeTime(article.publishedAt);
             const isLiked = state.likedArticleIds.has(article.id);
+            const isBookmarked = state.bookmarkedArticleIds.has(article.id);
             const isRead = state.readArticleIds.has(article.id);
 
             // Compute word count and standard reading time (e.g. 50 words ≈ 14s)
@@ -1294,24 +1815,24 @@
             const wordCount = textContent.trim().split(/\s+/).length;
             const standardReadSecs = Math.max(3, Math.round(wordCount * 0.28));
 
-            // Slot badge indicator (clean for readers, no calculations or percentages)
+            // Slot badge indicator with Serendipity Horizon badge
             let slotBadgeHtml = '';
             if (article.slotType === 'breaking') {
                 slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 flex items-center gap-1"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng</span>`;
-            } else if (article.slotType === 'exploration') {
-                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center gap-1"><i class="fa-solid fa-compass text-amber-400"></i> Khám Phá</span>`;
+            } else if (article.slotType === 'serendipity' || article.slotType === 'exploration' || (article.serendipityScore && article.serendipityScore >= 50)) {
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center gap-1"><i class="fa-solid fa-sparkles text-amber-400"></i> ✨ Khám phá</span>`;
             }
 
             const baseLikes = 120 + ((article.id * 37) % 890);
 
             card.innerHTML = `
-                <!-- Reading Dwell Time Progress Bar on Top -->
-                <div class="absolute top-0 left-0 right-0 h-1 bg-zinc-900 z-30 overflow-hidden">
-                    <div id="readProgress-${article.id}" class="read-progress-bar h-full bg-[#e11d48] w-0"></div>
+                <!-- Reading Progress Bar (Hardware Accelerated via CSS scaleX transform) -->
+                <div class="absolute top-0 left-0 right-0 h-1 bg-zinc-900/80 z-30 overflow-hidden">
+                    <div id="readProgress-${article.id}" class="read-progress-bar h-full"></div>
                 </div>
 
                 <!-- Background Media with Dark Cinematic Gradient Overlay -->
-                <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 z-0 pointer-events-none">
                     <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
                          class="w-full h-full object-cover object-center filter brightness-[0.72]"
                          onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
@@ -1319,7 +1840,7 @@
                 </div>
 
                 <!-- Top Card Bar (Metadata & Algorithm Tag) -->
-                <div class="relative z-10 p-5 flex items-center justify-between gap-2">
+                <div class="relative z-10 p-3.5 sm:p-5 flex items-center justify-between gap-1.5 sm:gap-2">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-white/10 text-zinc-300 border border-white/10">
                             #${index + 1}
@@ -1339,81 +1860,119 @@
                     </span>
                 </div>
 
-                <!-- Center/Bottom: Micro-Article Lead-in & TikTok Action Column -->
-                <div class="relative z-10 p-5 sm:p-6 flex items-end justify-between gap-3">
+                <!-- Center/Bottom: Micro-Article Lead-in & Action Column -->
+                <div class="relative z-10 p-3.5 sm:p-6 flex items-end justify-between gap-2 sm:gap-3">
                     
-                    <!-- Left: Micro-Article Lead-in Content (Under 60 words) -->
-                    <div class="flex-1 space-y-2.5 max-w-[340px] sm:max-w-[360px]">
+                    <!-- Left: Micro-Article Lead-in Content -->
+                    <div class="flex-1 min-w-0 space-y-2 sm:space-y-2.5 pr-1">
                         
                         <!-- Headline -->
-                        <h2 class="text-base sm:text-lg font-extrabold text-white leading-snug tracking-tight drop-shadow-md">
+                        <h2 class="text-sm sm:text-lg font-extrabold text-white leading-snug tracking-tight drop-shadow-md line-clamp-3 sm:line-clamp-4">
                             ${escapeHtml(article.title)}
                         </h2>
 
-                        <!-- Micro-Article Summary Box (Clean: Only main content, no icon or label) -->
-                        <div class="summary-box p-3 sm:p-3.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-2xl transition-all">
-                            <p class="summary-text line-clamp-3">
+                        <!-- Micro-Article Summary Box (Clean editorial, NO icons, NO calculations) -->
+                        <div class="summary-box p-2.5 sm:p-3.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-lg transition-all">
+                            <p class="summary-text line-clamp-3 sm:line-clamp-4">
                                 ${escapeHtml(article.summary || 'Nhấn nút bên dưới để đọc bài viết gốc đầy đủ trên trang báo.')}
                             </p>
                         </div>
 
-                        <!-- Publish time -->
+                        <!-- Publish time (Clean, NO calculated reading metrics) -->
                         <div class="flex items-center gap-2 text-[10px] font-mono text-zinc-400 pt-0.5">
                             <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
                         </div>
 
                         <!-- Action: Read Full Article (Deep Read Signal) -->
-                        <div class="pt-1">
+                        <div class="pt-0.5 sm:pt-1">
                             <a href="${article.url}" target="_blank" rel="noopener noreferrer"
                                onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
-                               class="inline-flex items-center gap-2 px-4 py-2 bg-white text-zinc-950 hover:bg-zinc-200 rounded-xl text-xs font-bold shadow-lg transition-all hover:scale-105 active:scale-95">
+                               class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-white text-zinc-950 hover:bg-zinc-200 rounded-lg sm:rounded-xl text-xs font-bold shadow-md transition-all active:scale-95">
                                 <span>Đọc bản đầy đủ trên ${article.sourceName || 'báo'}</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[9px] sm:text-[10px]"></i>
                             </a>
                         </div>
                     </div>
 
-                    <!-- Right: TikTok Action Column -->
-                    <div class="flex flex-col items-center gap-3.5 shrink-0 pb-1">
+                    <!-- Right: Tactile Action Column -->
+                    <div class="flex flex-col items-center gap-1.5 sm:gap-3 shrink-0 pb-1">
                         
                         <!-- Source Avatar -->
-                        <div class="w-10 h-10 rounded-full bg-zinc-800 border-2 border-white/20 flex items-center justify-center text-xs font-bold text-white shadow-md">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-zinc-800 border border-white/20 sm:border-2 flex items-center justify-center text-xs font-bold text-white shadow-md">
                             ${(article.sourceName || 'N')[0]}
                         </div>
 
                         <!-- Like Button with Count -->
                         <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" id="likeBtn-${article.id}"
-                                class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all ${isLiked ? 'text-rose-500' : ''}">
-                                <i id="likeIcon-${article.id}" class="fa-solid fa-heart text-base ${isLiked ? 'text-rose-500 scale-110' : ''}"></i>
+                                class="flex flex-col items-center gap-0.5 sm:gap-1 text-zinc-300 hover:text-white transition-all group">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all ${isLiked ? 'text-rose-500' : ''}">
+                                <i id="likeIcon-${article.id}" class="fa-solid fa-heart text-xs sm:text-base ${isLiked ? 'text-rose-500 scale-110' : ''}"></i>
                             </div>
-                            <span id="likeCount-${article.id}" class="text-[10px] font-mono font-medium">${isLiked ? baseLikes + 1 : baseLikes}</span>
+                            <span id="likeCount-${article.id}" class="text-[9px] sm:text-[10px] font-mono font-medium">${isLiked ? baseLikes + 1 : baseLikes}</span>
+                        </button>
+
+                        <!-- Dedicated Bookmark / Save Button -->
+                        <button onclick="toggleBookmark(${article.id})" id="bookmarkBtn-${article.id}" title="Lưu bài viết vào thư viện"
+                                class="bookmark-btn-${article.id} flex flex-col items-center gap-0.5 sm:gap-1 text-zinc-300 hover:text-amber-400 transition-all group">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all ${isBookmarked ? 'text-amber-400' : ''}">
+                                <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-xs sm:text-sm ${isBookmarked ? 'text-amber-400 scale-110' : ''}"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-[10px] font-mono font-medium">${isBookmarked ? 'Đã lưu' : 'Lưu tin'}</span>
+                        </button>
+
+                        <!-- Story Arc / Timeline Continuity Button -->
+                        <button onclick="openTimelineDrawer(${article.id})" title="Xem mạch tin sự kiện (Story Arc)"
+                                class="flex flex-col items-center gap-0.5 sm:gap-1 text-zinc-300 hover:text-amber-400 transition-all group">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all text-amber-400">
+                                <i class="fa-solid fa-timeline text-[10px] sm:text-xs"></i>
+                            </div>
+                            <span class="text-[9px] sm:text-[10px] font-mono font-medium">Mạch tin</span>
                         </button>
 
                         <!-- Share Button -->
-                        <button onclick="recordShareSignal(${article.id}, '${article.categorySlug}', '${escapeHtml(article.title)}', '${article.url}')" title="Chia sẻ"
-                                class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
-                                <i class="fa-solid fa-share text-sm"></i>
+                        <button onclick="handleShareCard(${article.id})" title="Chia sẻ"
+                                class="flex flex-col items-center gap-0.5 sm:gap-1 text-zinc-300 hover:text-white transition-all group">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
+                                <i class="fa-solid fa-share text-xs sm:text-sm"></i>
                             </div>
-                            <span class="text-[10px] font-mono font-medium">Share</span>
+                            <span class="text-[9px] sm:text-[10px] font-mono font-medium">Share</span>
                         </button>
 
                         <!-- External Link Direct Icon -->
                         <a href="${article.url}" target="_blank" title="Mở trang gốc"
                            onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
-                           class="flex flex-col items-center gap-1 text-zinc-300 hover:text-white transition-all group">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
-                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                           class="flex flex-col items-center gap-0.5 sm:gap-1 text-zinc-300 hover:text-white transition-all group">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-black/50 backdrop-blur-md border border-white/10 group-hover:bg-zinc-800 transition-all">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] sm:text-xs"></i>
                             </div>
-                            <span class="text-[10px] font-mono font-medium">Link</span>
+                            <span class="text-[9px] sm:text-[10px] font-mono font-medium">Link</span>
                         </a>
 
                     </div>
 
                 </div>
             `;
+
+            // Kinetic Double-Tap to Like Listener
+            let lastTapTime = 0;
+            card.addEventListener('pointerdown', (e) => {
+                if (e.target.closest('button, a, input, [role="button"]')) return;
+                const now = performance.now();
+                if (now - lastTapTime < 320) {
+                    triggerDoubleTapLike(article.id, article.categorySlug, e.clientX, e.clientY, card);
+                    lastTapTime = 0;
+                } else {
+                    lastTapTime = now;
+                }
+            });
+
             return card;
+        }
+
+        function handleShareCard(articleId) {
+            const article = state.reelsDeck.find(a => a.id === articleId);
+            if (!article) return;
+            recordShareSignal(article.id, article.categorySlug, article.title, article.url);
         }
 
         // =========================================================================
@@ -1437,14 +1996,7 @@
                 entries.forEach(entry => {
                     const cardId = entry.target.id;
 
-                    // End Loader Card intersection triggers loadMoreArticles
-                    if (cardId === 'feedEndLoaderCard') {
-                        if (entry.isIntersecting && !state.isLoadingMore && !state.isLastPage) {
-                            loadMoreArticles();
-                        }
-                        return;
-                    }
-                    if (cardId === 'feedEndCompletedCard') {
+                    if (cardId === 'feedEndCompletedCard' || cardId === 'feedEndLoaderCard') {
                         return;
                     }
 
@@ -1456,6 +2008,7 @@
                     const textContent = `${article.title || ''} ${article.summary || ''}`;
                     const wordCount = textContent.trim().split(/\s+/).length;
                     const standardReadMs = Math.max(3000, wordCount * 280);
+                    const achievementThresholdMs = standardReadMs * 0.65;
 
                     if (entry.isIntersecting) {
                         // Update live position indicator
@@ -1464,8 +2017,8 @@
                             state.currentCardIndex = cardIndex;
                             updateFeedProgressHUD();
 
-                            // Pre-fetch trigger: Automatically load more when 3 cards before the end
-                            if (cardIndex >= state.reelsDeck.length - 3 && !state.isLoadingMore && !state.isLastPage) {
+                            // Pre-fetch trigger: Automatically load more when within 2 cards of the end
+                            if (cardIndex >= state.reelsDeck.length - 2 && !state.isLoadingMore && !state.isLastPage) {
                                 loadMoreArticles();
                             }
                         }
@@ -1474,28 +2027,42 @@
                         const startTime = performance.now();
                         cardSessionState[articleId] = {
                             startTime,
-                            progressBarInterval: null
+                            achievementTimeout: null,
+                            hasAchieved: false
                         };
 
-                        // Animate reading progress bar
+                        // GPU-accelerated reading progress bar via CSS transition
                         const progressBar = document.getElementById(`readProgress-${articleId}`);
                         if (progressBar) {
-                            progressBar.style.width = '0%';
-                            const updateInterval = 100;
-                            cardSessionState[articleId].progressBarInterval = setInterval(() => {
-                                const elapsed = performance.now() - startTime;
-                                const pct = Math.min(100, (elapsed / standardReadMs) * 100);
-                                progressBar.style.width = `${pct}%`;
-                            }, updateInterval);
+                            progressBar.style.transition = `transform ${standardReadMs}ms linear`;
+                            progressBar.style.transform = 'scaleX(1)';
                         }
+
+                        // Reading Achievement Horizon: trigger soft ambient glow when threshold is reached
+                        cardSessionState[articleId].achievementTimeout = setTimeout(() => {
+                            if (cardSessionState[articleId]) {
+                                cardSessionState[articleId].hasAchieved = true;
+                                triggerReadingAchievement(articleId, catSlug);
+                            }
+                        }, achievementThresholdMs);
 
                     } else {
                         // User scrolled away: Calculate Dwell Time
                         if (cardSessionState[articleId]) {
-                            const { startTime, progressBarInterval } = cardSessionState[articleId];
-                            clearInterval(progressBarInterval);
+                            const { startTime, achievementTimeout } = cardSessionState[articleId];
+                            if (achievementTimeout) clearTimeout(achievementTimeout);
+
                             const dwellMs = performance.now() - startTime;
                             const dwellSec = dwellMs / 1000;
+
+                            // Freeze reading progress bar at current progress
+                            const progressBar = document.getElementById(`readProgress-${articleId}`);
+                            if (progressBar) {
+                                const progressRatio = Math.min(1, dwellMs / standardReadMs);
+                                progressBar.style.transition = 'none';
+                                progressBar.style.transform = `scaleX(${progressRatio})`;
+                            }
+
                             delete cardSessionState[articleId];
 
                             // Evaluate Signals:
@@ -1510,15 +2077,107 @@
             });
         }
 
-        function initFeedScrollListener() {
-            const feed = document.getElementById('tiktokFeed');
-            if (!feed) return;
-            feed.addEventListener('scroll', () => {
-                const distanceToBottom = feed.scrollHeight - (feed.scrollTop + feed.clientHeight);
-                if (distanceToBottom < 600 && !state.isLoadingMore && !state.isLastPage) {
-                    loadMoreArticles();
+        function triggerReadingAchievement(articleId, categorySlug) {
+            const card = document.getElementById(`tiktok-card-${articleId}`);
+            const badge = document.getElementById(`signalBadge-${articleId}`);
+            if (card) {
+                const summaryBox = card.querySelector('.summary-box');
+                if (summaryBox) {
+                    summaryBox.classList.add('achievement-glow');
                 }
-            }, { passive: true });
+            }
+            if (badge) {
+                badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-400/40 animate-pulse flex items-center gap-1 font-semibold';
+                badge.innerHTML = '<i class="fa-solid fa-award text-amber-400"></i> Đã thẩm thấu';
+            }
+            applySignalAdjustment(categorySlug, 20, `⭐ Đạt thành tựu đọc sâu: ${categorySlug} (+20đ)`);
+            recordArticleAsRead(articleId);
+        }
+
+        function triggerDoubleTapLike(articleId, categorySlug, clientX, clientY, cardEl) {
+            // 1. Kinetic Heart Burst and Micro-Particles Animation
+            const rect = cardEl.getBoundingClientRect();
+            const relX = clientX ? (clientX - rect.left) : (rect.width / 2);
+            const relY = clientY ? (clientY - rect.top) : (rect.height / 2);
+
+            const container = document.createElement('div');
+            container.className = 'kinetic-heart-wrapper';
+            container.style.left = `${relX}px`;
+            container.style.top = `${relY}px`;
+
+            // Big Spring Heart
+            const heart = document.createElement('i');
+            heart.className = 'fa-solid fa-heart kinetic-heart-icon';
+            container.appendChild(heart);
+
+            // 10 Radial Micro-Particles
+            const particleCount = 10;
+            const colors = ['#f43f5e', '#fb7185', '#fbbf24', '#ffffff', '#fda4af', '#e11d48'];
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'kinetic-particle';
+                const angle = (i * (360 / particleCount) + (Math.random() * 20 - 10)) * (Math.PI / 180);
+                const distance = 45 + Math.random() * 45;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                particle.style.setProperty('--dx', `${dx}px`);
+                particle.style.setProperty('--dy', `${dy}px`);
+                particle.style.backgroundColor = colors[i % colors.length];
+                container.appendChild(particle);
+            }
+
+            cardEl.appendChild(container);
+            setTimeout(() => container.remove(), 800);
+
+            // 2. Perform like toggle if not already liked
+            if (!state.likedArticleIds.has(articleId)) {
+                toggleLike(articleId, categorySlug);
+            } else {
+                const icon = document.getElementById(`likeIcon-${articleId}`);
+                if (icon) {
+                    icon.classList.remove('heart-animate');
+                    void icon.offsetWidth;
+                    icon.classList.add('heart-animate');
+                }
+            }
+        }
+
+        function toggleBookmark(articleId) {
+            const isBookmarked = state.bookmarkedArticleIds.has(articleId);
+
+            if (isBookmarked) {
+                state.bookmarkedArticleIds.delete(articleId);
+                showToast('Đã xóa khỏi danh sách Đã Lưu', 'info');
+            } else {
+                state.bookmarkedArticleIds.add(articleId);
+                showToast('Đã lưu bài viết vào Thư Viện Đọc Sau! 📌', 'success');
+            }
+
+            localStorage.setItem('bookmarked_articles_v3', JSON.stringify(Array.from(state.bookmarkedArticleIds)));
+            updateStatsBadges();
+
+            // Synchronize all bookmark buttons across both views
+            const hasSaved = state.bookmarkedArticleIds.has(articleId);
+            document.querySelectorAll(`.bookmark-btn-${articleId}`).forEach(btn => {
+                const icon = btn.querySelector('i');
+                const label = btn.querySelector('span');
+                if (icon) {
+                    icon.className = `fa-${hasSaved ? 'solid' : 'regular'} fa-bookmark text-sm ${hasSaved ? 'text-amber-400 scale-110' : ''}`;
+                }
+                if (label) {
+                    label.textContent = hasSaved ? 'Đã lưu' : 'Lưu tin';
+                }
+            });
+
+            if (state.feedFilter === 'saved') {
+                if (state.viewMode === 'reels') renderTikTokDeck();
+                else renderDateGroupedGrid();
+            }
+        }
+
+        function initFeedScrollListener() {
+            // Replaced raw pixel-distance scroll listener with card-based IntersectionObserver prefetching
+            // to completely eliminate runaway auto-pagination loops on rapid mouse-wheel scrolling.
         }
 
         /**
@@ -1577,6 +2236,13 @@
 
             if (state.signalsCount >= 5) {
                 state.isColdStart = false;
+            }
+
+            // Update Thompson Sampling Beta distribution parameters based on feedback
+            if (delta > 0) {
+                ThompsonSamplingBandit.recordFeedback(cat, true);
+            } else if (delta < 0) {
+                ThompsonSamplingBandit.recordFeedback(cat, false);
             }
 
             // Update live HUD
@@ -1645,56 +2311,82 @@
                         handleReloadAction();
                     }
                 }
+                if (e.key === 'Escape') {
+                    closeMobileCategoryDrawer();
+                    closeTimelineModal();
+                    closeAuthModal();
+                    closeSubModal();
+                    closePreviewModal();
+                }
             });
         }
 
         function initWheelAndTouchHandling() {
             const reelsSection = document.getElementById('reelsViewSection');
             if (reelsSection) {
-                // Forward wheel events anywhere on reelsViewSection to tiktokFeed
+                // Fluid scroll forwarding without blocking compositor thread
                 reelsSection.addEventListener('wheel', (e) => {
                     const feed = document.getElementById('tiktokFeed');
                     if (feed && state.viewMode === 'reels' && !e.target.closest('#tiktokFeed')) {
-                        e.preventDefault();
                         feed.scrollBy({ top: e.deltaY, behavior: 'auto' });
                     }
-                }, { passive: false });
+                }, { passive: true });
             }
 
-            // Prevent outer window pull/bounce on mobile touch devices
-            window.addEventListener('touchmove', (e) => {
-                if (state.viewMode === 'reels' && !e.target.closest('#tiktokFeed, aside, #subModal, #authModal, #previewModal')) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
+            // Passive touch listener to prevent compositor lag
+            window.addEventListener('touchmove', () => {
+                // Native gestures handled by overscroll-behavior: none
+            }, { passive: true });
         }
 
         function toggleLike(articleId, categorySlug) {
             const icon = document.getElementById(`likeIcon-${articleId}`);
             const countEl = document.getElementById(`likeCount-${articleId}`);
-            let count = parseInt(countEl.textContent || '0');
+            let count = countEl ? parseInt(countEl.textContent || '0') : 0;
 
             if (state.likedArticleIds.has(articleId)) {
                 state.likedArticleIds.delete(articleId);
-                icon.className = 'fa-solid fa-heart text-base';
-                countEl.textContent = Math.max(0, count - 1);
+                if (icon) icon.className = 'fa-solid fa-heart text-base';
+                if (countEl) countEl.textContent = Math.max(0, count - 1);
                 applySignalAdjustment(categorySlug, -20, `💔 Bỏ thích: ${categorySlug} (-20đ)`);
                 showToast('Đã bỏ thích bài viết', 'info');
             } else {
                 state.likedArticleIds.add(articleId);
-                icon.className = 'fa-solid fa-heart text-base text-rose-500 scale-110 heart-animate';
-                countEl.textContent = count + 1;
+                if (icon) icon.className = 'fa-solid fa-heart text-base text-rose-500 scale-110 heart-animate';
+                if (countEl) countEl.textContent = count + 1;
                 applySignalAdjustment(categorySlug, 25, `❤️ Thả tim: ${categorySlug} (+25đ)`);
                 showToast('Đã lưu bài viết vào mục Yêu thích! ❤️', 'success');
             }
 
             localStorage.setItem('liked_articles_v3', JSON.stringify(Array.from(state.likedArticleIds)));
             updateStatsBadges();
+
+            // Synchronize like button on Bento cards
+            const gridIcon = document.querySelector(`#gridLikeBtn-${articleId} i`);
+            if (gridIcon) {
+                gridIcon.className = `fa-solid fa-heart ${state.likedArticleIds.has(articleId) ? 'text-rose-500 scale-110' : ''}`;
+            }
+
+            if (state.feedFilter === 'liked') {
+                if (state.viewMode === 'reels') renderTikTokDeck();
+                else renderDateGroupedGrid();
+            }
         }
 
         function updateStatsBadges() {
-            document.getElementById('likedCountBadge').textContent = state.likedArticleIds.size;
-            document.getElementById('readCountBadge').textContent = state.readArticleIds.size;
+            const likedBadge = document.getElementById('likedCountBadge');
+            const readBadge = document.getElementById('readCountBadge');
+            const savedBadge = document.getElementById('savedCountBadge');
+            const mobileSaved = document.getElementById('mobileSavedCountBadge');
+            if (likedBadge) likedBadge.textContent = state.likedArticleIds.size;
+            if (readBadge) readBadge.textContent = state.readArticleIds.size;
+            if (savedBadge) savedBadge.textContent = state.bookmarkedArticleIds.size;
+            if (mobileSaved) {
+                const count = state.bookmarkedArticleIds.size;
+                mobileSaved.textContent = count;
+                mobileSaved.classList.toggle('hidden', count === 0);
+                mobileSaved.classList.toggle('flex', count > 0);
+            }
         }
 
         function handleReloadAction() {
@@ -1720,15 +2412,36 @@
         }
 
         // =========================================================================
-        // 5. RENDER EDITORIAL BENTO GRID (GROUPED BY DATE)
+        // 5. RENDER EDITORIAL ASYMMETRIC BENTO GRID (GROUPED BY DATE)
         // =========================================================================
         function renderDateGroupedGrid() {
             const container = document.getElementById('gridDateGroupedContainer');
-            document.getElementById('gridTotalElements').textContent = `${state.allArticles.length} bài viết`;
+            if (!container) return;
             container.innerHTML = '';
 
-            if (state.allArticles.length === 0) {
-                container.innerHTML = '<div class="text-center py-16 text-zinc-500 text-xs font-mono">Không có bài viết nào.</div>';
+            let displayArticles = [...state.allArticles];
+            if (state.feedFilter === 'liked') {
+                displayArticles = state.allArticles.filter(a => state.likedArticleIds.has(a.id));
+            } else if (state.feedFilter === 'saved') {
+                displayArticles = state.allArticles.filter(a => state.bookmarkedArticleIds.has(a.id));
+            } else if (state.feedFilter === 'history') {
+                displayArticles = state.allArticles.filter(a => state.readArticleIds.has(a.id));
+            }
+
+            document.getElementById('gridTotalElements').textContent = `${displayArticles.length} bài viết`;
+
+            if (displayArticles.length === 0) {
+                let emptyMsg = 'Chưa có bài viết phù hợp.';
+                if (state.feedFilter === 'saved') emptyMsg = 'Chưa có bài viết nào được lưu. Bấm vào biểu tượng Lưu tin trên bất kỳ thẻ nào để thêm vào đây!';
+                else if (state.feedFilter === 'liked') emptyMsg = 'Chưa có bài viết nào được thả tim.';
+                else if (state.feedFilter === 'history') emptyMsg = 'Chưa có bài viết nào trong lịch sử đã xem.';
+
+                container.innerHTML = `
+                    <div class="text-center py-20 text-[var(--text-caption)] text-xs font-mono">
+                        <i class="fa-regular fa-folder-open text-3xl mb-3 block text-zinc-500"></i>
+                        ${emptyMsg}
+                    </div>
+                `;
                 return;
             }
 
@@ -1738,7 +2451,7 @@
             yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayStr = yesterday.toDateString();
 
-            state.allArticles.forEach(article => {
+            displayArticles.forEach(article => {
                 let dateKey = 'Tin gần đây';
                 if (article.publishedAt) {
                     const d = new Date(article.publishedAt);
@@ -1761,25 +2474,25 @@
 
                 section.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="date-badge px-3 py-1 rounded-md text-xs font-mono font-bold bg-zinc-800/80 text-zinc-200 border border-zinc-700/60">
+                        <span class="date-badge px-3 py-1 rounded-md text-xs font-mono font-bold bg-[var(--bg-surface-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)]">
                             ${dateLabel}
                         </span>
-                        <div class="date-divider h-px bg-zinc-800/80 flex-1"></div>
-                        <span class="text-[11px] font-mono text-zinc-500">${articles.length} tin tức</span>
+                        <div class="date-divider h-px bg-[var(--border-subtle)] flex-1"></div>
+                        <span class="text-[11px] font-mono text-[var(--text-caption)] font-medium">${articles.length} tin tức</span>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        ${articles.map(a => createBentoGridCard(a)).join('')}
+                    <div class="bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 auto-rows-fr">
+                        ${articles.map((a, idx) => createBentoGridCard(a, idx, articles.length)).join('')}
                     </div>
                 `;
                 container.appendChild(section);
             }
 
-            if (!state.isLastPage) {
+            if (!state.isLastPage && state.feedFilter !== 'liked' && state.feedFilter !== 'saved' && state.feedFilter !== 'history') {
                 const loadMoreBtnContainer = document.createElement('div');
                 loadMoreBtnContainer.className = 'text-center pt-6 pb-12';
                 loadMoreBtnContainer.innerHTML = `
-                    <button id="loadMoreBtn" onclick="loadMoreArticles()" class="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold text-xs shadow-lg transition-all inline-flex items-center gap-2">
+                    <button id="loadMoreBtn" onclick="loadMoreArticles()" class="px-5 py-2.5 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] font-semibold text-xs shadow-lg transition-all inline-flex items-center gap-2">
                         <i class="fa-solid fa-arrow-down text-zinc-400"></i>
                         <span>Tải thêm tin tức cũ hơn (Trang ${state.currentPage + 2})</span>
                     </button>
@@ -1788,53 +2501,259 @@
             }
         }
 
-        function createBentoGridCard(article) {
+        function createBentoGridCard(article, index = 0, groupTotal = 1) {
             const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
             const timeAgo = formatRelativeTime(article.publishedAt);
             const isLiked = state.likedArticleIds.has(article.id);
+            const isBookmarked = state.bookmarkedArticleIds.has(article.id);
+            const isSerendipity = article.slotType === 'serendipity' || article.slotType === 'exploration' || (article.serendipityScore && article.serendipityScore >= 50);
 
-            return `
-                <div class="grid-card group bg-[#111115] rounded-xl overflow-hidden border border-[rgba(255,255,255,0.07)] hover:border-zinc-500/40 transition-all flex flex-col justify-between">
-                    <div>
-                        <!-- Cover Image -->
-                        <div class="h-40 w-full relative overflow-hidden bg-zinc-900">
-                            <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                 onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
-                            <div class="absolute top-2.5 left-2.5 flex gap-1.5">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-black/70 backdrop-blur-md text-zinc-200 border border-white/10">
-                                    ${article.sourceName || 'Tin tức'}
-                                </span>
+            // Calculate reading time estimate
+            const textContent = `${article.title || ''} ${article.summary || ''}`;
+            const wordCount = textContent.trim().split(/\s+/).length;
+            const readMinutes = Math.max(1, Math.round(wordCount / 180));
+
+            // Serendipity Pill Badge
+            const serendipityBadgeHtml = isSerendipity
+                ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40 flex items-center gap-1 shadow-sm"><i class="fa-solid fa-sparkles text-amber-400"></i> ✨ Khám phá</span>`
+                : '';
+
+            // Slot badge (Hot / Breaking)
+            const slotBadgeHtml = article.slotType === 'breaking'
+                ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-400/40 flex items-center gap-1 shadow-sm"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng</span>`
+                : '';
+
+            const patternIdx = index % 6;
+
+            // RHYTHM 1: LEAD EDITORIAL STORY (Hero 2x2 on lg/md)
+            if (patternIdx === 0) {
+                return `
+                    <div class="bento-card bento-lead ${isSerendipity ? 'bento-serendipity' : ''} col-span-1 md:col-span-2 lg:col-span-2 row-span-2 group flex flex-col justify-between">
+                        <div>
+                            <!-- Hero Cover Image -->
+                            <div class="h-60 sm:h-72 w-full relative overflow-hidden bg-zinc-900 rounded-t-2xl">
+                                <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                     onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                                <div class="absolute top-3 left-3 flex gap-2 flex-wrap z-10">
+                                    <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-extrabold bg-rose-600 text-white shadow-md">
+                                        ★ TIÊU ĐIỂM
+                                    </span>
+                                    <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-black/75 backdrop-blur-md text-zinc-100 border border-white/20">
+                                        ${escapeHtml(article.sourceName || 'Báo điện tử')}
+                                    </span>
+                                    ${serendipityBadgeHtml}
+                                    ${slotBadgeHtml}
+                                </div>
+                                <div class="absolute bottom-3 left-4 right-4 z-10 text-[11px] font-mono text-zinc-300 flex items-center justify-between">
+                                    <span class="px-2 py-0.5 rounded bg-black/60 backdrop-blur-md border border-white/10 font-semibold text-rose-300">
+                                        ${escapeHtml(article.categoryName || 'Thời sự')}
+                                    </span>
+                                    <span class="text-zinc-300 font-medium"><i class="fa-regular fa-clock mr-1"></i>${timeAgo}</span>
+                                </div>
+                            </div>
+
+                            <!-- Lead Content Details -->
+                            <div class="p-5 sm:p-6 space-y-3">
+                                <h3 class="text-base sm:text-xl font-extrabold text-[var(--text-primary)] group-hover:text-[var(--accent-editorial)] transition-colors leading-tight tracking-tight">
+                                    <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
+                                </h3>
+
+                                <div class="p-3.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                                    <div class="text-[10px] font-mono uppercase tracking-wider text-[var(--accent-editorial)] font-bold mb-1 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-quote-left text-[9px]"></i> Cốt Lõi Bản Tin
+                                    </div>
+                                    <p class="line-clamp-3 font-medium">
+                                        ${escapeHtml(article.summary || 'Nhấn đọc tiếp để xem toàn văn bài viết trên báo chính thống.')}
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Text details -->
-                        <div class="p-4 space-y-2">
-                            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-500">
-                                <span>${escapeHtml(article.categoryName || 'Chung')}</span>
-                                <span>${timeAgo}</span>
+                        <!-- Card Footer Toolbar -->
+                        <div class="p-5 sm:p-6 pt-0 flex items-center justify-between border-t border-[var(--border-subtle)] mt-2">
+                            <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
+                               onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
+                               class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[var(--accent-editorial)] hover:bg-[var(--accent-editorial-hover)] text-white text-xs font-bold shadow-md transition-all hover:scale-105 active:scale-95">
+                                <span>Đọc bài gốc</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openTimelineDrawer(${article.id})" title="Xem mạch tin sự kiện (Story Arc)" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono font-semibold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 transition-all">
+                                    <i class="fa-solid fa-timeline text-xs text-amber-400"></i>
+                                    <span>Mạch tin</span>
+                                </button>
+                                <button onclick="toggleBookmark(${article.id})" title="Lưu bài viết" class="bookmark-btn-${article.id} p-2 rounded-lg text-zinc-400 hover:text-amber-400 hover:bg-[var(--bg-surface-elevated)] transition-colors">
+                                    <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-sm ${isBookmarked ? 'text-amber-400 scale-110' : ''}"></i>
+                                </button>
+                                <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" id="gridLikeBtn-${article.id}" title="Thả tim" class="p-2 rounded-lg text-zinc-400 hover:text-rose-500 hover:bg-[var(--bg-surface-elevated)] transition-colors">
+                                    <i class="fa-solid fa-heart text-sm ${isLiked ? 'text-rose-500 scale-110' : ''}"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // RHYTHM 2: SPOTLIGHT HORIZONTAL / SPLIT (2 cols on md/lg)
+            if (patternIdx === 1) {
+                return `
+                    <div class="bento-card ${isSerendipity ? 'bento-serendipity' : ''} col-span-1 md:col-span-2 lg:col-span-2 group flex flex-col sm:flex-row justify-between overflow-hidden">
+                        <!-- Left Side Image -->
+                        <div class="sm:w-2/5 h-48 sm:h-auto min-h-[180px] relative overflow-hidden bg-zinc-900 shrink-0">
+                            <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
+                            <div class="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/80 via-black/20 to-transparent"></div>
+                            <div class="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-black/75 backdrop-blur-md text-zinc-200 border border-white/10">
+                                    ${escapeHtml(article.sourceName || 'Tin tức')}
+                                </span>
+                                ${serendipityBadgeHtml}
+                            </div>
+                        </div>
+
+                        <!-- Right Side Editorial Text -->
+                        <div class="sm:w-3/5 p-4 sm:p-5 flex flex-col justify-between">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between text-[11px] font-mono text-[var(--text-caption)]">
+                                    <span class="font-semibold text-rose-400">${escapeHtml(article.categoryName || 'Chung')}</span>
+                                    <span><i class="fa-regular fa-clock mr-1"></i>${timeAgo}</span>
+                                </div>
+                                <h3 class="text-sm sm:text-base font-extrabold text-[var(--text-primary)] group-hover:text-[var(--accent-editorial)] transition-colors line-clamp-2 leading-snug">
+                                    <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
+                                </h3>
+                                <p class="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
+                                    ${escapeHtml(article.summary || 'Không có mô tả chi tiết.')}
+                                </p>
                             </div>
 
-                            <h3 class="grid-card-title text-sm font-bold text-zinc-100 group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
+                            <div class="pt-3 border-t border-[var(--border-subtle)] mt-3 flex items-center justify-between">
+                                <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
+                                   onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
+                                   class="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent-editorial)] hover:underline transition-colors">
+                                    <span>Đọc chi tiết</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                </a>
+                                <div class="flex items-center gap-1.5">
+                                    <button onclick="openTimelineDrawer(${article.id})" title="Xem mạch tin (Story Arc)" class="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-mono text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 transition-colors">
+                                        <i class="fa-solid fa-timeline text-[10px]"></i>
+                                        <span>Mạch tin</span>
+                                    </button>
+                                    <button onclick="toggleBookmark(${article.id})" title="Lưu bài viết" class="bookmark-btn-${article.id} p-1.5 text-zinc-400 hover:text-amber-400 transition-colors">
+                                        <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-xs ${isBookmarked ? 'text-amber-400 scale-110' : ''}"></i>
+                                    </button>
+                                    <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" id="gridLikeBtn-${article.id}" title="Thả tim" class="p-1.5 text-zinc-400 hover:text-rose-500 transition-colors">
+                                        <i class="fa-solid fa-heart text-xs ${isLiked ? 'text-rose-500 scale-110' : ''}"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // RHYTHM 4: STORYLINE NARRATIVE RIBBON (2 cols on md/lg)
+            if (patternIdx === 4) {
+                return `
+                    <div class="bento-card ${isSerendipity ? 'bento-serendipity' : ''} col-span-1 md:col-span-2 lg:col-span-2 group flex flex-col justify-between">
+                        <!-- Story Arc Progression Ribbon Header -->
+                        <div class="px-4 py-2.5 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-subtle)] flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400">Mạch Tin Tức (Story Arc)</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-[var(--text-caption)]">Khởi nguồn ── Diễn biến ── Mới nhất</span>
+                        </div>
+
+                        <div class="p-4 sm:p-5 space-y-2.5">
+                            <div class="flex items-center justify-between text-[11px] font-mono text-[var(--text-caption)]">
+                                <span class="font-bold text-[var(--text-primary)]">${escapeHtml(article.sourceName || 'Báo điện tử')}</span>
+                                <span><i class="fa-regular fa-clock mr-1"></i>${timeAgo}</span>
+                            </div>
+                            <h3 class="text-sm sm:text-base font-extrabold text-[var(--text-primary)] group-hover:text-[var(--accent-editorial)] transition-colors leading-snug">
+                                <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
+                            </h3>
+                            <p class="text-xs text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
+                                ${escapeHtml(article.summary || 'Theo dõi chuỗi diễn biến toàn cảnh sự kiện liên quan này.')}
+                            </p>
+                        </div>
+
+                        <div class="p-4 sm:p-5 pt-0 flex items-center justify-between border-t border-[var(--border-subtle)] mt-2">
+                            <button onclick="openTimelineDrawer(${article.id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/35 text-xs font-semibold font-mono transition-all">
+                                <i class="fa-solid fa-timeline text-xs text-amber-400"></i>
+                                <span>Mở toàn bộ mạch tin</span>
+                            </button>
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleBookmark(${article.id})" title="Lưu bài viết" class="bookmark-btn-${article.id} p-1.5 text-zinc-400 hover:text-amber-400 transition-colors">
+                                    <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-xs ${isBookmarked ? 'text-amber-400 scale-110' : ''}"></i>
+                                </button>
+                                <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" id="gridLikeBtn-${article.id}" title="Thả tim" class="p-1.5 text-zinc-400 hover:text-rose-500 transition-colors">
+                                    <i class="fa-solid fa-heart text-xs ${isLiked ? 'text-rose-500 scale-110' : ''}"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // RHYTHM 3 & 5: COMPACT QUICK BITES / EDITORIAL CARD (1 col)
+            return `
+                <div class="bento-card ${isSerendipity ? 'bento-serendipity' : ''} col-span-1 group flex flex-col justify-between">
+                    <div>
+                        <!-- Cover Image -->
+                        <div class="h-36 w-full relative overflow-hidden bg-zinc-900">
+                            <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+                            <div class="absolute top-2 left-2 flex gap-1.5 flex-wrap z-10">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-black/75 backdrop-blur-md text-zinc-200 border border-white/10">
+                                    ${escapeHtml(article.sourceName || 'Tin tức')}
+                                </span>
+                                ${serendipityBadgeHtml}
+                                ${slotBadgeHtml}
+                            </div>
+                            <div class="absolute bottom-1.5 right-2 text-[10px] font-mono text-zinc-300">
+                                <span>${timeAgo}</span>
+                            </div>
+                        </div>
+
+                        <!-- Content Details -->
+                        <div class="p-3.5 space-y-1.5">
+                            <div class="flex items-center justify-between text-[10px] font-mono text-[var(--text-caption)]">
+                                <span class="font-semibold text-rose-400">${escapeHtml(article.categoryName || 'Chung')}</span>
+                            </div>
+
+                            <h3 class="text-xs sm:text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-editorial)] transition-colors line-clamp-2 leading-snug">
                                 <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
                             </h3>
 
-                            <p class="grid-card-desc text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                            <p class="text-[11px] text-[var(--text-secondary)] line-clamp-2 leading-relaxed">
                                 ${escapeHtml(article.summary || 'Không có mô tả chi tiết.')}
                             </p>
                         </div>
                     </div>
 
-                    <div class="grid-card-footer p-4 pt-0 flex items-center justify-between border-t border-zinc-800/80 mt-2">
+                    <div class="p-3.5 pt-0 flex items-center justify-between border-t border-[var(--border-subtle)] mt-2">
                         <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
                            onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
-                           class="inline-flex items-center gap-1 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
+                           class="inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--text-secondary)] hover:text-[var(--accent-editorial)] transition-colors">
                             <span>Đọc tiếp</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
                         </a>
-                        <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" class="text-xs text-zinc-500 hover:text-rose-500 p-1">
-                            <i class="fa-solid fa-heart ${isLiked ? 'text-rose-500' : ''}"></i>
-                        </button>
+                        <div class="flex items-center gap-1">
+                            <button onclick="openTimelineDrawer(${article.id})" title="Xem mạch tin (Story Arc)" class="p-1 text-zinc-400 hover:text-amber-400 transition-colors">
+                                <i class="fa-solid fa-timeline text-[11px] text-amber-400"></i>
+                            </button>
+                            <button onclick="toggleBookmark(${article.id})" title="Lưu bài viết" class="bookmark-btn-${article.id} p-1 text-zinc-400 hover:text-amber-400 transition-colors">
+                                <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-[11px] ${isBookmarked ? 'text-amber-400' : ''}"></i>
+                            </button>
+                            <button onclick="toggleLike(${article.id}, '${article.categorySlug}')" id="gridLikeBtn-${article.id}" title="Thả tim" class="p-1 text-zinc-400 hover:text-rose-500 transition-colors">
+                                <i class="fa-solid fa-heart text-[11px] ${isLiked ? 'text-rose-500' : ''}"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1844,24 +2763,73 @@
         // 6. SIDEBAR, CATEGORIES, SEARCH & MODES
         // =========================================================================
         function switchViewMode(mode) {
+            if (state.viewMode === mode) return;
             state.viewMode = mode;
             const reelsSection = document.getElementById('reelsViewSection');
             const gridSection = document.getElementById('gridViewSection');
             const reelsBtn = document.getElementById('viewReelsBtn');
             const gridBtn = document.getElementById('viewGridBtn');
 
+            // Fluid crossfade transition (<150ms)
             if (mode === 'reels') {
-                reelsSection.classList.remove('hidden');
-                gridSection.classList.add('hidden');
-                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all';
+                gridSection.style.opacity = '0';
+                gridSection.style.transform = 'translateY(8px)';
+                gridSection.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+                setTimeout(() => {
+                    gridSection.classList.add('hidden');
+                    reelsSection.classList.remove('hidden');
+                    reelsSection.style.opacity = '0';
+                    reelsSection.style.transform = 'translateY(8px)';
+                    reelsSection.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+                    renderTikTokDeck();
+                    requestAnimationFrame(() => {
+                        reelsSection.style.opacity = '1';
+                        reelsSection.style.transform = 'translateY(0)';
+                    });
+                }, 130);
+
+                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[var(--accent-editorial)] text-white shadow-sm transition-all';
                 gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all';
-                renderTikTokDeck();
             } else {
-                reelsSection.classList.add('hidden');
-                gridSection.classList.remove('hidden');
-                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-700 text-white shadow-xs transition-all';
+                reelsSection.style.opacity = '0';
+                reelsSection.style.transform = 'translateY(8px)';
+                reelsSection.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+                setTimeout(() => {
+                    reelsSection.classList.add('hidden');
+                    gridSection.classList.remove('hidden');
+                    gridSection.style.opacity = '0';
+                    gridSection.style.transform = 'translateY(8px)';
+                    gridSection.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+                    renderDateGroupedGrid();
+                    requestAnimationFrame(() => {
+                        gridSection.style.opacity = '1';
+                        gridSection.style.transform = 'translateY(0)';
+                    });
+                }, 130);
+
+                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[var(--accent-editorial)] text-white shadow-sm transition-all';
                 reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all';
-                renderDateGroupedGrid();
+            }
+
+            // Synchronize Mobile Bottom Navigation Tabs
+            const mobForYou = document.getElementById('mobileNav-for-you');
+            const mobTrending = document.getElementById('mobileNav-trending');
+            const mobGrid = document.getElementById('mobileNav-grid');
+            if (mobForYou && mobTrending && mobGrid) {
+                if (mode === 'grid') {
+                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
+                    mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                } else {
+                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    if (state.feedFilter === 'trending') {
+                        mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
+                        mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    } else {
+                        mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
+                        mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    }
+                }
             }
         }
 
@@ -1870,14 +2838,37 @@
             state.currentCategoryId = null;
             state.currentSearchKeyword = null;
 
-            ['for-you', 'trending', 'liked', 'history'].forEach(f => {
+            ['for-you', 'trending', 'liked', 'saved', 'history'].forEach(f => {
                 const btn = document.getElementById(`nav-${f}`);
                 if (btn) {
                     btn.className = f === filter 
-                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20 transition-all'
+                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 transition-all'
                         : 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
                 }
             });
+
+            // Synchronize Mobile Bottom Navigation Tabs
+            const mobForYou = document.getElementById('mobileNav-for-you');
+            const mobTrending = document.getElementById('mobileNav-trending');
+            const mobSaved = document.getElementById('mobileNav-saved');
+            const mobGrid = document.getElementById('mobileNav-grid');
+
+            if (mobForYou && mobTrending && mobSaved && mobGrid) {
+                mobForYou.className = (filter === 'for-you' && state.viewMode === 'reels')
+                    ? 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all'
+                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                mobTrending.className = (filter === 'trending' && state.viewMode === 'reels')
+                    ? 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all'
+                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                mobSaved.className = (filter === 'saved')
+                    ? 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-amber-500 font-bold transition-all relative'
+                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all relative';
+                if (state.viewMode === 'grid') {
+                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
+                } else {
+                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                }
+            }
 
             document.querySelectorAll('#sidebarCategoriesList button').forEach(b => {
                 b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
@@ -1893,13 +2884,36 @@
                 state.categories = await res.json();
 
                 const container = document.getElementById('sidebarCategoriesList');
+                const mobileGrid = document.getElementById('mobileCategoriesGrid');
+
+                if (mobileGrid) {
+                    mobileGrid.innerHTML = `
+                        <button onclick="selectCategory(null, 'Tất cả tin'); closeMobileCategoryDrawer();" class="p-2.5 rounded-xl text-xs font-semibold text-left bg-zinc-800 text-white border border-zinc-700/60 transition-all flex items-center gap-2">
+                            <span>🌐</span> <span>Tất cả tin</span>
+                        </button>
+                    `;
+                }
+
                 state.categories.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.id = `cat-btn-${cat.id}`;
-                    btn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
-                    btn.textContent = cat.name;
-                    btn.onclick = () => selectCategory(cat.id, cat.name);
-                    container.appendChild(btn);
+                    if (container) {
+                        const btn = document.createElement('button');
+                        btn.id = `cat-btn-${cat.id}`;
+                        btn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
+                        btn.textContent = cat.name;
+                        btn.onclick = () => selectCategory(cat.id, cat.name);
+                        container.appendChild(btn);
+                    }
+                    if (mobileGrid) {
+                        const mBtn = document.createElement('button');
+                        mBtn.id = `mobile-cat-btn-${cat.id}`;
+                        mBtn.className = 'p-2.5 rounded-xl text-xs font-medium text-left bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 border border-zinc-700/50 transition-all flex items-center gap-2 truncate';
+                        mBtn.innerHTML = `<span>📰</span> <span class="truncate">${escapeHtml(cat.name)}</span>`;
+                        mBtn.onclick = () => {
+                            selectCategory(cat.id, cat.name);
+                            closeMobileCategoryDrawer();
+                        };
+                        mobileGrid.appendChild(mBtn);
+                    }
                 });
             } catch (err) {
                 console.error(err);
@@ -1925,24 +2939,43 @@
 
         function renderSidebarTrendingCloud() {
             const container = document.getElementById('sidebarTrendingCloud');
-            container.innerHTML = '';
+            const mobileContainer = document.getElementById('mobileTrendingCloud');
+            if (container) container.innerHTML = '';
+            if (mobileContainer) mobileContainer.innerHTML = '';
+
             if (state.trendingKeywords.length === 0) {
-                container.innerHTML = '<span class="text-[11px] text-zinc-600 italic">Chưa có từ khóa hot</span>';
+                if (container) container.innerHTML = '<span class="text-[11px] text-zinc-600 italic">Chưa có từ khóa hot</span>';
+                if (mobileContainer) mobileContainer.innerHTML = '<span class="text-xs text-zinc-500 italic">Chưa có từ khóa hot</span>';
                 return;
             }
             state.trendingKeywords.forEach(kw => {
-                const tag = document.createElement('button');
-                tag.className = 'text-[10px] font-mono px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-[rgba(255,255,255,0.06)] transition-all';
-                tag.innerHTML = `#${kw.keyword}`;
-                tag.onclick = () => searchByTag(kw.keyword);
-                container.appendChild(tag);
+                if (container) {
+                    const tag = document.createElement('button');
+                    tag.className = 'text-[10px] font-mono px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-[rgba(255,255,255,0.06)] transition-all';
+                    tag.textContent = `#${kw.keyword}`;
+                    tag.onclick = () => searchByTag(kw.keyword);
+                    container.appendChild(tag);
+                }
+                if (mobileContainer) {
+                    const mTag = document.createElement('button');
+                    mTag.className = 'text-xs font-mono px-2.5 py-1 rounded-lg bg-zinc-800/80 hover:bg-rose-500/20 text-zinc-300 hover:text-rose-300 border border-zinc-700/60 transition-all';
+                    mTag.textContent = `#${kw.keyword}`;
+                    mTag.onclick = () => {
+                        closeMobileCategoryDrawer();
+                        searchByTag(kw.keyword);
+                    };
+                    mobileContainer.appendChild(mTag);
+                }
             });
         }
 
         function searchByTag(keyword) {
             state.currentSearchKeyword = keyword;
             state.currentCategoryId = null;
-            document.getElementById('searchInput').value = keyword;
+            const desktopInput = document.getElementById('searchInput');
+            const mobileInput = document.getElementById('mobileSearchInput');
+            if (desktopInput) desktopInput.value = keyword;
+            if (mobileInput) mobileInput.value = keyword;
             showToast(`Tìm kiếm: #${keyword}`, 'info');
             fetchArticlesAndBuildFeed();
         }
@@ -1952,8 +2985,40 @@
             if (kw) searchByTag(kw);
         }
 
+        function triggerMobileSearch() {
+            const input = document.getElementById('mobileSearchInput');
+            const keyword = input ? input.value.trim() : '';
+            closeMobileCategoryDrawer();
+            if (keyword) {
+                searchByTag(keyword);
+            }
+        }
+
+        function openMobileCategoryDrawer(focusSearch = false) {
+            const drawer = document.getElementById('mobileCategoryDrawer');
+            if (!drawer) return;
+            drawer.classList.remove('hidden');
+            drawer.classList.add('flex');
+            if (focusSearch) {
+                setTimeout(() => {
+                    const input = document.getElementById('mobileSearchInput');
+                    if (input) input.focus();
+                }, 150);
+            }
+        }
+
+        function closeMobileCategoryDrawer() {
+            const drawer = document.getElementById('mobileCategoryDrawer');
+            if (!drawer) return;
+            drawer.classList.add('hidden');
+            drawer.classList.remove('flex');
+        }
+
         function resetFilters() {
-            document.getElementById('searchInput').value = '';
+            const desktopInput = document.getElementById('searchInput');
+            const mobileInput = document.getElementById('mobileSearchInput');
+            if (desktopInput) desktopInput.value = '';
+            if (mobileInput) mobileInput.value = '';
             selectFeedFilter('for-you');
         }
 
