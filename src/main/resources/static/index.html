@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VNNews Hub - Micro-Content Feed & TikTok Recommendation Engine</title>
+    <title>VNNews Hub - Đọc Báo Tóm Tắt & Tin Tức Xu Hướng</title>
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,6 +50,7 @@
             background-color: #0c0d0e;
             color: #f5f3ef;
             letter-spacing: -0.015em;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         /* Snap Scroll TikTok Deck */
@@ -106,6 +107,300 @@
         .read-progress-bar {
             transition: width 0.1s linear;
         }
+
+        /* =========================================================
+           HIGH CONTRAST THEME SYSTEM (DARK & LIGHT MODE)
+           ========================================================= */
+        /* Dark mode summary box */
+        .summary-box {
+            background-color: rgba(10, 11, 14, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f5f3ef;
+        }
+        .summary-text {
+            color: #f5f3ef;
+        }
+
+        /* Light Mode High Contrast Overrides */
+        html.light {
+            color-scheme: light;
+        }
+        html.light,
+        html.light body {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+        html.light ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+        }
+        html.light ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Header in Light Mode */
+        html.light header {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border-bottom-color: #e2e8f0 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        html.light header span.text-white,
+        html.light header .text-white {
+            color: #0f172a !important;
+        }
+        html.light header .text-zinc-200 {
+            color: #1e293b !important;
+        }
+        html.light header .text-zinc-300 {
+            color: #334155 !important;
+        }
+        html.light header .text-zinc-400 {
+            color: #64748b !important;
+        }
+        html.light header .text-zinc-500 {
+            color: #94a3b8 !important;
+        }
+        html.light #viewModeToggleContainer {
+            background-color: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+        }
+        html.light #searchInput {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        html.light #searchInput::placeholder {
+            color: #94a3b8 !important;
+        }
+        html.light #themeToggleBtn {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        html.light #themeToggleBtn:hover {
+            background-color: #e2e8f0 !important;
+        }
+        html.light button[onclick="handleReloadAction()"] {
+            background-color: #f1f5f9 !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        html.light a[title="Tài liệu Swagger API"] {
+            border-color: #cbd5e1 !important;
+            color: #475569 !important;
+        }
+        html.light a[title="Tài liệu Swagger API"]:hover {
+            color: #0f172a !important;
+        }
+
+        /* Sidebar in Light Mode */
+        html.light aside {
+            background-color: #ffffff !important;
+            border-right-color: #e2e8f0 !important;
+        }
+        html.light aside .text-zinc-500 {
+            color: #64748b !important;
+        }
+        html.light aside button {
+            color: #475569;
+        }
+        html.light aside button:hover {
+            color: #0f172a !important;
+            background-color: #f1f5f9 !important;
+        }
+        html.light aside button.bg-rose-500\/10 {
+            background-color: #fff1f2 !important;
+            color: #e11d48 !important;
+            border-color: #fecdd3 !important;
+        }
+        html.light aside button.bg-zinc-800\/60,
+        html.light aside button.bg-zinc-800 {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+        }
+        html.light #likedCountBadge,
+        html.light #readCountBadge {
+            background-color: #e2e8f0 !important;
+            color: #475569 !important;
+        }
+        html.light #sidebarTrendingCloud button {
+            background-color: #f1f5f9 !important;
+            color: #334155 !important;
+            border-color: #e2e8f0 !important;
+        }
+        html.light #sidebarTrendingCloud button:hover {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+        }
+
+        /* Main Area & TikTok View in Light Mode */
+        html.light main {
+            background-color: #f8fafc !important;
+        }
+        html.light #tiktokFeed {
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0,0,0,0.15) !important;
+        }
+        html.light #feedProgressBadge {
+            background-color: rgba(255, 255, 255, 0.92) !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        }
+        html.light .tiktok-nav-arrow {
+            background-color: #ffffff !important;
+            border-color: #cbd5e1 !important;
+            color: #1e293b !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        }
+        html.light .tiktok-nav-arrow:hover {
+            background-color: #f1f5f9 !important;
+            color: #0f172a !important;
+        }
+
+        /* Summary Box in Light Mode - High Contrast White Glass Card with Deep Ink Text */
+        html.light .summary-box {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border: 1px solid rgba(0, 0, 0, 0.12) !important;
+            color: #0f172a !important;
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.25) !important;
+        }
+        html.light .summary-text {
+            color: #0f172a !important;
+            font-weight: 550 !important;
+        }
+
+        /* Bento Grid in Light Mode */
+        html.light #gridViewSection {
+            background-color: #f8fafc !important;
+        }
+        html.light .grid-card {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+        }
+        html.light .grid-card:hover {
+            border-color: #e11d48 !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+        html.light .grid-card-title,
+        html.light .grid-card-title a {
+            color: #0f172a !important;
+        }
+        html.light .grid-card-title a:hover {
+            color: #e11d48 !important;
+        }
+        html.light .grid-card-desc {
+            color: #475569 !important;
+        }
+        html.light .grid-card-footer {
+            border-top-color: #f1f5f9 !important;
+        }
+        html.light .grid-card-footer a {
+            color: #334155 !important;
+        }
+        html.light .grid-card-footer a:hover {
+            color: #0f172a !important;
+        }
+        html.light .date-badge {
+            background-color: #0f172a !important;
+            color: #ffffff !important;
+            border-color: #0f172a !important;
+        }
+        html.light .date-divider {
+            background-color: #e2e8f0 !important;
+        }
+        html.light #gridViewSection span.text-zinc-500 {
+            color: #64748b !important;
+        }
+        html.light #loadMoreBtn {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+        }
+        html.light #loadMoreBtn:hover {
+            background-color: #f8fafc !important;
+        }
+
+        /* Modals in Light Mode */
+        html.light #authModal > div,
+        html.light #subModal > div,
+        html.light #previewModal > div {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        }
+        html.light #authModal input,
+        html.light #subModal input {
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+        html.light #authModal input::placeholder {
+            color: #94a3b8 !important;
+        }
+        html.light #authModal label,
+        html.light #subModal label {
+            color: #334155 !important;
+        }
+        html.light #subCategoryList > div {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+        }
+        html.light #subCategoryList span.text-white {
+            color: #0f172a !important;
+        }
+        html.light #subCategoryList span.text-zinc-500 {
+            color: #64748b !important;
+        }
+        html.light #previewModal .bg-zinc-900 {
+            background-color: #f1f5f9 !important;
+            border-bottom-color: #e2e8f0 !important;
+        }
+        html.light #previewModal span.text-zinc-300 {
+            color: #0f172a !important;
+        }
+        html.light #authModal .border-zinc-800,
+        html.light #subModal .border-zinc-800 {
+            border-color: #e2e8f0 !important;
+        }
+        html.light #authTabLogin.text-white {
+            color: #0f172a !important;
+        }
+        html.light #authTabRegister.text-white {
+            color: #0f172a !important;
+        }
+
+        /* Toast in Light Mode */
+        html.light #toastContent {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        /* End Cards in Light Mode */
+        html.light #feedEndCompletedCard,
+        html.light #feedEndLoaderCard {
+            background-color: #f8fafc !important;
+        }
+        html.light #feedEndCompletedCard h3,
+        html.light #feedEndLoaderCard h3 {
+            color: #0f172a !important;
+        }
+        html.light #feedEndCompletedCard p,
+        html.light #feedEndLoaderCard p {
+            color: #475569 !important;
+        }
+        html.light #feedEndCompletedCard button.bg-zinc-800 {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            border-color: #cbd5e1 !important;
+        }
     </style>
 </head>
 <body class="bg-[#0c0d0e] text-[#f5f3ef] h-screen w-screen overflow-hidden flex flex-col antialiased selection:bg-rose-500/25 selection:text-rose-200">
@@ -126,7 +421,7 @@
             </div>
 
             <!-- Mode Switcher: Reels vs Grid -->
-            <div class="flex items-center bg-[#141417] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
+            <div id="viewModeToggleContainer" class="flex items-center bg-[#141417] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
                 <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ Micro-Content (TikTok)"
                         class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-800 text-white shadow-xs transition-all">
                     <i class="fa-solid fa-mobile-screen text-[11px]"></i>
@@ -153,9 +448,16 @@
 
         <!-- Right: Actions & User -->
         <div class="flex items-center gap-2 sm:gap-3">
+
+            <!-- Theme Mode Toggle (Trắng / Đen) -->
+            <button id="themeToggleBtn" onclick="toggleThemeMode()" title="Chuyển chế độ Sáng / Tối (Trắng / Đen)" 
+                    class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.1)] bg-zinc-800/90 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold transition-all">
+                <i id="themeToggleIcon" class="fa-solid fa-sun text-amber-400 text-xs"></i>
+                <span id="themeToggleText" class="hidden sm:inline text-[11px]">Nền sáng</span>
+            </button>
             
-            <!-- Reload Unread Deck Button with Recommendation Trigger -->
-            <button onclick="handleReloadAction()" title="Làm mới hàng đợi (Học tức thì theo sở thích phiên hiện tại)" 
+            <!-- Reload Unread Deck Button -->
+            <button onclick="handleReloadAction()" title="Làm mới bản tin" 
                     class="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
                 <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-rose-400"></i>
                 <span class="hidden sm:inline">Làm Mới</span>
@@ -204,7 +506,7 @@
                     <button onclick="selectFeedFilter('for-you')" id="nav-for-you" 
                             class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20 transition-all">
                         <span class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-layer-group text-rose-400"></i> Dành Cho Bạn (70-20-10)
+                            <i class="fa-solid fa-layer-group text-rose-400"></i> Dành Cho Bạn
                         </span>
                         <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
                     </button>
@@ -256,8 +558,8 @@
 
             </div>
 
-            <!-- EDITORIAL RECOMMENDATION ENGINE: LIVE SIGNALS HUD -->
-            <div class="p-3.5 rounded-xl bg-[#141417] border border-[rgba(255,255,255,0.08)] text-[11px] space-y-2 mt-4">
+            <!-- Internal Algorithm HUD (Hidden from normal end-users) -->
+            <div id="internalAlgorithmHUD" class="hidden p-3.5 rounded-xl bg-[#141417] border border-[rgba(255,255,255,0.08)] text-[11px] space-y-2 mt-4">
                 <div class="flex items-center justify-between font-mono text-[10px] text-rose-400 font-bold">
                     <span class="flex items-center gap-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping"></span> ĐIỀU PHỐI BẢN TIN
@@ -265,13 +567,11 @@
                     <span id="coldStartBadge" class="text-[9px] bg-zinc-800 px-1 rounded text-zinc-400">Cold-Start</span>
                 </div>
 
-                <!-- Dominant Interest Profile -->
                 <div>
                     <div class="text-[10px] font-mono text-zinc-500 uppercase">Trọng số hứng thú phiên:</div>
                     <div id="dominantInterestText" class="text-xs font-bold text-white mt-0.5 truncate">
                         Đang đọc vị hành vi...
                     </div>
-                    <!-- Interest score distribution bar -->
                     <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1.5 flex" id="interestBar">
                         <div class="bg-rose-500 h-full w-1/4"></div>
                         <div class="bg-amber-500 h-full w-1/4"></div>
@@ -280,16 +580,11 @@
                     </div>
                 </div>
 
-                <!-- Live Signal Activity Log -->
                 <div class="pt-1 border-t border-zinc-800">
                     <div class="text-[10px] font-mono text-zinc-500">Tín hiệu ngầm mới nhất:</div>
                     <div id="liveSignalLog" class="text-[11px] font-mono text-emerald-400 truncate mt-0.5">
                         Chờ tín hiệu lướt tin...
                     </div>
-                </div>
-
-                <div class="text-[9px] text-zinc-500 font-mono flex items-center justify-between pt-0.5">
-                    <span>Tỷ lệ: 70% Cá nhân • 20% Khám phá • 10% Hot</span>
                 </div>
             </div>
         </aside>
@@ -332,11 +627,11 @@
                     <!-- Desktop Navigation Arrows (Right side of card) -->
                     <div class="hidden sm:flex flex-col gap-2 absolute -right-14 bottom-1/2 translate-y-1/2 z-30">
                         <button onclick="scrollTikTok(-1)" title="Tin trước (Phím ↑ / K)" 
-                                class="w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                                class="tiktok-nav-arrow w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
                             <i class="fa-solid fa-chevron-up text-xs"></i>
                         </button>
                         <button onclick="scrollTikTok(1)" title="Tin tiếp theo (Phím ↓ / J / Space)" 
-                                class="w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                                class="tiktok-nav-arrow w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
                             <i class="fa-solid fa-chevron-down text-xs"></i>
                         </button>
                     </div>
@@ -464,6 +759,46 @@
     <!-- APPLICATION JAVASCRIPT: TIKTOK RECOMMENDATION ENGINE -->
     <script>
         // =========================================================================
+        // THEME MODE CONTROLLER (HIGH CONTRAST LIGHT / DARK)
+        // =========================================================================
+        function initThemeMode() {
+            const savedTheme = localStorage.getItem('app_theme') || 'dark';
+            applyThemeMode(savedTheme);
+        }
+
+        function toggleThemeMode() {
+            const currentTheme = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyThemeMode(nextTheme);
+        }
+
+        function applyThemeMode(theme) {
+            const root = document.documentElement;
+            const icon = document.getElementById('themeToggleIcon');
+            const text = document.getElementById('themeToggleText');
+            const btn = document.getElementById('themeToggleBtn');
+
+            if (theme === 'light') {
+                root.classList.remove('dark');
+                root.classList.add('light');
+                localStorage.setItem('app_theme', 'light');
+                if (icon) icon.className = 'fa-solid fa-moon text-slate-800 text-xs';
+                if (text) text.textContent = 'Nền tối';
+                if (btn) btn.title = 'Chuyển sang nền tối (Đen)';
+            } else {
+                root.classList.remove('light');
+                root.classList.add('dark');
+                localStorage.setItem('app_theme', 'dark');
+                if (icon) icon.className = 'fa-solid fa-sun text-amber-400 text-xs';
+                if (text) text.textContent = 'Nền sáng';
+                if (btn) btn.title = 'Chuyển sang nền sáng (Trắng)';
+            }
+        }
+
+        // Apply immediately to prevent flash
+        initThemeMode();
+
+        // =========================================================================
         // 1. STATE & IMPLICIT SIGNALS MAPPING ENGINE
         // =========================================================================
         let state = {
@@ -534,6 +869,7 @@
 
         // Initialize application on load
         document.addEventListener('DOMContentLoaded', () => {
+            initThemeMode();
             initAuth();
             state.isColdStart = state.signalsCount < 5;
             updateStatsBadges();
@@ -860,7 +1196,7 @@
                             <i class="fa-solid fa-bolt-lightning"></i>
                         </div>
                         <h3 class="text-sm font-bold text-white mb-1">Đang nạp luồng tin tiếp theo...</h3>
-                        <p class="text-xs text-zinc-400 max-w-xs leading-relaxed">Thuật toán đang cá nhân hóa đợt tin tiếp theo dựa trên hành vi đọc của bạn.</p>
+                        <p class="text-xs text-zinc-400 max-w-xs leading-relaxed">Hệ thống đang chuẩn bị thêm tin tức mới nhất dành cho bạn.</p>
                     `;
                     feed.appendChild(endLoader);
                     if (signalsObserver) signalsObserver.observe(endLoader);
@@ -913,7 +1249,7 @@
 
             if (state.reelsDeck.length === 0) {
                 feed.innerHTML = `
-                    <div class="tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417]">
+                    <div class="empty-deck-card tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417]">
                         <div class="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-xl mb-3 border border-zinc-700/60">
                             <i class="fa-solid fa-check-double text-zinc-400"></i>
                         </div>
@@ -958,14 +1294,12 @@
             const wordCount = textContent.trim().split(/\s+/).length;
             const standardReadSecs = Math.max(3, Math.round(wordCount * 0.28));
 
-            // Slot badge indicator (70 - 20 - 10)
+            // Slot badge indicator (clean for readers, no calculations or percentages)
             let slotBadgeHtml = '';
             if (article.slotType === 'breaking') {
-                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 flex items-center gap-1"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng (10%)</span>`;
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-400/30 flex items-center gap-1"><i class="fa-solid fa-fire text-rose-400"></i> Tin Nóng</span>`;
             } else if (article.slotType === 'exploration') {
-                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center gap-1"><i class="fa-solid fa-compass text-amber-400"></i> Khám Phá (20%)</span>`;
-            } else {
-                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-zinc-200 border border-white/15 flex items-center gap-1"><i class="fa-solid fa-sliders text-zinc-300"></i> Sở Thích (70%)</span>`;
+                slotBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center gap-1"><i class="fa-solid fa-compass text-amber-400"></i> Khám Phá</span>`;
             }
 
             const baseLikes = 120 + ((article.id * 37) % 890);
@@ -1016,19 +1350,16 @@
                             ${escapeHtml(article.title)}
                         </h2>
 
-                        <!-- Micro-Article Summary Box (Linear Card) -->
-                        <div class="p-3 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-zinc-200 text-xs leading-relaxed space-y-1 shadow-2xl">
-                            <p class="line-clamp-3">
-                                <span class="text-rose-400 font-bold mr-1">⚡ Tóm tắt:</span>
+                        <!-- Micro-Article Summary Box (Clean: Only main content, no icon or label) -->
+                        <div class="summary-box p-3 sm:p-3.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-2xl transition-all">
+                            <p class="summary-text line-clamp-3">
                                 ${escapeHtml(article.summary || 'Nhấn nút bên dưới để đọc bài viết gốc đầy đủ trên trang báo.')}
                             </p>
                         </div>
 
-                        <!-- Read time benchmark & word count -->
+                        <!-- Publish time -->
                         <div class="flex items-center gap-2 text-[10px] font-mono text-zinc-400 pt-0.5">
                             <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
-                            <span>&bull;</span>
-                            <span>~${wordCount} từ (${standardReadSecs}s)</span>
                         </div>
 
                         <!-- Action: Read Full Article (Deep Read Signal) -->
@@ -1430,10 +1761,10 @@
 
                 section.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="px-3 py-1 rounded-md text-xs font-mono font-bold bg-zinc-800/80 text-zinc-200 border border-zinc-700/60">
+                        <span class="date-badge px-3 py-1 rounded-md text-xs font-mono font-bold bg-zinc-800/80 text-zinc-200 border border-zinc-700/60">
                             ${dateLabel}
                         </span>
-                        <div class="h-px bg-zinc-800/80 flex-1"></div>
+                        <div class="date-divider h-px bg-zinc-800/80 flex-1"></div>
                         <span class="text-[11px] font-mono text-zinc-500">${articles.length} tin tức</span>
                     </div>
 
@@ -1448,7 +1779,7 @@
                 const loadMoreBtnContainer = document.createElement('div');
                 loadMoreBtnContainer.className = 'text-center pt-6 pb-12';
                 loadMoreBtnContainer.innerHTML = `
-                    <button onclick="loadMoreArticles()" class="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold text-xs shadow-lg transition-all inline-flex items-center gap-2">
+                    <button id="loadMoreBtn" onclick="loadMoreArticles()" class="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 font-semibold text-xs shadow-lg transition-all inline-flex items-center gap-2">
                         <i class="fa-solid fa-arrow-down text-zinc-400"></i>
                         <span>Tải thêm tin tức cũ hơn (Trang ${state.currentPage + 2})</span>
                     </button>
@@ -1463,7 +1794,7 @@
             const isLiked = state.likedArticleIds.has(article.id);
 
             return `
-                <div class="group bg-[#111115] rounded-xl overflow-hidden border border-[rgba(255,255,255,0.07)] hover:border-zinc-500/40 transition-all flex flex-col justify-between">
+                <div class="grid-card group bg-[#111115] rounded-xl overflow-hidden border border-[rgba(255,255,255,0.07)] hover:border-zinc-500/40 transition-all flex flex-col justify-between">
                     <div>
                         <!-- Cover Image -->
                         <div class="h-40 w-full relative overflow-hidden bg-zinc-900">
@@ -1484,17 +1815,17 @@
                                 <span>${timeAgo}</span>
                             </div>
 
-                            <h3 class="text-sm font-bold text-zinc-100 group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
+                            <h3 class="grid-card-title text-sm font-bold text-zinc-100 group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug">
                                 <a href="${article.url}" target="_blank" onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')">${escapeHtml(article.title)}</a>
                             </h3>
 
-                            <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                            <p class="grid-card-desc text-xs text-zinc-400 line-clamp-2 leading-relaxed">
                                 ${escapeHtml(article.summary || 'Không có mô tả chi tiết.')}
                             </p>
                         </div>
                     </div>
 
-                    <div class="p-4 pt-0 flex items-center justify-between border-t border-zinc-800/80 mt-2">
+                    <div class="grid-card-footer p-4 pt-0 flex items-center justify-between border-t border-zinc-800/80 mt-2">
                         <a href="${article.url}" target="_blank" rel="noopener noreferrer" 
                            onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
                            class="inline-flex items-center gap-1 text-xs font-semibold text-zinc-300 hover:text-white transition-colors">
@@ -1849,17 +2180,20 @@
             const toast = document.getElementById('toast');
             const content = document.getElementById('toastContent');
 
-            let bg = 'bg-[#18181b] border-zinc-700 text-zinc-200';
-            let icon = 'fa-solid fa-circle-info text-zinc-300';
+            const isLight = document.documentElement.classList.contains('light');
+
+            let bg = isLight ? 'bg-white border-slate-300 text-slate-800 shadow-xl' : 'bg-[#18181b] border-zinc-700 text-zinc-200';
+            let icon = isLight ? 'fa-solid fa-circle-info text-slate-600' : 'fa-solid fa-circle-info text-zinc-300';
+
             if (type === 'success') {
-                bg = 'bg-[#121c16] border-emerald-800/80 text-emerald-200';
-                icon = 'fa-solid fa-circle-check text-emerald-400';
+                bg = isLight ? 'bg-emerald-50 border-emerald-300 text-emerald-900 shadow-xl' : 'bg-[#121c16] border-emerald-800/80 text-emerald-200';
+                icon = isLight ? 'fa-solid fa-circle-check text-emerald-600' : 'fa-solid fa-circle-check text-emerald-400';
             } else if (type === 'error') {
-                bg = 'bg-[#201315] border-rose-800/80 text-rose-200';
-                icon = 'fa-solid fa-triangle-exclamation text-rose-400';
+                bg = isLight ? 'bg-rose-50 border-rose-300 text-rose-900 shadow-xl' : 'bg-[#201315] border-rose-800/80 text-rose-200';
+                icon = isLight ? 'fa-solid fa-triangle-exclamation text-rose-600' : 'fa-solid fa-triangle-exclamation text-rose-400';
             }
 
-            content.className = `flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium border ${bg}`;
+            content.className = `flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold border ${bg}`;
             content.innerHTML = `<i class="${icon}"></i> <span>${message}</span>`;
             toast.classList.remove('hidden');
 
