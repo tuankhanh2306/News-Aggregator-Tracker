@@ -21,12 +21,12 @@
                     },
                     colors: {
                         brand: {
-                            base: '#0c0d0e',
-                            surface: '#141417',
-                            card: '#18191c',
+                            base: '#121316',
+                            surface: '#18191d',
+                            card: '#22242a',
                             border: 'rgba(255, 255, 255, 0.08)',
                             vermilion: '#e11d48',
-                            cream: '#f5f3ef',
+                            cream: '#f8f8fa',
                             amber: '#d97706',
                         }
                     }
@@ -38,84 +38,84 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* =========================================================
-           1. WCAG AAA HIGH CONTRAST DESIGN TOKENS (DARK & LIGHT)
+           1. EYE-FRIENDLY EDITORIAL DESIGN TOKENS (WARM GRAPHITE & PAPER)
            ========================================================= */
-        :root {
+        :root, html.dark {
             color-scheme: dark;
 
-            /* Surface & Canvas (Dark Obsidian) */
-            --bg-canvas: #090a0d;
-            --bg-surface: #12141a;
-            --bg-surface-elevated: #1a1d26;
-            --bg-surface-glass: rgba(18, 20, 26, 0.88);
-            --bg-modal: #12141a;
-            --bg-input: #15171f;
+            /* Surface & Canvas (Warm Editorial Graphite - Gentle on Eyes, Eliminates Astigmatism Glare) */
+            --bg-canvas: #121316;
+            --bg-surface: #18191d;
+            --bg-surface-elevated: #22242a;
+            --bg-surface-glass: rgba(24, 25, 29, 0.88);
+            --bg-modal: #18191d;
+            --bg-input: #1e2026;
 
-            /* High Contrast Borders (>= 3.0:1 UI Boundaries) */
-            --border-subtle: rgba(255, 255, 255, 0.16);
-            --border-strong: rgba(255, 255, 255, 0.32);
-            --border-focus: #f43f5e;
+            /* Soft Editorial Hairlines (Delicate, Anti-Wireframe) */
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --border-focus: #e11d48;
 
-            /* Typography (WCAG AAA >= 7.0:1) */
-            --text-primary: #ffffff;
-            --text-secondary: #e2e8f0;
-            --text-muted: #cbd5e1;
-            --text-caption: #cbd5e1;
-            --text-inverted: #090d16;
+            /* Typography (Warm Eggshell & Zinc - 14:1 Contrast, Zero Halation) */
+            --text-primary: #edeef0;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --text-caption: #71717a;
+            --text-inverted: #121316;
 
-            /* Editorial Accents */
-            --accent-editorial: #f43f5e;
-            --accent-editorial-hover: #fb7185;
-            --accent-serendipity: #fbbf24;
-            --accent-serendipity-bg: rgba(251, 191, 36, 0.18);
-            --accent-live: #10b981;
+            /* Editorial Accents (Calibrated, Non-Neon) */
+            --accent-editorial: #e11d48;
+            --accent-editorial-hover: #f43f5e;
+            --accent-serendipity: #d97706;
+            --accent-serendipity-bg: rgba(217, 119, 6, 0.12);
+            --accent-live: #059669;
 
-            /* Elevation & Effects */
-            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
-            --shadow-pop: 0 20px 35px -5px rgba(0, 0, 0, 0.7);
-            --bezel-ring: 0 0 0 1px rgba(255, 255, 255, 0.10);
-            --glow-achievement: 0 0 28px rgba(244, 63, 94, 0.45);
-            --scrollbar-thumb: #2d3139;
-            --scrollbar-hover: #454a54;
+            /* Elevation & Micro-Effects */
+            --shadow-card: 0 4px 16px -2px rgba(0, 0, 0, 0.35);
+            --shadow-pop: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
+            --bezel-ring: 0 0 0 1px rgba(255, 255, 255, 0.06);
+            --glow-achievement: 0 0 12px rgba(225, 29, 72, 0.20);
+            --scrollbar-thumb: #2d3037;
+            --scrollbar-hover: #3f434d;
         }
 
         html.light {
             color-scheme: light;
 
-            /* Surface & Canvas (Pristine Editorial Paper) */
-            --bg-canvas: #f8fafc;
+            /* Surface & Canvas (Warm Editorial Paper/Newsprint - Soft and Soothing) */
+            --bg-canvas: #f8f8fa;
             --bg-surface: #ffffff;
-            --bg-surface-elevated: #f1f5f9;
-            --bg-surface-glass: rgba(255, 255, 255, 0.94);
+            --bg-surface-elevated: #f1f1f4;
+            --bg-surface-glass: rgba(255, 255, 255, 0.92);
             --bg-modal: #ffffff;
-            --bg-input: #f1f5f9;
+            --bg-input: #f4f4f6;
 
-            /* High Contrast Borders (>= 3.0:1 on #ffffff) */
-            --border-subtle: #94a3b8;
-            --border-strong: #475569;
+            /* Soft Gray Hairlines (Subtle Zinc-200, Eliminates Slate-400 Cage Effect) */
+            --border-subtle: #e4e4e7;
+            --border-strong: #d4d4d8;
             --border-focus: #be123c;
 
-            /* Typography (WCAG AAA >= 7.0:1 on #ffffff) */
-            --text-primary: #090d16;
-            --text-secondary: #1e293b;
-            --text-muted: #334155;
-            --text-caption: #475569;
-            --text-inverted: #ffffff;
+            /* Typography (Charcoal Zinc-900 - 15:1 Contrast, Zero Glare) */
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --text-muted: #71717a;
+            --text-caption: #71717a;
+            --text-inverted: #f8f8fa;
 
             /* Editorial Accents */
             --accent-editorial: #be123c;
             --accent-editorial-hover: #9f1239;
             --accent-serendipity: #b45309;
-            --accent-serendipity-bg: rgba(180, 83, 9, 0.14);
+            --accent-serendipity-bg: rgba(180, 83, 9, 0.08);
             --accent-live: #047857;
 
-            /* Elevation & Effects */
-            --shadow-card: 0 4px 18px -2px rgba(15, 23, 42, 0.08);
-            --shadow-pop: 0 20px 35px -5px rgba(15, 23, 42, 0.16);
-            --bezel-ring: 0 0 0 1px rgba(15, 23, 42, 0.14);
-            --glow-achievement: 0 0 28px rgba(190, 18, 60, 0.35);
-            --scrollbar-thumb: #cbd5e1;
-            --scrollbar-hover: #94a3b8;
+            /* Elevation & Micro-Effects */
+            --shadow-card: 0 2px 10px -1px rgba(0, 0, 0, 0.05);
+            --shadow-pop: 0 10px 25px -4px rgba(0, 0, 0, 0.08);
+            --bezel-ring: 0 0 0 1px rgba(0, 0, 0, 0.06);
+            --glow-achievement: 0 0 12px rgba(190, 18, 60, 0.15);
+            --scrollbar-thumb: #d4d4d8;
+            --scrollbar-hover: #a1a1aa;
         }
 
         /* =========================================================
@@ -131,10 +131,10 @@
             padding: 0;
             overflow: hidden !important;
             overscroll-behavior: none;
-            background-color: var(--bg-canvas);
-            color: var(--text-primary);
+            background-color: var(--bg-canvas) !important;
+            color: var(--text-primary) !important;
             letter-spacing: -0.015em;
-            transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Snap Scroll TikTok Deck with Compositor Optimization */
@@ -196,19 +196,9 @@
         }
 
         .achievement-glow {
-            animation: achievementGlowPulse 1.8s ease-in-out infinite alternate;
-            box-shadow: var(--glow-achievement);
-        }
-
-        @keyframes achievementGlowPulse {
-            0% {
-                box-shadow: 0 0 10px rgba(244, 63, 94, 0.3);
-                border-color: rgba(244, 63, 94, 0.5);
-            }
-            100% {
-                box-shadow: 0 0 28px rgba(244, 63, 94, 0.8);
-                border-color: rgba(244, 63, 94, 0.95);
-            }
+            border-color: rgba(225, 29, 72, 0.45) !important;
+            box-shadow: 0 0 14px rgba(225, 29, 72, 0.16);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         /* =========================================================
@@ -324,16 +314,25 @@
         }
 
         /* =========================================================
-           6. COMPONENT THEMING (ELIMINATING !important OVERRIDES)
+           6. COMPONENT THEMING (SEAMLESS DARK & LIGHT HARMONY)
            ========================================================= */
         header {
-            background-color: var(--bg-surface-glass);
-            border-bottom: 1px solid var(--border-subtle);
+            background-color: var(--bg-surface-glass) !important;
+            border-bottom: 1px solid var(--border-subtle) !important;
         }
 
         aside {
-            background-color: var(--bg-surface);
-            border-right: 1px solid var(--border-subtle);
+            background-color: var(--bg-surface) !important;
+            border-right: 1px solid var(--border-subtle) !important;
+        }
+
+        main {
+            background-color: var(--bg-canvas) !important;
+        }
+
+        #mobileBottomNav {
+            background-color: var(--bg-surface-glass) !important;
+            border-top: 1px solid var(--border-subtle) !important;
         }
 
         #searchInput {
@@ -384,6 +383,16 @@
             border: 1px solid var(--border-subtle);
         }
 
+        /* Light Mode High Contrast Text Color Consistency */
+        html.light .text-white:not(.bg-rose-600 *):not(.bg-rose-500 *):not(.bg-\[\#e11d48\] *):not(.bento-lead *):not(.bento-card a.bg-\[var\(--accent-editorial\)\], .bento-card a.bg-\[var\(--accent-editorial\)\] *):not(#unauthSection button.bg-white):not(.tiktok-card h2) {
+            color: var(--text-primary) !important;
+        }
+        html.light #gridCategoryBadge {
+            background-color: var(--bg-surface-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+
         /* View Crossfade */
         .view-section-transition {
             transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
@@ -407,10 +416,10 @@
         }
     </style>
 </head>
-<body class="bg-[#0c0d0e] text-[#f5f3ef] h-[100dvh] w-screen overflow-hidden flex flex-col antialiased selection:bg-rose-500/25 selection:text-rose-200">
+<body class="bg-[var(--bg-canvas)] text-[var(--text-primary)] h-[100dvh] w-screen overflow-hidden flex flex-col antialiased selection:bg-rose-500/20 selection:text-rose-400">
 
     <!-- Top Navigation Header -->
-    <header class="h-14 shrink-0 border-b border-[rgba(255,255,255,0.07)] bg-[#0c0d0e]/90 backdrop-blur-xl sticky top-0 z-40 flex items-center px-3 sm:px-6 justify-between gap-2 sm:gap-4">
+    <header class="h-14 shrink-0 border-b border-[var(--border-subtle)] bg-[var(--bg-surface-glass)] backdrop-blur-xl sticky top-0 z-40 flex items-center px-3 sm:px-6 justify-between gap-2 sm:gap-4">
         
         <!-- Left: Logo & View Switcher -->
         <div class="flex items-center gap-3 sm:gap-6 min-w-0">
@@ -419,20 +428,20 @@
                     <span>N</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-white whitespace-nowrap">VNNews Hub</span>
-                    <span class="hidden md:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-300 border border-rose-500/20">Micro-Article Feed</span>
+                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-[var(--text-primary)] whitespace-nowrap">VNNews Hub</span>
+                    <span class="hidden md:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-rose-500/10 text-rose-500 border border-rose-500/20">Micro-Article Feed</span>
                 </div>
             </div>
 
             <!-- Mode Switcher: Reels vs Grid (Hidden on mobile, accessible via Bottom Nav) -->
-            <div id="viewModeToggleContainer" class="hidden sm:flex items-center bg-[#141417] p-0.5 rounded-lg border border-[rgba(255,255,255,0.08)]">
+            <div id="viewModeToggleContainer" class="hidden sm:flex items-center bg-[var(--bg-surface-elevated)] p-0.5 rounded-lg border border-[var(--border-subtle)]">
                 <button id="viewReelsBtn" onclick="switchViewMode('reels')" title="Chế độ Lướt Thẻ Micro-Content (TikTok)"
-                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-zinc-800 text-white shadow-xs transition-all">
+                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[var(--accent-editorial)] text-white shadow-xs transition-all">
                     <i class="fa-solid fa-mobile-screen text-[11px]"></i>
                     <span>Lướt Thẻ</span>
                 </button>
                 <button id="viewGridBtn" onclick="switchViewMode('grid')" title="Chế độ Xem Lưới Theo Ngày"
-                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all">
+                        class="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all">
                     <i class="fa-solid fa-table-cells text-[11px]"></i>
                     <span>Dạng Lưới</span>
                 </button>
@@ -442,11 +451,11 @@
         <!-- Center: Search Box (Desktop) -->
         <div class="flex-1 max-w-md hidden md:block">
             <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-caption)] text-xs"></i>
                 <input type="text" id="searchInput" placeholder="Tìm kiếm tin tức (Full-Text Search)..." 
-                       class="w-full pl-8 pr-16 py-1.5 bg-[#141417] border border-[rgba(255,255,255,0.08)] rounded-lg text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-rose-500/80 focus:ring-1 focus:ring-rose-500/30 transition-all"
+                       class="w-full pl-8 pr-16 py-1.5 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-lg text-xs text-[var(--text-primary)] placeholder-[var(--text-caption)] focus:outline-none focus:border-rose-500/80 focus:ring-1 focus:ring-rose-500/30 transition-all"
                        onkeydown="if(event.key === 'Enter') triggerSearch()">
-                <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-500 bg-zinc-800/80 px-1 rounded border border-zinc-700/50">↵ Enter</span>
+                <span class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[var(--text-caption)] bg-[var(--bg-surface-elevated)] px-1 rounded border border-[var(--border-subtle)]">↵ Enter</span>
             </div>
         </div>
 
@@ -455,47 +464,47 @@
 
             <!-- Mobile Quick Search Button -->
             <button onclick="openMobileCategoryDrawer(true)" title="Tìm kiếm tin nhanh" 
-                    class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg border border-[rgba(255,255,255,0.1)] bg-zinc-800/90 text-zinc-300 hover:text-white text-xs transition-all">
+                    class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs transition-all">
                 <i class="fa-solid fa-magnifying-glass text-xs"></i>
             </button>
 
             <!-- Theme Mode Toggle (Trắng / Đen) -->
             <button id="themeToggleBtn" onclick="toggleThemeMode()" title="Chuyển chế độ Sáng / Tối (Trắng / Đen)" 
-                    class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.1)] bg-zinc-800/90 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold transition-all">
+                    class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] text-xs font-semibold transition-all">
                 <i id="themeToggleIcon" class="fa-solid fa-sun text-amber-400 text-xs"></i>
                 <span id="themeToggleText" class="hidden sm:inline text-[11px]">Nền sáng</span>
             </button>
             
             <!-- Reload Unread Deck Button -->
             <button onclick="handleReloadAction()" title="Làm mới bản tin" 
-                    class="group flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-zinc-800/90 hover:bg-zinc-700 border border-[rgba(255,255,255,0.08)] text-zinc-200 text-xs font-semibold transition-all">
-                <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-rose-400"></i>
+                    class="group flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] border border-[var(--border-subtle)] text-[var(--text-primary)] text-xs font-semibold transition-all">
+                <i id="reloadSpinner" class="fa-solid fa-rotate-right text-xs transition-transform duration-500 text-rose-500"></i>
                 <span class="hidden sm:inline">Làm Mới</span>
             </button>
 
             <!-- Swagger API Docs -->
             <a href="/swagger-ui/index.html" target="_blank" title="Tài liệu Swagger API"
-               class="hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] text-zinc-400 hover:text-zinc-200 text-xs font-mono transition-all">
+               class="hidden lg:flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-mono transition-all">
                 API Docs
             </a>
 
             <!-- User Auth Buttons -->
             <div id="unauthSection" class="flex items-center gap-1.5">
-                <button onclick="openAuthModal('login')" class="px-2.5 py-1.5 text-xs font-medium text-zinc-300 hover:text-white transition-colors">
+                <button onclick="openAuthModal('login')" class="px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
                     Đăng nhập
                 </button>
-                <button onclick="openAuthModal('register')" class="px-3 py-1.5 text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 rounded-lg transition-all">
+                <button onclick="openAuthModal('register')" class="px-3 py-1.5 text-xs font-semibold bg-[var(--accent-editorial)] hover:bg-[var(--accent-editorial-hover)] text-white rounded-lg shadow-sm transition-all">
                     Đăng ký
                 </button>
             </div>
 
             <div id="authSection" class="hidden items-center gap-2">
-                <button onclick="openSubModal()" class="flex items-center gap-1 px-2.5 py-1.5 bg-rose-500/10 text-rose-300 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg text-xs font-medium transition-all">
+                <button onclick="openSubModal()" class="flex items-center gap-1 px-2.5 py-1.5 bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500/20 rounded-lg text-xs font-medium transition-all">
                     <i class="fa-regular fa-envelope text-[11px]"></i>
                     <span class="hidden sm:inline">Bản tin</span>
                 </button>
-                <span id="userBadge" class="text-xs font-mono text-zinc-400 hidden sm:inline truncate max-w-[110px]"></span>
-                <button onclick="handleLogout()" title="Đăng xuất" class="p-1.5 text-zinc-500 hover:text-rose-400 transition-colors">
+                <span id="userBadge" class="text-xs font-mono text-[var(--text-secondary)] hidden sm:inline truncate max-w-[110px]"></span>
+                <button onclick="handleLogout()" title="Đăng xuất" class="p-1.5 text-[var(--text-caption)] hover:text-[var(--accent-editorial)] transition-colors">
                     <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
                 </button>
             </div>
@@ -508,56 +517,56 @@
         <!-- ========================================== -->
         <!-- LEFT SIDEBAR: Linear / TikTok Navigation -->
         <!-- ========================================== -->
-        <aside class="w-64 shrink-0 border-r border-[rgba(255,255,255,0.07)] p-4 hidden md:flex flex-col justify-between overflow-y-auto">
+        <aside class="w-64 shrink-0 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 hidden md:flex flex-col justify-between overflow-y-auto">
             <div class="space-y-6">
                 
                 <!-- Main Nav Tabs -->
                 <div class="space-y-1">
                     <button onclick="selectFeedFilter('for-you')" id="nav-for-you" 
-                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-300 border border-rose-500/20 transition-all">
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20 transition-all">
                         <span class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-layer-group text-rose-400"></i> Dành Cho Bạn
+                            <i class="fa-solid fa-layer-group text-rose-500"></i> Dành Cho Bạn
                         </span>
-                        <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
+                        <span id="recDot" class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
                     </button>
 
                     <button onclick="selectFeedFilter('trending')" id="nav-trending" 
-                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all">
                         <span class="flex items-center gap-2.5">
                             <i class="fa-solid fa-fire text-rose-500"></i> Xu Hướng Hot
                         </span>
                     </button>
 
                     <button onclick="selectFeedFilter('liked')" id="nav-liked" 
-                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all">
                         <span class="flex items-center gap-2.5">
                             <i class="fa-solid fa-heart text-rose-500"></i> Tin Đã Thích
                         </span>
-                        <span id="likedCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
+                        <span id="likedCountBadge" class="text-[10px] font-mono text-[var(--text-caption)] bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded">0</span>
                     </button>
 
                     <button onclick="selectFeedFilter('saved')" id="nav-saved" 
-                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all">
                         <span class="flex items-center gap-2.5">
                             <i class="fa-solid fa-bookmark text-amber-500"></i> Đã Lưu (Bookmarks)
                         </span>
-                        <span id="savedCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
+                        <span id="savedCountBadge" class="text-[10px] font-mono text-[var(--text-caption)] bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded">0</span>
                     </button>
 
                     <button onclick="selectFeedFilter('history')" id="nav-history" 
-                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all">
+                            class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all">
                         <span class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-clock-rotate-left text-zinc-400"></i> Đã Xem Qua
+                            <i class="fa-solid fa-clock-rotate-left text-[var(--text-caption)]"></i> Đã Xem Qua
                         </span>
-                        <span id="readCountBadge" class="text-[10px] font-mono text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">0</span>
+                        <span id="readCountBadge" class="text-[10px] font-mono text-[var(--text-caption)] bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded">0</span>
                     </button>
                 </div>
 
                 <!-- Categories -->
                 <div>
-                    <div class="px-3 mb-2 text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">Chuyên Mục</div>
+                    <div class="px-3 mb-2 text-[10px] font-mono uppercase tracking-wider text-[var(--text-caption)] font-semibold">Chuyên Mục</div>
                     <div id="sidebarCategoriesList" class="space-y-0.5">
-                        <button onclick="selectCategory(null, 'Tất cả tin')" id="cat-btn-all" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-200 bg-zinc-800/60 transition-all">
+                        <button onclick="selectCategory(null, 'Tất cả tin')" id="cat-btn-all" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] transition-all">
                             Tất cả tin
                         </button>
                     </div>
@@ -565,32 +574,32 @@
 
                 <!-- Trending Topics Cloud -->
                 <div>
-                    <div class="px-3 mb-2 text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-semibold flex items-center justify-between">
+                    <div class="px-3 mb-2 text-[10px] font-mono uppercase tracking-wider text-[var(--text-caption)] font-semibold flex items-center justify-between">
                         <span>Top Tìm Kiếm</span>
-                        <i class="fa-solid fa-chart-line text-[10px] text-zinc-600"></i>
+                        <i class="fa-solid fa-chart-line text-[10px] text-[var(--text-caption)]"></i>
                     </div>
                     <div id="sidebarTrendingCloud" class="flex flex-wrap gap-1.5 px-2">
-                        <span class="text-[11px] text-zinc-600 italic">Đang phân tích...</span>
+                        <span class="text-[11px] text-[var(--text-caption)] italic">Đang phân tích...</span>
                     </div>
                 </div>
 
             </div>
 
             <!-- Internal Algorithm HUD (Hidden from normal end-users) -->
-            <div id="internalAlgorithmHUD" class="hidden p-3.5 rounded-xl bg-[#141417] border border-[rgba(255,255,255,0.08)] text-[11px] space-y-2 mt-4">
-                <div class="flex items-center justify-between font-mono text-[10px] text-rose-400 font-bold">
+            <div id="internalAlgorithmHUD" class="hidden p-3.5 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-[11px] space-y-2 mt-4">
+                <div class="flex items-center justify-between font-mono text-[10px] text-rose-500 font-bold">
                     <span class="flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-rose-400 animate-ping"></span> ĐIỀU PHỐI BẢN TIN
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ĐIỀU PHỐI BẢN TIN
                     </span>
-                    <span id="coldStartBadge" class="text-[9px] bg-zinc-800 px-1 rounded text-zinc-400">Cold-Start</span>
+                    <span id="coldStartBadge" class="text-[9px] bg-[var(--bg-surface)] px-1 rounded text-[var(--text-caption)]">Cold-Start</span>
                 </div>
 
                 <div>
-                    <div class="text-[10px] font-mono text-zinc-500 uppercase">Trọng số hứng thú phiên:</div>
-                    <div id="dominantInterestText" class="text-xs font-bold text-white mt-0.5 truncate">
+                    <div class="text-[10px] font-mono text-[var(--text-caption)] uppercase">Trọng số hứng thú phiên:</div>
+                    <div id="dominantInterestText" class="text-xs font-bold text-[var(--text-primary)] mt-0.5 truncate">
                         Đang đọc vị hành vi...
                     </div>
-                    <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1.5 flex" id="interestBar">
+                    <div class="w-full bg-[var(--bg-surface)] h-1.5 rounded-full overflow-hidden mt-1.5 flex" id="interestBar">
                         <div class="bg-rose-500 h-full w-1/4"></div>
                         <div class="bg-amber-500 h-full w-1/4"></div>
                         <div class="bg-zinc-600 h-full w-1/4"></div>
@@ -598,9 +607,9 @@
                     </div>
                 </div>
 
-                <div class="pt-1 border-t border-zinc-800">
-                    <div class="text-[10px] font-mono text-zinc-500">Tín hiệu ngầm mới nhất:</div>
-                    <div id="liveSignalLog" class="text-[11px] font-mono text-emerald-400 truncate mt-0.5">
+                <div class="pt-1 border-t border-[var(--border-subtle)]">
+                    <div class="text-[10px] font-mono text-[var(--text-caption)]">Tín hiệu ngầm mới nhất:</div>
+                    <div id="liveSignalLog" class="text-[11px] font-mono text-emerald-500 truncate mt-0.5">
                         Chờ tín hiệu lướt tin...
                     </div>
                 </div>
@@ -610,7 +619,7 @@
         <!-- ========================================== -->
         <!-- MAIN STAGE: REELS VIEW & GRID VIEW -->
         <!-- ========================================== -->
-        <main class="flex-1 h-full flex flex-col items-center justify-center relative overflow-hidden bg-[#0c0d0e]">
+        <main class="flex-1 h-full flex flex-col items-center justify-center relative overflow-hidden bg-[var(--bg-canvas)]">
 
             <!-- VIEW 1: TIKTOK REELS SWIPE (ONE-CARD-PER-SCREEN) -->
             <section id="reelsViewSection" class="w-full h-full flex items-center justify-center p-0 sm:p-4 relative overflow-hidden select-none">
@@ -620,24 +629,24 @@
                     
                     <!-- Floating Position & Pre-fetch Status Badge -->
                     <div class="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 z-30 flex items-center gap-2 pointer-events-none">
-                        <div id="feedLoadingMoreBadge" class="hidden bg-rose-600/90 backdrop-blur-md border border-rose-400/40 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium text-white shadow-xl items-center gap-1.5 animate-pulse">
+                        <div id="feedLoadingMoreBadge" class="hidden bg-rose-600/90 backdrop-blur-md border border-rose-400/40 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium text-white shadow-lg items-center gap-1.5">
                             <i class="fa-solid fa-spinner fa-spin text-[10px]"></i> <span>Đang nạp thêm tin...</span>
                         </div>
-                        <div id="feedProgressBadge" class="bg-black/75 backdrop-blur-md border border-white/15 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold text-zinc-200 shadow-xl flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50"></span>
+                        <div id="feedProgressBadge" class="bg-[var(--bg-surface-glass)] backdrop-blur-md border border-[var(--border-subtle)] px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold text-[var(--text-secondary)] shadow-md flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/40"></span>
                             <span id="feedProgressText">Tin 1 / 20</span>
                         </div>
                     </div>
 
                     <!-- The Snap Scroll Feed -->
-                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-none sm:rounded-3xl border-0 sm:border border-[rgba(255,255,255,0.1)] bg-[#141417] sm:shadow-2xl relative">
+                    <div id="tiktokFeed" class="tiktok-feed w-full h-full overflow-y-auto rounded-none sm:rounded-3xl border-0 sm:border border-[var(--border-subtle)] bg-[var(--bg-surface)] sm:shadow-xl relative">
                         <!-- Loading State Card -->
-                        <div class="tiktok-card w-full h-full flex flex-col justify-end p-6 relative bg-[#141417] animate-pulse">
-                            <div class="absolute inset-0 bg-zinc-800/40"></div>
+                        <div class="tiktok-card w-full h-full flex flex-col justify-end p-6 relative bg-[var(--bg-surface)]">
+                            <div class="absolute inset-0 bg-[var(--bg-surface-elevated)]/60"></div>
                             <div class="relative z-10 space-y-3">
-                                <div class="h-4 bg-zinc-700 rounded w-1/3"></div>
-                                <div class="h-6 bg-zinc-600 rounded w-3/4"></div>
-                                <div class="h-14 bg-zinc-700/60 rounded"></div>
+                                <div class="h-4 bg-[var(--border-strong)] rounded w-1/3"></div>
+                                <div class="h-6 bg-[var(--border-strong)] rounded w-3/4"></div>
+                                <div class="h-14 bg-[var(--border-subtle)] rounded"></div>
                             </div>
                         </div>
                     </div>
@@ -645,11 +654,11 @@
                     <!-- Desktop Navigation Arrows (Right side of card) -->
                     <div class="hidden sm:flex flex-col gap-2 absolute -right-14 bottom-1/2 translate-y-1/2 z-30">
                         <button onclick="scrollTikTok(-1)" title="Tin trước (Phím ↑ / K)" 
-                                class="tiktok-nav-arrow w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                                class="tiktok-nav-arrow w-10 h-10 rounded-full bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95">
                             <i class="fa-solid fa-chevron-up text-xs"></i>
                         </button>
                         <button onclick="scrollTikTok(1)" title="Tin tiếp theo (Phím ↓ / J / Space)" 
-                                class="tiktok-nav-arrow w-10 h-10 rounded-full bg-[#18181b]/90 hover:bg-zinc-700 text-zinc-200 border border-[rgba(255,255,255,0.12)] flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95">
+                                class="tiktok-nav-arrow w-10 h-10 rounded-full bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] flex items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95">
                             <i class="fa-solid fa-chevron-down text-xs"></i>
                         </button>
                     </div>
@@ -660,16 +669,16 @@
 
             <!-- VIEW 2: EDITORIAL BENTO GRID (GROUPED BY DATE) -->
             <section id="gridViewSection" class="hidden w-full h-full overflow-y-auto p-4 sm:p-8 max-w-7xl mx-auto overscroll-contain">
-                <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[rgba(255,255,255,0.07)]">
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--border-subtle)]">
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)] flex items-center gap-2">
                             <span>Bản Tin Tổng Hợp</span>
-                            <span id="gridCategoryBadge" class="text-xs font-mono font-normal text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded">Tất cả tin</span>
+                            <span id="gridCategoryBadge" class="text-xs font-mono font-normal text-[var(--text-secondary)] bg-[var(--bg-surface-elevated)] px-2 py-0.5 rounded border border-[var(--border-subtle)]">Tất cả tin</span>
                         </h1>
-                        <p class="text-xs text-zinc-400 mt-0.5">Phân loại theo ngày xuất bản &bull; Lọc thông tin có tương tác cao</p>
+                        <p class="text-xs text-[var(--text-secondary)] mt-0.5">Phân loại theo ngày xuất bản &bull; Lọc thông tin có tương tác cao</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span id="gridTotalElements" class="text-xs font-mono text-zinc-400">0 bài viết</span>
+                        <span id="gridTotalElements" class="text-xs font-mono text-[var(--text-caption)]">0 bài viết</span>
                     </div>
                 </div>
 
@@ -683,18 +692,18 @@
     </div>
 
     <!-- MODAL: Auth (Login & Register) -->
-    <div id="authModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-[#121216] rounded-2xl max-w-md w-full p-6 border border-[rgba(255,255,255,0.1)] shadow-2xl relative">
-            <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-zinc-500 hover:text-white p-1">
+    <div id="authModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[var(--bg-modal)] rounded-2xl max-w-md w-full p-6 border border-[var(--border-subtle)] shadow-2xl relative">
+            <button onclick="closeAuthModal()" class="absolute right-4 top-4 text-[var(--text-caption)] hover:text-[var(--text-primary)] p-1">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
             <!-- Tabs -->
-            <div class="flex border-b border-zinc-800 mb-5">
-                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2.5 text-xs font-bold text-white border-b-2 border-rose-500">
+            <div class="flex border-b border-[var(--border-subtle)] mb-5">
+                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2.5 text-xs font-bold text-[var(--text-primary)] border-b-2 border-rose-500">
                     Đăng nhập
                 </button>
-                <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2.5 text-xs font-bold text-zinc-500 border-b-2 border-transparent hover:text-zinc-300">
+                <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2.5 text-xs font-bold text-[var(--text-secondary)] border-b-2 border-transparent hover:text-[var(--text-primary)]">
                     Đăng ký
                 </button>
             </div>
@@ -702,16 +711,16 @@
             <!-- Form -->
             <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
                 <div id="fullNameGroup" class="hidden">
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Họ và tên</label>
-                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-rose-500">
+                    <label class="block text-[11px] font-semibold text-[var(--text-caption)] mb-1">Họ và tên</label>
+                    <input type="text" id="authFullName" placeholder="Nguyễn Văn A" class="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-lg text-xs text-[var(--text-primary)] placeholder-[var(--text-caption)] focus:outline-none focus:border-rose-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Địa chỉ Email</label>
-                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-rose-500">
+                    <label class="block text-[11px] font-semibold text-[var(--text-caption)] mb-1">Địa chỉ Email</label>
+                    <input type="email" id="authEmail" required placeholder="name@example.com" class="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-lg text-xs text-[var(--text-primary)] placeholder-[var(--text-caption)] focus:outline-none focus:border-rose-500">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-semibold text-zinc-400 mb-1">Mật khẩu</label>
-                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700/80 rounded-lg text-xs text-white focus:outline-none focus:border-rose-500">
+                    <label class="block text-[11px] font-semibold text-[var(--text-caption)] mb-1">Mật khẩu</label>
+                    <input type="password" id="authPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="w-full px-3 py-2 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-lg text-xs text-[var(--text-primary)] placeholder-[var(--text-caption)] focus:outline-none focus:border-rose-500">
                 </div>
 
                 <div id="authAlert" class="hidden p-2.5 rounded-lg text-xs font-medium"></div>
@@ -724,32 +733,32 @@
     </div>
 
     <!-- MODAL: Subscriptions & Digest -->
-    <div id="subModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-[#121216] rounded-2xl max-w-lg w-full p-6 border border-[rgba(255,255,255,0.1)] shadow-2xl relative max-h-[90vh] flex flex-col">
-            <button onclick="closeSubModal()" class="absolute right-4 top-4 text-zinc-500 hover:text-white p-1">
+    <div id="subModal" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[var(--bg-modal)] rounded-2xl max-w-lg w-full p-6 border border-[var(--border-subtle)] shadow-2xl relative max-h-[90vh] flex flex-col">
+            <button onclick="closeSubModal()" class="absolute right-4 top-4 text-[var(--text-caption)] hover:text-[var(--text-primary)] p-1">
                 <i class="fa-solid fa-xmark text-sm"></i>
             </button>
 
             <div class="flex items-center gap-3 mb-4">
-                <div class="w-9 h-9 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center text-sm border border-rose-500/20">
+                <div class="w-9 h-9 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center text-sm border border-rose-500/20">
                     <i class="fa-regular fa-envelope"></i>
                 </div>
                 <div>
-                    <h2 class="text-sm font-bold text-white">Bản Tin Email Hằng Ngày</h2>
-                    <p class="text-[11px] text-zinc-400">Tự động tổng hợp và gửi tóm tắt các chuyên mục bạn theo dõi lúc 7:00 AM</p>
+                    <h2 class="text-sm font-bold text-[var(--text-primary)]">Bản Tin Email Hằng Ngày</h2>
+                    <p class="text-[11px] text-[var(--text-secondary)]">Tự động tổng hợp và gửi tóm tắt các chuyên mục bạn theo dõi lúc 7:00 AM</p>
                 </div>
             </div>
 
             <!-- Categories Checklist -->
             <div id="subCategoryList" class="overflow-y-auto flex-1 my-2 pr-1 space-y-2">
-                <div class="text-center py-4 text-xs text-zinc-500 font-mono">Đang tải...</div>
+                <div class="text-center py-4 text-xs text-[var(--text-caption)] font-mono">Đang tải...</div>
             </div>
 
-            <div class="border-t border-zinc-800 pt-3 mt-2 flex items-center justify-between gap-2">
-                <button onclick="previewEmailDigest()" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-xs font-semibold transition-all">
-                    <i class="fa-solid fa-eye text-zinc-400 mr-1"></i> Xem trước Email
+            <div class="border-t border-[var(--border-subtle)] pt-3 mt-2 flex items-center justify-between gap-2">
+                <button onclick="previewEmailDigest()" class="px-3 py-1.5 bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg text-xs font-semibold border border-[var(--border-subtle)] transition-all">
+                    <i class="fa-solid fa-eye text-[var(--text-caption)] mr-1"></i> Xem trước Email
                 </button>
-                <button onclick="closeSubModal()" class="px-3 py-1.5 border border-zinc-700 text-zinc-400 hover:text-white rounded-lg text-xs">
+                <button onclick="closeSubModal()" class="px-3 py-1.5 border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg text-xs transition-colors">
                     Đóng
                 </button>
             </div>
@@ -757,11 +766,11 @@
     </div>
 
     <!-- MODAL: Email Preview Iframe -->
-    <div id="previewModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-[#121216] rounded-2xl max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col relative overflow-hidden border border-zinc-800">
-            <div class="px-4 py-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between">
-                <span class="text-xs font-mono font-semibold text-zinc-300">Xem trước Daily Digest (HTML Template)</span>
-                <button onclick="closePreviewModal()" class="text-zinc-500 hover:text-white">
+    <div id="previewModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-[var(--bg-modal)] rounded-2xl max-w-3xl w-full h-[85vh] shadow-2xl flex flex-col relative overflow-hidden border border-[var(--border-subtle)]">
+            <div class="px-4 py-3 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-subtle)] flex items-center justify-between">
+                <span class="text-xs font-mono font-semibold text-[var(--text-primary)]">Xem trước Daily Digest (HTML Template)</span>
+                <button onclick="closePreviewModal()" class="text-[var(--text-caption)] hover:text-[var(--text-primary)]">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
@@ -770,28 +779,28 @@
     </div>
 
     <!-- MODAL / DRAWER: Story Arc / Timeline Continuity -->
-    <div id="timelineModal" onclick="if(event.target === this) closeTimelineModal()" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 transition-all">
-        <div class="drawer-slide-container bg-[#12141a] rounded-2xl max-w-xl w-full max-h-[88vh] shadow-2xl flex flex-col relative overflow-hidden border border-[var(--border-subtle)]">
-            <div class="px-5 py-4 bg-[#1a1d26] border-b border-[var(--border-subtle)] flex items-center justify-between">
+    <div id="timelineModal" onclick="if(event.target === this) closeTimelineModal()" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 transition-all">
+        <div class="drawer-slide-container bg-[var(--bg-modal)] rounded-2xl max-w-xl w-full max-h-[88vh] shadow-2xl flex flex-col relative overflow-hidden border border-[var(--border-subtle)]">
+            <div class="px-5 py-4 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-subtle)] flex items-center justify-between">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs border border-amber-500/30">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs border border-amber-500/30">
                         <i class="fa-solid fa-timeline"></i>
                     </div>
                     <div>
-                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Mạch Tin Tức (Story Arc)</h3>
-                        <p id="timelineTopicTitle" class="text-[11px] text-zinc-400 line-clamp-1 font-medium">Đang xâu chuỗi sự kiện...</p>
+                        <h3 class="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider">Mạch Tin Tức (Story Arc)</h3>
+                        <p id="timelineTopicTitle" class="text-[11px] text-[var(--text-secondary)] line-clamp-1 font-medium">Đang xâu chuỗi sự kiện...</p>
                     </div>
                 </div>
-                <button onclick="closeTimelineModal()" class="text-zinc-400 hover:text-white p-1 rounded-md transition-colors" title="Đóng (ESC)">
+                <button onclick="closeTimelineModal()" class="text-[var(--text-caption)] hover:text-[var(--text-primary)] p-1 rounded-md transition-colors" title="Đóng (ESC)">
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
             <div id="timelineEventsList" class="p-5 overflow-y-auto flex-1 space-y-4">
                 <!-- Timeline events dynamically inserted -->
             </div>
-            <div class="px-5 py-3 bg-[#15171f] border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] font-mono text-zinc-400">
-                <span><i class="fa-solid fa-compass text-amber-400 mr-1.5"></i>Tự động gom cụm theo thực thể</span>
-                <button onclick="closeTimelineModal()" class="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition-all">Đóng</button>
+            <div class="px-5 py-3 bg-[var(--bg-surface-elevated)] border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] font-mono text-[var(--text-caption)]">
+                <span><i class="fa-solid fa-compass text-amber-500 mr-1.5"></i>Tự động gom cụm theo thực thể</span>
+                <button onclick="closeTimelineModal()" class="px-3 py-1 rounded bg-[var(--bg-surface)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] text-xs font-medium transition-all">Đóng</button>
             </div>
         </div>
     </div>
@@ -826,17 +835,17 @@
     <!-- ========================================== -->
     <!-- MOBILE DRAWER: Categories & Quick Search -->
     <!-- ========================================== -->
-    <div id="mobileCategoryDrawer" onclick="if(event.target === this) closeMobileCategoryDrawer()" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex flex-col justify-end md:hidden transition-all">
+    <div id="mobileCategoryDrawer" onclick="if(event.target === this) closeMobileCategoryDrawer()" class="fixed inset-0 z-50 hidden bg-black/70 backdrop-blur-md flex flex-col justify-end md:hidden transition-all">
         <div class="drawer-slide-container bg-[var(--bg-modal)] rounded-t-3xl w-full max-h-[85vh] shadow-2xl flex flex-col relative overflow-hidden border-t border-[var(--border-subtle)]">
             <!-- Header & Drag handle -->
             <div class="pt-3 pb-2 px-5 flex flex-col items-center border-b border-[var(--border-subtle)] bg-[var(--bg-surface-elevated)]">
-                <div class="w-10 h-1 rounded-full bg-zinc-600 mb-2"></div>
+                <div class="w-10 h-1 rounded-full bg-[var(--border-strong)] mb-2"></div>
                 <div class="w-full flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-compass text-rose-500 text-sm"></i>
-                        <span class="text-xs font-bold uppercase tracking-wider text-white">Khám Phá Chuyên Mục</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">Khám Phá Chuyên Mục</span>
                     </div>
-                    <button onclick="closeMobileCategoryDrawer()" class="p-1 text-zinc-400 hover:text-white">
+                    <button onclick="closeMobileCategoryDrawer()" class="p-1 text-[var(--text-caption)] hover:text-[var(--text-primary)]">
                         <i class="fa-solid fa-xmark text-base"></i>
                     </button>
                 </div>
@@ -845,11 +854,11 @@
             <!-- Mobile Search Bar -->
             <div class="p-4 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)]">
                 <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-xs"></i>
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-caption)] text-xs"></i>
                     <input type="text" id="mobileSearchInput" placeholder="Tìm kiếm tin tức nhanh..."
-                           class="w-full pl-8 pr-14 py-2 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-all"
+                           class="w-full pl-8 pr-14 py-2 bg-[var(--bg-input)] border border-[var(--border-subtle)] rounded-xl text-xs text-[var(--text-primary)] placeholder-[var(--text-caption)] focus:outline-none focus:border-rose-500 transition-all"
                            onkeydown="if(event.key === 'Enter') triggerMobileSearch()">
-                    <button onclick="triggerMobileSearch()" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs font-semibold px-2.5 py-1 rounded-lg bg-rose-600 text-white shadow-xs">
+                    <button onclick="triggerMobileSearch()" class="absolute right-1.5 top-1/2 -translate-y-1/2 text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#e11d48] text-white shadow-xs">
                         Tìm
                     </button>
                 </div>
@@ -858,24 +867,24 @@
             <!-- Categories List Grid & Topics -->
             <div class="p-4 overflow-y-auto flex-1 space-y-4">
                 <div>
-                    <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-2">Chuyên Mục Tin Tức</div>
+                    <div class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-caption)] font-semibold mb-2">Chuyên Mục Tin Tức</div>
                     <div id="mobileCategoriesGrid" class="grid grid-cols-2 gap-2">
-                        <button onclick="selectCategory(null, 'Tất cả tin'); closeMobileCategoryDrawer();" class="p-2.5 rounded-xl text-xs font-semibold text-left bg-zinc-800 text-white border border-zinc-700/60 transition-all flex items-center gap-2">
+                        <button onclick="selectCategory(null, 'Tất cả tin'); closeMobileCategoryDrawer();" class="p-2.5 rounded-xl text-xs font-semibold text-left bg-[var(--bg-surface-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all flex items-center gap-2">
                             <span>🌐</span> <span>Tất cả tin</span>
                         </button>
                     </div>
                 </div>
 
                 <div>
-                    <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-2">Chủ Đề Nóng</div>
+                    <div class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-caption)] font-semibold mb-2">Chủ Đề Nóng</div>
                     <div id="mobileTrendingCloud" class="flex flex-wrap gap-1.5">
-                        <span class="text-xs text-zinc-500 italic">Đang cập nhật...</span>
+                        <span class="text-xs text-[var(--text-caption)] italic">Đang cập nhật...</span>
                     </div>
                 </div>
             </div>
             
             <div class="p-3 bg-[var(--bg-surface-elevated)] border-t border-[var(--border-subtle)] text-center">
-                <button onclick="closeMobileCategoryDrawer()" class="w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-xl text-xs font-semibold transition-all">
+                <button onclick="closeMobileCategoryDrawer()" class="w-full py-2 bg-[var(--bg-surface)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] rounded-xl text-xs font-semibold transition-all">
                     Đóng
                 </button>
             </div>
@@ -1726,22 +1735,22 @@
                 if (!endCompleted && state.reelsDeck.length > 0) {
                     endCompleted = document.createElement('div');
                     endCompleted.id = 'feedEndCompletedCard';
-                    endCompleted.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417] select-none';
+                    endCompleted.className = 'tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[var(--bg-surface)] text-[var(--text-primary)] select-none';
                     endCompleted.innerHTML = `
-                        <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-4 shadow-xl">
+                        <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 text-2xl mb-4 shadow-md">
                             <i class="fa-solid fa-check-double"></i>
                         </div>
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-2 font-semibold">ĐÃ CẬP NHẬT TẤT CẢ</span>
-                        <h3 class="text-base font-bold text-white mb-1">Bạn đã theo kịp toàn bộ diễn biến!</h3>
-                        <p class="text-xs text-zinc-400 max-w-xs leading-relaxed mb-6">Hệ thống tổng hợp tất cả các nguồn tin chính thống hôm nay. Bạn có thể quét lại tin mới hoặc đọc lại từ đầu.</p>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 mb-2 font-semibold">ĐÃ CẬP NHẬT TẤT CẢ</span>
+                        <h3 class="text-base font-bold text-[var(--text-primary)] mb-1">Bạn đã theo kịp toàn bộ diễn biến!</h3>
+                        <p class="text-xs text-[var(--text-secondary)] max-w-xs leading-relaxed mb-6">Hệ thống tổng hợp tất cả các nguồn tin chính thống hôm nay. Bạn có thể quét lại tin mới hoặc đọc lại từ đầu.</p>
                         <div class="flex flex-wrap gap-2.5 justify-center">
-                            <button onclick="handleReloadAction()" class="px-4 py-2 rounded-xl bg-[#e11d48] hover:bg-rose-600 text-white text-xs font-semibold shadow-lg shadow-rose-950/40 transition-all">
+                            <button onclick="handleReloadAction()" class="px-4 py-2 rounded-xl bg-[#e11d48] hover:bg-rose-600 text-white text-xs font-semibold shadow-md shadow-rose-950/30 transition-all">
                                 <i class="fa-solid fa-rotate-right mr-1.5"></i> Quét tin mới nhất
                             </button>
-                            <button onclick="resetReadHistory()" class="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold border border-zinc-700 transition-all">
+                            <button onclick="resetReadHistory()" class="px-4 py-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] text-xs font-semibold border border-[var(--border-subtle)] transition-all">
                                 <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> Đọc lại từ đầu
                             </button>
-                            <button onclick="switchViewMode('grid')" class="px-4 py-2 rounded-xl bg-zinc-800/80 hover:bg-zinc-700 text-zinc-400 hover:text-white text-xs font-semibold border border-zinc-800 transition-all">
+                            <button onclick="switchViewMode('grid')" class="px-4 py-2 rounded-xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-semibold border border-[var(--border-subtle)] transition-all">
                                 <i class="fa-solid fa-table-cells mr-1.5"></i> Xem dạng lưới
                             </button>
                         </div>
@@ -1769,14 +1778,14 @@
 
             if (state.reelsDeck.length === 0) {
                 feed.innerHTML = `
-                    <div class="empty-deck-card tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#141417]">
-                        <div class="w-14 h-14 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-400 text-xl mb-3 border border-zinc-700/60">
-                            <i class="fa-solid fa-check-double text-zinc-400"></i>
+                    <div class="empty-deck-card tiktok-card w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[var(--bg-surface)] text-[var(--text-primary)]">
+                        <div class="w-14 h-14 rounded-full bg-[var(--bg-surface-elevated)] flex items-center justify-center text-[var(--text-caption)] text-xl mb-3 border border-[var(--border-subtle)]">
+                            <i class="fa-solid fa-check-double text-[var(--text-caption)]"></i>
                         </div>
-                        <h3 class="text-base font-bold text-white">Chưa có bài viết phù hợp</h3>
-                        <p class="text-xs text-zinc-400 mt-1 max-w-xs">Hệ thống đang liên tục quét thêm tin tức. Bấm làm mới để tải lại.</p>
+                        <h3 class="text-base font-bold text-[var(--text-primary)]">Chưa có bài viết phù hợp</h3>
+                        <p class="text-xs text-[var(--text-secondary)] mt-1 max-w-xs">Hệ thống đang liên tục quét thêm tin tức. Bấm làm mới để tải lại.</p>
                         <div class="mt-4 flex gap-2">
-                            <button onclick="handleReloadAction()" class="px-3.5 py-1.5 rounded-lg bg-[#e11d48] hover:bg-rose-600 text-white text-xs font-semibold shadow-md shadow-rose-950/40">
+                            <button onclick="handleReloadAction()" class="px-3.5 py-1.5 rounded-lg bg-[#e11d48] hover:bg-rose-600 text-white text-xs font-semibold shadow-sm transition-all">
                                 Làm mới
                             </button>
                         </div>
@@ -1802,7 +1811,7 @@
         function createTikTokCard(article, index) {
             const card = document.createElement('div');
             card.id = `tiktok-card-${article.id}`;
-            card.className = 'tiktok-card w-full h-full flex flex-col justify-between relative overflow-hidden bg-black select-none';
+            card.className = 'tiktok-card w-full h-full flex flex-col justify-between relative overflow-hidden bg-[var(--bg-canvas)] select-none';
 
             const imgUrl = article.imageUrl || CATEGORY_DEFAULT_IMAGES[article.categorySlug] || CATEGORY_DEFAULT_IMAGES['default'];
             const timeAgo = formatRelativeTime(article.publishedAt);
@@ -1836,19 +1845,19 @@
                     <img src="${imgUrl}" alt="${escapeHtml(article.title)}" 
                          class="w-full h-full object-cover object-center filter brightness-[0.72]"
                          onerror="this.src='${CATEGORY_DEFAULT_IMAGES['default']}'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/35"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#101114] via-[#101114]/80 to-[#101114]/35"></div>
                 </div>
 
                 <!-- Top Card Bar (Metadata & Algorithm Tag) -->
                 <div class="relative z-10 p-3.5 sm:p-5 flex items-center justify-between gap-1.5 sm:gap-2">
                     <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-white/10 text-zinc-300 border border-white/10">
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-black/40 backdrop-blur-md text-zinc-300 border border-white/10">
                             #${index + 1}
                         </span>
-                        <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-black/65 backdrop-blur-md text-zinc-200 border border-white/10">
+                        <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-black/60 backdrop-blur-md text-zinc-200 border border-white/10">
                             ${article.sourceName || 'Báo điện tử'}
                         </span>
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-zinc-900/80 backdrop-blur-md text-zinc-300 border border-white/10">
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-black/40 backdrop-blur-md text-zinc-300 border border-white/10">
                             ${escapeHtml(article.categoryName || 'Tin tức')}
                         </span>
                         ${slotBadgeHtml}
@@ -1867,19 +1876,19 @@
                     <div class="flex-1 min-w-0 space-y-2 sm:space-y-2.5 pr-1">
                         
                         <!-- Headline -->
-                        <h2 class="text-sm sm:text-lg font-extrabold text-white leading-snug tracking-tight drop-shadow-md line-clamp-3 sm:line-clamp-4">
+                        <h2 class="text-sm sm:text-lg font-extrabold text-[#edeef0] leading-snug tracking-tight drop-shadow-sm line-clamp-3 sm:line-clamp-4">
                             ${escapeHtml(article.title)}
                         </h2>
 
                         <!-- Micro-Article Summary Box (Clean editorial, NO icons, NO calculations) -->
-                        <div class="summary-box p-2.5 sm:p-3.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-lg transition-all">
-                            <p class="summary-text line-clamp-3 sm:line-clamp-4">
+                        <div class="summary-box p-2.5 sm:p-3.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-sm transition-all">
+                            <p class="summary-text line-clamp-3 sm:line-clamp-4 font-normal text-[var(--text-secondary)]">
                                 ${escapeHtml(article.summary || 'Nhấn nút bên dưới để đọc bài viết gốc đầy đủ trên trang báo.')}
                             </p>
                         </div>
 
                         <!-- Publish time (Clean, NO calculated reading metrics) -->
-                        <div class="flex items-center gap-2 text-[10px] font-mono text-zinc-400 pt-0.5">
+                        <div class="flex items-center gap-2 text-[10px] font-mono text-[var(--text-caption)] pt-0.5">
                             <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
                         </div>
 
@@ -1887,7 +1896,7 @@
                         <div class="pt-0.5 sm:pt-1">
                             <a href="${article.url}" target="_blank" rel="noopener noreferrer"
                                onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
-                               class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-white text-zinc-950 hover:bg-zinc-200 rounded-lg sm:rounded-xl text-xs font-bold shadow-md transition-all active:scale-95">
+                               class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-[#edeef0] text-[#121316] hover:bg-white rounded-lg sm:rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95">
                                 <span>Đọc bản đầy đủ trên ${article.sourceName || 'báo'}</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] sm:text-[10px]"></i>
                             </a>
@@ -2087,7 +2096,7 @@
                 }
             }
             if (badge) {
-                badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-400/40 animate-pulse flex items-center gap-1 font-semibold';
+                badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 font-semibold transition-all';
                 badge.innerHTML = '<i class="fa-solid fa-award text-amber-400"></i> Đã thẩm thấu';
             }
             applySignalAdjustment(categorySlug, 20, `⭐ Đạt thành tựu đọc sâu: ${categorySlug} (+20đ)`);
@@ -2661,8 +2670,8 @@
                         <!-- Story Arc Progression Ribbon Header -->
                         <div class="px-4 py-2.5 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-subtle)] flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400">Mạch Tin Tức (Story Arc)</span>
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-500">Mạch Tin Tức (Story Arc)</span>
                             </div>
                             <span class="text-[10px] font-mono text-[var(--text-caption)]">Khởi nguồn ── Diễn biến ── Mới nhất</span>
                         </div>
@@ -2789,7 +2798,7 @@
                 }, 130);
 
                 reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[var(--accent-editorial)] text-white shadow-sm transition-all';
-                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all';
+                gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all';
             } else {
                 reelsSection.style.opacity = '0';
                 reelsSection.style.transform = 'translateY(8px)';
@@ -2808,7 +2817,7 @@
                 }, 130);
 
                 gridBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-[var(--accent-editorial)] text-white shadow-sm transition-all';
-                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-all';
+                reelsBtn.className = 'flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-all';
             }
 
             // Synchronize Mobile Bottom Navigation Tabs
@@ -2818,16 +2827,16 @@
             if (mobForYou && mobTrending && mobGrid) {
                 if (mode === 'grid') {
                     mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
-                    mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
-                    mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
+                    mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                 } else {
-                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                     if (state.feedFilter === 'trending') {
                         mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
-                        mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                        mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                     } else {
                         mobForYou.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
-                        mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                        mobTrending.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                     }
                 }
             }
@@ -2842,8 +2851,8 @@
                 const btn = document.getElementById(`nav-${f}`);
                 if (btn) {
                     btn.className = f === filter 
-                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30 transition-all'
-                        : 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
+                        ? 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20 transition-all'
+                        : 'w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all';
                 }
             });
 
@@ -2856,22 +2865,22 @@
             if (mobForYou && mobTrending && mobSaved && mobGrid) {
                 mobForYou.className = (filter === 'for-you' && state.viewMode === 'reels')
                     ? 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all'
-                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                 mobTrending.className = (filter === 'trending' && state.viewMode === 'reels')
                     ? 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all'
-                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                 mobSaved.className = (filter === 'saved')
                     ? 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-amber-500 font-bold transition-all relative'
-                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all relative';
+                    : 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all relative';
                 if (state.viewMode === 'grid') {
                     mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-rose-500 font-bold transition-all';
                 } else {
-                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-zinc-400 hover:text-zinc-200 transition-all';
+                    mobGrid.className = 'flex flex-col items-center justify-center gap-0.5 flex-1 h-full text-[var(--text-caption)] hover:text-[var(--text-primary)] transition-all';
                 }
             }
 
             document.querySelectorAll('#sidebarCategoriesList button').forEach(b => {
-                b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
+                b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all';
             });
 
             fetchArticlesAndBuildFeed();
@@ -2888,7 +2897,7 @@
 
                 if (mobileGrid) {
                     mobileGrid.innerHTML = `
-                        <button onclick="selectCategory(null, 'Tất cả tin'); closeMobileCategoryDrawer();" class="p-2.5 rounded-xl text-xs font-semibold text-left bg-zinc-800 text-white border border-zinc-700/60 transition-all flex items-center gap-2">
+                        <button onclick="selectCategory(null, 'Tất cả tin'); closeMobileCategoryDrawer();" class="p-2.5 rounded-xl text-xs font-semibold text-left bg-[var(--bg-surface-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all flex items-center gap-2">
                             <span>🌐</span> <span>Tất cả tin</span>
                         </button>
                     `;
@@ -2898,7 +2907,7 @@
                     if (container) {
                         const btn = document.createElement('button');
                         btn.id = `cat-btn-${cat.id}`;
-                        btn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
+                        btn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all';
                         btn.textContent = cat.name;
                         btn.onclick = () => selectCategory(cat.id, cat.name);
                         container.appendChild(btn);
@@ -2906,7 +2915,7 @@
                     if (mobileGrid) {
                         const mBtn = document.createElement('button');
                         mBtn.id = `mobile-cat-btn-${cat.id}`;
-                        mBtn.className = 'p-2.5 rounded-xl text-xs font-medium text-left bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 border border-zinc-700/50 transition-all flex items-center gap-2 truncate';
+                        mBtn.className = 'p-2.5 rounded-xl text-xs font-medium text-left bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all flex items-center gap-2 truncate';
                         mBtn.innerHTML = `<span>📰</span> <span class="truncate">${escapeHtml(cat.name)}</span>`;
                         mBtn.onclick = () => {
                             selectCategory(cat.id, cat.name);
@@ -2925,12 +2934,12 @@
             state.currentSearchKeyword = null;
 
             document.querySelectorAll('#sidebarCategoriesList button').forEach(b => {
-                b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-all';
+                b.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-all';
             });
 
             const activeBtn = id ? document.getElementById(`cat-btn-${id}`) : document.getElementById('cat-btn-all');
             if (activeBtn) {
-                activeBtn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-200 bg-zinc-800/60 transition-all';
+                activeBtn.className = 'w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] transition-all';
             }
 
             document.getElementById('gridCategoryBadge').textContent = name || 'Tất cả tin';
@@ -2944,21 +2953,21 @@
             if (mobileContainer) mobileContainer.innerHTML = '';
 
             if (state.trendingKeywords.length === 0) {
-                if (container) container.innerHTML = '<span class="text-[11px] text-zinc-600 italic">Chưa có từ khóa hot</span>';
-                if (mobileContainer) mobileContainer.innerHTML = '<span class="text-xs text-zinc-500 italic">Chưa có từ khóa hot</span>';
+                if (container) container.innerHTML = '<span class="text-[11px] text-[var(--text-caption)] italic">Chưa có từ khóa hot</span>';
+                if (mobileContainer) mobileContainer.innerHTML = '<span class="text-xs text-[var(--text-caption)] italic">Chưa có từ khóa hot</span>';
                 return;
             }
             state.trendingKeywords.forEach(kw => {
                 if (container) {
                     const tag = document.createElement('button');
-                    tag.className = 'text-[10px] font-mono px-2 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-[rgba(255,255,255,0.06)] transition-all';
+                    tag.className = 'text-[10px] font-mono px-2 py-1 rounded bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all';
                     tag.textContent = `#${kw.keyword}`;
                     tag.onclick = () => searchByTag(kw.keyword);
                     container.appendChild(tag);
                 }
                 if (mobileContainer) {
                     const mTag = document.createElement('button');
-                    mTag.className = 'text-xs font-mono px-2.5 py-1 rounded-lg bg-zinc-800/80 hover:bg-rose-500/20 text-zinc-300 hover:text-rose-300 border border-zinc-700/60 transition-all';
+                    mTag.className = 'text-xs font-mono px-2.5 py-1 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all';
                     mTag.textContent = `#${kw.keyword}`;
                     mTag.onclick = () => {
                         closeMobileCategoryDrawer();
