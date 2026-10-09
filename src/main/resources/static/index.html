@@ -891,6 +891,89 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- EDITORIAL AI CHATBOX (HYBRID RAG ASSISTANT) -->
+    <!-- ========================================== -->
+    <!-- Floating Trigger Button -->
+    <button id="aiChatFab" onclick="toggleAiChatDrawer()" title="Trợ lý Điểm tin AI"
+            class="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-strong)] shadow-xl transition-all active:scale-95">
+        <span class="w-6 h-6 rounded-lg bg-[var(--accent-editorial)] text-white flex items-center justify-center text-xs shadow-sm">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </span>
+        <span class="text-xs font-bold tracking-tight">Trợ lý AI</span>
+    </button>
+
+    <!-- AI Chatbox Panel -->
+    <div id="aiChatDrawer" class="fixed bottom-20 md:bottom-6 right-3 md:right-6 z-50 hidden w-[calc(100vw-1.5rem)] sm:w-[400px] max-h-[76vh] bg-[var(--bg-modal)] border border-[var(--border-strong)] rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all">
+        <!-- Header -->
+        <div class="px-4 py-3 bg-[var(--bg-surface-elevated)] border-b border-[var(--border-subtle)] flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-[var(--accent-editorial)] text-white flex items-center justify-center text-xs font-bold">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h3 class="text-xs font-bold text-[var(--text-primary)] tracking-tight">Trợ lý Điểm tin AI</h3>
+                        <span id="aiEngineBadge" class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-subtle)]">Editorial RAG</span>
+                    </div>
+                    <p class="text-[10px] text-[var(--text-caption)]">Tóm tắt, phân tích & xâu chuỗi sự kiện</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1">
+                <button onclick="resetAiChatConversation()" title="Làm mới hội thoại"
+                        class="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-caption)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-all">
+                    <i class="fa-solid fa-rotate-right text-xs"></i>
+                </button>
+                <button onclick="toggleAiChatDrawer(false)" title="Thu gọn"
+                        class="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--text-caption)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-all">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Active Article Context Bar -->
+        <div id="aiContextBanner" class="px-3.5 py-2 bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+                <i class="fa-regular fa-newspaper text-[11px] text-[var(--accent-editorial)] shrink-0"></i>
+                <span id="aiContextTitle" class="text-[11px] text-[var(--text-secondary)] truncate font-medium">Ngữ cảnh: Toàn bộ bản tin mới nhất</span>
+            </div>
+            <span class="text-[9px] font-mono text-[var(--text-caption)] shrink-0">Tự động</span>
+        </div>
+
+        <!-- Chat Messages Scroll Area -->
+        <div id="aiChatMessages" class="p-3.5 overflow-y-auto flex-1 space-y-3 max-h-[44vh] bg-[var(--bg-canvas)]">
+            <!-- Initial Welcome Message populated via JS -->
+        </div>
+
+        <!-- Quick Suggested Prompts -->
+        <div id="aiQuickPrompts" class="px-3 py-2 bg-[var(--bg-surface)] border-t border-[var(--border-subtle)] flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            <button onclick="sendAiQuickPrompt('Tóm tắt tin đang xem')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all">
+                Tóm tắt tin đang xem
+            </button>
+            <button onclick="sendAiQuickPrompt('Diễn biến sự kiện này')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all">
+                Diễn biến sự kiện này
+            </button>
+            <button onclick="sendAiQuickPrompt('Điểm 5 tin nóng nhất')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all">
+                Điểm 5 tin nóng nhất
+            </button>
+            <button onclick="sendAiQuickPrompt('Chủ đề xu hướng hôm nay')" class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all">
+                Chủ đề xu hướng hôm nay
+            </button>
+        </div>
+
+        <!-- Input Form -->
+        <form onsubmit="handleAiChatSubmit(event)" class="p-3 bg-[var(--bg-surface-elevated)] border-t border-[var(--border-subtle)] flex items-center gap-2">
+            <input type="text" id="aiChatInput" maxlength="500"
+                   placeholder="Hỏi về bài báo này hoặc chủ đề bất kỳ..."
+                   class="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-input)] border border-[var(--border-subtle)] text-xs text-[var(--text-primary)] placeholder-[var(--text-caption)] focus:outline-none focus:border-[var(--border-focus)] transition-all">
+            <button type="submit" id="aiChatSubmitBtn"
+                    class="px-3.5 py-2 rounded-xl bg-[var(--accent-editorial)] hover:bg-[var(--accent-editorial-hover)] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1">
+                <span>Gửi</span>
+                <i class="fa-solid fa-paper-plane text-[10px]"></i>
+            </button>
+        </form>
+    </div>
+
     <!-- Toast Component -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transition-all duration-300">
         <div id="toastContent" class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-medium border"></div>
@@ -989,7 +1072,9 @@
             auth: '/api/auth',
             subscriptions: '/api/subscriptions',
             digest: '/api/subscriptions/digest',
-            timeline: (id) => `/api/articles/${id}/timeline`
+            timeline: (id) => `/api/articles/${id}/timeline`,
+            chatAsk: '/api/chat/ask',
+            chatStatus: '/api/chat/status'
         };
 
         // Source Credibility Weights (Anti-Clickbait filter)
@@ -1767,6 +1852,9 @@
             const current = Math.min(state.currentCardIndex + 1, Math.max(1, state.reelsDeck.length));
             const total = state.reelsDeck.length;
             textEl.textContent = `Tin ${current} / ${total}`;
+            if (typeof updateAiChatContextBanner === 'function') {
+                updateAiChatContextBanner();
+            }
         }
 
         // =========================================================================
@@ -1892,14 +1980,19 @@
                             <span><i class="fa-regular fa-clock mr-1"></i> ${timeAgo}</span>
                         </div>
 
-                        <!-- Action: Read Full Article (Deep Read Signal) -->
-                        <div class="pt-0.5 sm:pt-1">
+                        <!-- Action: Read Full Article & Quick Ask AI -->
+                        <div class="pt-0.5 sm:pt-1 flex items-center gap-2 flex-wrap">
                             <a href="${article.url}" target="_blank" rel="noopener noreferrer"
                                onclick="recordDeepReadSignal(${article.id}, '${article.categorySlug}')"
                                class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-[#edeef0] text-[#121316] hover:bg-white rounded-lg sm:rounded-xl text-xs font-bold shadow-sm transition-all active:scale-95">
                                 <span>Đọc bản đầy đủ trên ${article.sourceName || 'báo'}</span>
                                 <i class="fa-solid fa-arrow-up-right-from-square text-[9px] sm:text-[10px]"></i>
                             </a>
+                            <button onclick="openAiChatForArticle(${article.id}, 'Tóm tắt tin đang xem')"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-black/55 hover:bg-black/75 text-[#edeef0] border border-white/15 rounded-lg sm:rounded-xl text-xs font-semibold backdrop-blur-md transition-all active:scale-95">
+                                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-[10px]"></i>
+                                <span>Hỏi AI</span>
+                            </button>
                         </div>
                     </div>
 
@@ -3274,6 +3367,250 @@
             setTimeout(() => {
                 toast.classList.add('hidden');
             }, 3500);
+        }
+
+        // =========================================================================
+        // 9. EDITORIAL AI CHATBOX CONTROLLER (HYBRID RAG ASSISTANT)
+        // =========================================================================
+        const aiChatState = {
+            isOpen: false,
+            isAsking: false,
+            overrideArticleId: null,
+            initialized: false
+        };
+
+        function getActiveContextArticle() {
+            if (aiChatState.overrideArticleId) {
+                const found = state.allArticles.find(a => a.id === aiChatState.overrideArticleId)
+                    || state.reelsDeck.find(a => a.id === aiChatState.overrideArticleId);
+                if (found) return found;
+            }
+            if (state.viewMode === 'reels' && state.reelsDeck.length > 0) {
+                return state.reelsDeck[state.currentCardIndex] || state.reelsDeck[0];
+            }
+            if (state.allArticles.length > 0) {
+                return state.allArticles[0];
+            }
+            return null;
+        }
+
+        function updateAiChatContextBanner() {
+            const titleEl = document.getElementById('aiContextTitle');
+            if (!titleEl) return;
+            const activeArticle = getActiveContextArticle();
+            if (activeArticle && activeArticle.title) {
+                titleEl.textContent = `Đang xem: ${activeArticle.title}`;
+                titleEl.title = activeArticle.title;
+            } else {
+                titleEl.textContent = 'Ngữ cảnh: Toàn bộ bản tin mới nhất';
+            }
+        }
+
+        function toggleAiChatDrawer(forceState) {
+            const drawer = document.getElementById('aiChatDrawer');
+            if (!drawer) return;
+
+            const nextState = typeof forceState === 'boolean' ? forceState : !aiChatState.isOpen;
+            aiChatState.isOpen = nextState;
+
+            if (nextState) {
+                drawer.classList.remove('hidden');
+                if (!aiChatState.initialized) {
+                    aiChatState.initialized = true;
+                    resetAiChatConversation();
+                }
+                updateAiChatContextBanner();
+                setTimeout(() => {
+                    const input = document.getElementById('aiChatInput');
+                    if (input && window.innerWidth >= 768) input.focus();
+                }, 80);
+            } else {
+                drawer.classList.add('hidden');
+                aiChatState.overrideArticleId = null;
+            }
+        }
+
+        function openAiChatForArticle(articleId, initialPrompt) {
+            aiChatState.overrideArticleId = articleId;
+            toggleAiChatDrawer(true);
+            updateAiChatContextBanner();
+            if (initialPrompt) {
+                sendAiChatMessage(initialPrompt);
+            }
+        }
+
+        function resetAiChatConversation() {
+            const container = document.getElementById('aiChatMessages');
+            if (!container) return;
+            aiChatState.overrideArticleId = null;
+            updateAiChatContextBanner();
+            container.innerHTML = `
+                <div class="p-3 rounded-xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs leading-relaxed text-[var(--text-secondary)] space-y-1.5">
+                    <div class="font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+                        <i class="fa-solid fa-wand-magic-sparkles text-[var(--accent-editorial)]"></i>
+                        <span>Xin chào! Tôi là Trợ lý Biên tập AI của VNNews Hub.</span>
+                    </div>
+                    <p>Tôi tự động nhận diện bản tin bạn đang dừng xem để hỗ trợ:</p>
+                    <ul class="space-y-1 pl-1 text-[11px]">
+                        <li>• <strong>Tóm tắt trọng tâm</strong> hoặc giải thích nhanh bài báo đang đọc.</li>
+                        <li>• <strong>Xâu chuỗi dòng sự kiện</strong> từ lúc khởi nguồn đến mới nhất.</li>
+                        <li>• <strong>Điểm tin nóng & từ khóa xu hướng</strong> trong 24 giờ qua.</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function formatAiReplyMarkdown(rawText) {
+            if (!rawText) return '';
+            let safe = escapeHtml(rawText);
+            safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-[var(--text-primary)]">$1</strong>');
+            safe = safe.replace(/\*([^*]+)\*/g, '<em class="italic text-[var(--text-primary)]">$1</em>');
+            safe = safe.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded bg-[var(--bg-surface)] text-[var(--accent-editorial)] font-mono text-[10px] border border-[var(--border-subtle)]">$1</code>');
+            safe = safe.replace(/\n/g, '<br>');
+            return safe;
+        }
+
+        function appendAiChatMessage(role, htmlContent, relatedArticles = []) {
+            const container = document.getElementById('aiChatMessages');
+            if (!container) return;
+
+            const wrapper = document.createElement('div');
+            if (role === 'user') {
+                wrapper.className = 'flex justify-end';
+                wrapper.innerHTML = `
+                    <div class="max-w-[85%] px-3 py-2 rounded-2xl rounded-br-sm bg-[var(--accent-editorial)] text-white text-xs font-medium leading-relaxed shadow-sm">
+                        ${escapeHtml(htmlContent)}
+                    </div>
+                `;
+            } else {
+                let articlesHtml = '';
+                if (Array.isArray(relatedArticles) && relatedArticles.length > 0) {
+                    const cards = relatedArticles.slice(0, 3).map(art => `
+                        <div class="p-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--border-strong)] transition-all flex items-start justify-between gap-2">
+                            <a href="${escapeHtml(art.url)}" target="_blank" rel="noopener noreferrer"
+                               class="flex-1 min-w-0 group">
+                                <div class="text-[10px] font-mono text-[var(--text-caption)] mb-0.5">
+                                    ${escapeHtml(art.sourceName || 'Báo điện tử')} • ${escapeHtml(art.categoryName || 'Tin tức')}
+                                </div>
+                                <div class="text-[11px] font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-editorial)] line-clamp-2 leading-snug transition-colors">
+                                    ${escapeHtml(art.title)}
+                                </div>
+                            </a>
+                            <button onclick="openTimelineDrawer(${art.id})" title="Xem mạch sự kiện"
+                                    class="shrink-0 px-2 py-1 rounded bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[10px] font-mono text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all">
+                                <i class="fa-solid fa-timeline mr-0.5 text-amber-500"></i> Mạch
+                            </button>
+                        </div>
+                    `).join('');
+
+                    articlesHtml = `
+                        <div class="mt-2.5 pt-2 border-t border-[var(--border-subtle)] space-y-1.5">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-[var(--text-caption)] font-semibold">
+                                Bài báo dẫn chứng (${Math.min(relatedArticles.length, 3)})
+                            </div>
+                            ${cards}
+                        </div>
+                    `;
+                }
+
+                wrapper.className = 'flex justify-start';
+                wrapper.innerHTML = `
+                    <div class="max-w-[94%] p-3 rounded-2xl rounded-bl-sm bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-xs text-[var(--text-secondary)] leading-relaxed shadow-sm">
+                        <div>${htmlContent}</div>
+                        ${articlesHtml}
+                    </div>
+                `;
+            }
+
+            container.appendChild(wrapper);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function updateAiSuggestedChips(prompts) {
+            const chipBar = document.getElementById('aiQuickPrompts');
+            if (!chipBar || !Array.isArray(prompts) || prompts.length === 0) return;
+
+            chipBar.innerHTML = prompts.map(p => `
+                <button onclick="sendAiQuickPrompt('${escapeHtml(p)}')"
+                        class="shrink-0 text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-strong)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-all">
+                    ${escapeHtml(p)}
+                </button>
+            `).join('');
+        }
+
+        function sendAiQuickPrompt(promptText) {
+            sendAiChatMessage(promptText);
+        }
+
+        function handleAiChatSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('aiChatInput');
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = '';
+            sendAiChatMessage(text);
+        }
+
+        async function sendAiChatMessage(messageText) {
+            if (aiChatState.isAsking || !messageText) return;
+            aiChatState.isAsking = true;
+
+            const activeArticle = getActiveContextArticle();
+            updateAiChatContextBanner();
+            appendAiChatMessage('user', messageText);
+
+            const container = document.getElementById('aiChatMessages');
+            const loadingEl = document.createElement('div');
+            loadingEl.className = 'flex justify-start';
+            loadingEl.innerHTML = `
+                <div class="px-3 py-2 rounded-2xl bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] text-[11px] font-mono text-[var(--text-caption)]">
+                    Đang tổng hợp dữ liệu bản tin...
+                </div>
+            `;
+            if (container) {
+                container.appendChild(loadingEl);
+                container.scrollTop = container.scrollHeight;
+            }
+
+            try {
+                const res = await fetch(API.chatAsk, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: messageText,
+                        currentArticleId: activeArticle ? activeArticle.id : null,
+                        categoryId: state.currentCategoryId || null
+                    })
+                });
+
+                if (loadingEl.parentNode) loadingEl.remove();
+
+                if (!res.ok) {
+                    throw new Error('Không thể kết nối Trợ lý AI lúc này');
+                }
+
+                const json = await res.json();
+                const data = json.data || json;
+
+                const badgeEl = document.getElementById('aiEngineBadge');
+                if (badgeEl && data.engine) {
+                    badgeEl.textContent = data.engine === 'GEMINI' ? 'Gemini AI'
+                        : (data.engine === 'GROQ' ? 'Groq AI' : 'Editorial RAG');
+                }
+
+                const formattedHtml = formatAiReplyMarkdown(data.reply || 'Đã tổng hợp thông tin bản tin.');
+                appendAiChatMessage('assistant', formattedHtml, data.relatedArticles || []);
+
+                if (data.suggestedPrompts) {
+                    updateAiSuggestedChips(data.suggestedPrompts);
+                }
+            } catch (err) {
+                if (loadingEl.parentNode) loadingEl.remove();
+                appendAiChatMessage('assistant', 'Hệ thống đang bận đồng bộ bản tin mới. Bạn vui lòng thử lại sau giây lát nhé!');
+            } finally {
+                aiChatState.isAsking = false;
+            }
         }
     </script>
 </body>

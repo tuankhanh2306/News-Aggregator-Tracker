@@ -64,3 +64,8 @@ news:
     enabled: ${NEWS_DIGEST_ENABLED:true}
     cron: ${NEWS_DIGEST_CRON:0 0 7 * * *}
     from: ${NEWS_DIGEST_FROM:news-digest@newsaggregator.com}
+  ai:
+    gemini-api-key: ${GEMINI_API_KEY:}
+    gemini-model: ${GEMINI_MODEL:gemini-2.0-flash}
+    groq-api-key: ${GROQ_API_KEY:}
+    groq-model: ${GROQ_MODEL:llama-3.3-70b-versatile}
